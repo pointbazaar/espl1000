@@ -38,6 +38,7 @@ struct BreakStmt;
 struct ForStmt;
 //typenodes
 struct Type;
+struct PointerType;
 struct ArrayType;
 struct BasicType;
 struct SimpleType;

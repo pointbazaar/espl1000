@@ -17,10 +17,7 @@
 
 #include "../astnodes/StmtBlockTest.h"
 
-#include "../astnodes/types/BasicTypeTest.h"
-#include "../astnodes/types/SubrTypeTest.h"
-#include "../astnodes/types/SimpleTypeTest.h"
-#include "../astnodes/types/StructTypeTest.h"
+#include "../astnodes/types/ParseTypeTests.h"
 
 #include "../astnodes/subr/DeclArgTest.h"
 #include "../astnodes/subr/MethodTest.h"
@@ -169,6 +166,8 @@ void test_parser_suite_types() {
 	subrtype_test_typename_subroutine_return_type();
 
 	structtype_test();
+
+	pointertype_test_type_parsing();
 }
 
 void test_parser_suite_range() {

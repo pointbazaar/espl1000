@@ -60,7 +60,7 @@
 
 	<h2>Types</h2>
 
-	<a id="type">Type</a> ::= <a href="#basictype">BasicType</a> | <a href="#typeparam">TypeParam</a> | <a href="#arraytype">ArrayType</a>
+	<a id="type">Type</a> ::= <a href="#basictype">BasicType</a> | <a href="#typeparam">TypeParam</a> | <a href="#arraytype">ArrayType</a> | <a href="#pointertype">PointerType</a>
 	<br><br>
 
 	<a id="basictype">BasicType</a> ::= <a href="#simpletype">SimpleType</a> | '(' <a href="#subrtype">SubrType</a> ')'
@@ -85,6 +85,9 @@
 	<br><br>
 
 	<a id="arraytype">ArrayType</a> ::= '[' <a href="#type">Type</a> ']'
+	<br><br>
+
+	<a id="pointertype">PointerType</a> ::= '*' <a href="#type">Type</a>
 	<br><br>
 
 	<h2>Statements</h2>

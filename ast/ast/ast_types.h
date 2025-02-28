@@ -12,6 +12,12 @@ struct ArrayType {
 	struct Type* element_type;
 };
 
+struct PointerType {
+	struct ASTNode super;
+
+	struct Type* element_type;
+};
+
 struct BasicType {
 	struct ASTNode super;
 	//these are alternatives,
@@ -62,6 +68,7 @@ struct Type {
 	struct BasicType* basic_type;
 	struct TypeParam* type_param;
 	struct ArrayType* array_type;
+	struct PointerType* pointer_type;
 };
 
 struct TypeParam {

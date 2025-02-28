@@ -1,7 +1,7 @@
 #include <stdbool.h>
 #include <string.h>
 
-#include "../ast.h"
+#include "ast/ast.h"
 
 #include "equals_ast.h"
 
@@ -14,6 +14,8 @@ bool eq_type(struct Type* a, struct Type* b) {
 	if (a->type_param != NULL) { return eq_typeparam(a->type_param, b->type_param); }
 
 	if (a->array_type != NULL) { return eq_arraytype(a->array_type, b->array_type); }
+
+	if (a->pointer_type != NULL) { return eq_pointertype(a->pointer_type, b->pointer_type); }
 
 	return false;
 }
@@ -89,6 +91,13 @@ bool eq_basictype(struct BasicType* a, struct BasicType* b) {
 }
 
 bool eq_arraytype(struct ArrayType* a, struct ArrayType* b) {
+
+	if (a == NULL || b == NULL) { return false; }
+
+	return eq_type(a->element_type, b->element_type);
+}
+
+bool eq_pointertype(struct PointerType* a, struct PointerType* b) {
 
 	if (a == NULL || b == NULL) { return false; }
 

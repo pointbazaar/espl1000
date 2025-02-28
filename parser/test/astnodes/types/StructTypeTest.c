@@ -7,7 +7,7 @@
 #include "token/TokenKeys.h"
 #include "ast/util/free_ast.h"
 #include "types/StructType.h"
-#include "StructTypeTest.h"
+#include "ParseTypeTests.h"
 #include "ast/ast/ast_types.h"
 
 int structtype_test() {

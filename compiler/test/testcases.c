@@ -18,15 +18,32 @@
 #include "tables/test/test.h"
 
 void (*tests_ast[])() = {
+    // const
     test_ast_str_binconst,
     test_ast_str_intconst,
     test_ast_str_charconst,
     test_ast_str_hexconst,
 
+    // expr
     test_ast_str_expr,
     test_ast_str_op,
     test_ast_str_unopterm,
     test_ast_str_term,
+
+    // struct
+    test_ast_str_structdecl,
+    test_ast_str_structmember,
+
+    // types
+    test_ast_str_type,
+    test_ast_str_basictype,
+    test_ast_str_simpletype,
+    test_ast_str_primitivetype,
+    test_ast_str_subrype,
+    test_ast_str_structtype,
+    test_ast_str_typeparam,
+    test_ast_str_arraytype,
+    test_ast_str_pointertype,
 
     NULL,
 };

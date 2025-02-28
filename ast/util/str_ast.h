@@ -21,6 +21,8 @@ char* str_bin_const(uint32_t b);
 // @returns NULL on error
 char* str_array_type(struct ArrayType* at);
 // @returns NULL on error
+char* str_pointer_type(struct PointerType* pt);
+// @returns NULL on error
 char* str_basic_type(struct BasicType* btw);
 // @returns NULL on error
 char* str_simple_type(struct SimpleType* st);

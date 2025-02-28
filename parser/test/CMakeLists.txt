@@ -30,14 +30,12 @@ add_library(sd-parser-test
 	astnodes/subr/DeclArgTest.c
 	astnodes/subr/MethodTest.c
 
+	astnodes/types/ParseTypeTests.h
 	astnodes/types/BasicTypeTest.c
-	astnodes/types/BasicTypeTest.h
 	astnodes/types/SimpleTypeTest.c
-	astnodes/types/SimpleTypeTest.h
 	astnodes/types/SubrTypeTest.c
-	astnodes/types/SubrTypeTest.h
 	astnodes/types/StructTypeTest.c
-	astnodes/types/StructTypeTest.h
+	astnodes/types/PointerTypeTest.c
 
 	astnodes/var/SimpleVarTest.c
 	astnodes/var/VariableTest.c

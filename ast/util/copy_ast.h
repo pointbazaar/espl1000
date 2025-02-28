@@ -32,6 +32,7 @@ struct StructType* copy_struct_type(struct StructType* s);
 struct PrimitiveType* copy_primitive_type(struct PrimitiveType* p);
 struct BasicType* copy_basic_type(struct BasicType* b);
 struct ArrayType* copy_array_type(struct ArrayType* a);
+struct PointerType* copy_pointer_type(struct PointerType* a);
 
 //expr
 struct Expr* copy_expr(struct Expr* expr);

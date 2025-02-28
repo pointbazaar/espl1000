@@ -174,6 +174,27 @@ char* str_array_type(struct ArrayType* at) {
 	return res;
 }
 
+char* str_pointer_type(struct PointerType* pt) {
+
+	char* inner = str_type(pt->element_type);
+
+	if (!inner) {
+		return NULL;
+	}
+
+	char* res = malloc(sizeof(char) * (strlen(inner) + 1 + 1));
+
+	if (!res) {
+		return NULL;
+	}
+
+	sprintf(res, "*%s", inner);
+
+	free(inner);
+
+	return res;
+}
+
 char* str_basic_type(struct BasicType* btw) {
 
 	if (btw->simple_type != NULL)
@@ -269,6 +290,8 @@ char* str_type(struct Type* t) {
 	if (t->type_param != NULL) { return str_type_param(t->type_param); }
 
 	if (t->array_type != NULL) { return str_array_type(t->array_type); }
+
+	if (t->pointer_type != NULL) { return str_pointer_type(t->pointer_type); }
 
 	error("str_type");
 	return NULL;
