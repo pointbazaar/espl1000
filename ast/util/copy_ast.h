@@ -38,6 +38,8 @@ struct PointerType* copy_pointer_type(struct PointerType* a);
 struct Expr* copy_expr(struct Expr* expr);
 // @returns NULL on error
 struct Term* copy_term(struct Term* t);
+struct AddressOf* copy_address_of(struct AddressOf* ao);
+struct Deref* copy_deref(struct Deref* d);
 struct UnOpTerm* copy_un_op_term(struct UnOpTerm* t);
 //struct Op*       copy_op(struct Op* op);
 struct MDirect* copy_mdirect(struct MDirect* m);

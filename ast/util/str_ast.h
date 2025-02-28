@@ -59,6 +59,10 @@ char* str_op(enum OP o);
 // @returns NULL on error
 char* str_un_op_term(struct UnOpTerm* u);
 // @returns NULL on error
+char* str_address_of(struct AddressOf* ao);
+// @returns NULL on error
+char* str_deref(struct Deref* d);
+// @returns NULL on error
 char* str_term(struct Term* t);
 // @returns NULL on error
 char* str_mdirect(struct MDirect* m);

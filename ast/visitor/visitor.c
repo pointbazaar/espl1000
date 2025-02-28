@@ -42,6 +42,10 @@ static bool visit_expr(struct Expr* e, VISITOR, ARG);
 static void visit_op(enum OP o, VISITOR, ARG);
 // @returns false on error
 static bool visit_un_op_term(struct UnOpTerm* u, VISITOR, ARG);
+// @returns false on error
+static bool visit_address_of(struct AddressOf* u, VISITOR, ARG);
+// @returns false on error
+static bool visit_deref(struct Deref* d, VISITOR, ARG);
 
 // @returns false on error
 static bool visit_term(struct Term* t, VISITOR, ARG);
@@ -301,9 +305,30 @@ static bool visit_un_op_term(struct UnOpTerm* u, VISITOR, void* arg) {
 
 	visitor(u, NODE_UNOPTERM, arg);
 
+	if (u->address_of) {
+		return visit_address_of(u->address_of, visitor, arg);
+	}
+	if (u->deref) {
+		return visit_deref(u->deref, visitor, arg);
+	}
+
 	visit_op(u->op, visitor, arg);
 
 	return visit_term(u->term, visitor, arg);
+}
+
+static bool visit_address_of(struct AddressOf* ao, VISITOR, ARG) {
+
+	visitor(ao, NODE_ADDRESSOF, arg);
+
+	return visit_term(ao->term, visitor, arg);
+}
+
+static bool visit_deref(struct Deref* d, VISITOR, ARG) {
+
+	visitor(d, NODE_DEREF, arg);
+
+	return visit_term(d->term, visitor, arg);
 }
 
 static bool visit_term(struct Term* t, VISITOR, void* arg) {
@@ -390,6 +415,8 @@ void visit_type(struct Type* t, VISITOR, void* arg) {
 	if (t->type_param != NULL) { visit_type_param(t->type_param, visitor, arg); }
 
 	if (t->array_type != NULL) { visit_array_type(t->array_type, visitor, arg); }
+
+	if (t->pointer_type != NULL) { visit_pointer_type(t->pointer_type, visitor, arg); }
 }
 
 void visit_array_type(struct ArrayType* a, VISITOR, void* arg) {
@@ -397,6 +424,13 @@ void visit_array_type(struct ArrayType* a, VISITOR, void* arg) {
 	visitor(a, NODE_ARRAYTYPE, arg);
 
 	visit_type(a->element_type, visitor, arg);
+}
+
+void visit_pointer_type(struct PointerType* ptt, VISITOR, ARG) {
+
+	visitor(ptt, NODE_POINTERTYPE, arg);
+
+	visit_type(ptt->element_type, visitor, arg);
 }
 
 void visit_subr_type(struct SubrType* s, VISITOR, void* arg) {

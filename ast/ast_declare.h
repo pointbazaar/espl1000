@@ -16,6 +16,8 @@ struct MethodDecl;
 struct StmtBlock;
 enum OP;
 struct Term;
+struct Deref;
+struct AddressOf;
 struct Expr;
 struct UnOpTerm;
 struct Id;

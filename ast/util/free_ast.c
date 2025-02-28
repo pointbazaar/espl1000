@@ -136,8 +136,26 @@ bool free_term(struct Term* t) {
 
 void free_un_op_term(struct UnOpTerm* t) {
 
-	free_term(t->term);
+	if (t->term) {
+		free_term(t->term);
+	}
+	if (t->address_of) {
+		free_address_of(t->address_of);
+	}
+	if (t->deref) {
+		free_deref(t->deref);
+	}
 	free(t);
+}
+
+void free_address_of(struct AddressOf* ao) {
+	free_term(ao->term);
+	free(ao);
+}
+
+void free_deref(struct Deref* d) {
+	free_term(d->term);
+	free(d);
 }
 
 void free_variable(struct Variable* var) {
