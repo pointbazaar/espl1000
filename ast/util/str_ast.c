@@ -542,6 +542,13 @@ char* str_op(enum OP o) {
 
 char* str_un_op_term(struct UnOpTerm* u) {
 
+	if (u->address_of) {
+		return str_address_of(u->address_of);
+	}
+	if (u->deref) {
+		return str_deref(u->deref);
+	}
+
 	char* strO = (u->op != OP_NONE) ? str_op(u->op) : "";
 
 	if (!strO) {
@@ -568,6 +575,41 @@ char* str_un_op_term(struct UnOpTerm* u) {
 	if (u->op != OP_NONE) { free(strO); }
 	free(strT);
 
+	return res;
+}
+
+char* str_address_of(struct AddressOf* ao) {
+
+	char* s = str_term(ao->term);
+	if (!s) {
+		return NULL;
+	}
+
+	char* res = malloc(sizeof(char) * (strlen(s) + 2));
+	if (!res) {
+		free(s);
+		return NULL;
+	}
+
+	sprintf(res, "&%s", s);
+	free(s);
+	return res;
+}
+
+char* str_deref(struct Deref* d) {
+	char* s = str_term(d->term);
+	if (!s) {
+		return NULL;
+	}
+
+	char* res = malloc(sizeof(char) * (strlen(s) + 2));
+	if (!res) {
+		free(s);
+		return NULL;
+	}
+
+	sprintf(res, "*%s", s);
+	free(s);
 	return res;
 }
 

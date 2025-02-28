@@ -37,6 +37,8 @@ void free_expr(struct Expr* expr);
 // @returns false on error
 bool free_term(struct Term* t);
 void free_un_op_term(struct UnOpTerm* t);
+void free_address_of(struct AddressOf* ao);
+void free_deref(struct Deref* d);
 void free_mdirect(struct MDirect* m);
 
 //var

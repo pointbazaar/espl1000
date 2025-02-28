@@ -50,6 +50,8 @@ enum NODE_TYPE {
 	NODE_EXPR,
 	NODE_OP,
 	NODE_UNOPTERM,
+	NODE_DEREF,
+	NODE_ADDRESSOF,
 	NODE_TERM,
 	NODE_MDIRECT,
 
@@ -65,6 +67,7 @@ enum NODE_TYPE {
 	NODE_STRUCTTYPE,
 	NODE_PRIMITIVETYPE,
 	NODE_ARRAYTYPE,
+	NODE_POINTERTYPE,
 	NODE_BASICTYPE,
 	NODE_TYPEPARAM,
 };
@@ -81,6 +84,7 @@ bool visit_stmt_block(struct StmtBlock* s, VISITOR, ARG);
 //c_types_util
 void visit_type(struct Type* t, VISITOR, ARG);
 void visit_array_type(struct ArrayType* a, VISITOR, ARG);
+void visit_pointer_type(struct PointerType* ptt, VISITOR, ARG);
 void visit_subr_type(struct SubrType* s, VISITOR, ARG);
 void visit_basic_type(struct BasicType* b, VISITOR, ARG);
 void visit_simple_type(struct SimpleType* s, VISITOR, ARG);

@@ -135,7 +135,15 @@
 	<a id="expr">Expr</a> ::= <a href="#unopterm">UnOpTerm</a> (<a href="#op">Op</a> <a href="#unopterm">UnOpTerm</a>)*
 	<br><br>
 
-	<a id="unopterm">UnOpTerm</a> ::= <a href="#op">Op</a> <a href="#term">Term</a>
+	<a id="unopterm">UnOpTerm</a> ::=  <a href="#addressof">AddressOf</a>
+	| <a href="#deref">Deref</a>
+	| <a href="#op">Op</a> <a href="#term">Term</a>
+	<br><br>
+
+	<a id="addressof">AddressOf</a> ::= '&amp;' <a href="#term">Term</a>
+	<br><br>
+
+	<a id="deref">Deref</a> ::= '*' <a href="#term">Term</a>
 	<br><br>
 
 	<a id="term">Term</a> ::= <a href="#constvalue">ConstValue</a> | StringConst | <a href="#call">Call</a> | '(' <a href="#expr">Expr</a> ')' | <a href="#variable">Variable</a> | <a href="#mdirect">MDirect</a>

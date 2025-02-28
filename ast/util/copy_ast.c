@@ -106,14 +106,29 @@ struct Term* copy_term(struct Term* t) {
 
 	return res;
 }
+struct AddressOf* copy_address_of(struct AddressOf* ao) {
+	struct AddressOf* res = make(AddressOf);
+	res->term = copy_term(ao->term);
+	return res;
+}
+struct Deref* copy_deref(struct Deref* d) {
+	struct Deref* res = make(Deref);
+	res->term = copy_term(d->term);
+	return res;
+}
 
 struct UnOpTerm* copy_un_op_term(struct UnOpTerm* t) {
 
 	struct UnOpTerm* res = make(UnOpTerm);
 
-	res->op = t->op;
-
-	res->term = copy_term(t->term);
+	if (t->address_of != NULL) {
+		res->address_of = copy_address_of(t->address_of);
+	} else if (t->deref != NULL) {
+		res->deref = copy_deref(t->deref);
+	} else {
+		res->op = t->op;
+		res->term = copy_term(t->term);
+	}
 
 	return res;
 }

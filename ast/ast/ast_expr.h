@@ -37,12 +37,27 @@ struct Expr {
 	enum OP op; //may be OP_NONE
 	struct UnOpTerm* term2; //may be NULL
 };
+struct Deref {
+	struct ASTNode super;
+	struct Term* term;
+};
+struct AddressOf {
+	struct ASTNode super;
+	struct Term* term;
+};
 struct UnOpTerm {
 	struct ASTNode super;
 	//a term preceded by an unary operator.
 
+	// may be NULL
+	struct AddressOf* address_of;
+
+	// may be NULL
+	struct Deref* deref;
+
 	enum OP op; //may be OP_NONE
 
+	// may be NULL
 	struct Term* term;
 };
 struct Term {
