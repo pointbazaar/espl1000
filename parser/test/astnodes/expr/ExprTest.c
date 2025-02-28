@@ -141,8 +141,6 @@ int expr_test_3_terms() {
 	assert(expr->term1 != NULL);
 	assert(expr->term2 != NULL);
 
-	printf("op = %d", expr->op);
-	fflush(stdout);
 	assert(expr->op == OP_PLUS);
 
 	assert(list_size(tokens) == 1);

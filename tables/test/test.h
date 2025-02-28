@@ -3,6 +3,7 @@
 void test_tables_lvst_ctor();
 void test_tables_lvst_sizeof_type_primitive();
 void test_tables_lvst_sizeof_type_other();
+void test_tables_lvst_sizeof_pointer_type();
 void test_tables_lvst_stack_frame_size_avr();
 void test_tables_lvst_stack_frame_size_x86();
 void test_tables_lvst_stack_frame_offset_avr_int8();
