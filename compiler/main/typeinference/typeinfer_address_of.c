@@ -3,6 +3,7 @@
 #include <stdlib.h>
 
 #include "ast/ast.h"
+#include "ast/util/copy_ast.h"
 
 #include "typeinference/typeinfer.h"
 
@@ -13,7 +14,7 @@ struct Type* infer_type_address_of(struct ST* st, struct AddressOf* ao) {
 	struct Type* t = infer_type_term(st, ao->term);
 
 	struct PointerType* pt = make(PointerType);
-	pt->element_type = t;
+	pt->element_type = copy_type(t);
 
 	struct Type* res = make(Type);
 

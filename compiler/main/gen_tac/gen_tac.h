@@ -24,6 +24,10 @@ bool tac_stmt(struct TACBuffer* buffer, struct Stmt* stmt, struct Ctx* ctx);
 bool tac_call(struct TACBuffer* buffer, struct Call* call, struct Ctx* ctx);
 
 bool tac_unopterm(struct TACBuffer* buffer, struct UnOpTerm* t, struct Ctx* ctx);
+bool tac_unopterm_addr(struct TACBuffer* buffer, struct UnOpTerm* u, struct Ctx* ctx);
+
+bool tac_address_of(struct TACBuffer* buffer, struct AddressOf* ao, struct Ctx* ctx);
+bool tac_deref(struct TACBuffer* buffer, struct Deref* d, struct Ctx* ctx);
 
 // @returns false on error
 bool tac_forstmt(struct TACBuffer* buffer, struct ForStmt* f, struct Ctx* ctx);
@@ -43,8 +47,10 @@ void tac_simplevar(struct TACBuffer* buffer, struct SimpleVar* sv, struct Ctx* c
 void tac_simplevar_addr(struct TACBuffer* buffer, struct SimpleVar* sv, struct Ctx* ctx);
 
 bool tac_expr(struct TACBuffer* buffer, struct Expr* expr, struct Ctx* ctx);
+bool tac_expr_addr(struct TACBuffer* buffer, struct Expr* expr, struct Ctx* ctx);
 
 bool tac_term(struct TACBuffer* buffer, struct Term* t, struct Ctx* ctx);
+bool tac_term_addr(struct TACBuffer* buffer, struct Term* t, struct Ctx* ctx);
 
 void tac_mdirect(struct TACBuffer* buffer, struct MDirect* m, struct Ctx* ctx);
 

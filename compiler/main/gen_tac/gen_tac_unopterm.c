@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <assert.h>
 
 #include "tac/tac.h"
 #include "tac/tacbuffer.h"
@@ -7,6 +8,14 @@
 #include "gen_tac.h"
 
 bool tac_unopterm(struct TACBuffer* buffer, struct UnOpTerm* u, struct Ctx* ctx) {
+
+	if (u->deref) {
+		return tac_deref(buffer, u->deref, ctx);
+	}
+
+	if (u->address_of) {
+		return tac_address_of(buffer, u->address_of, ctx);
+	}
 
 	tac_term(buffer, u->term, ctx);
 
@@ -33,4 +42,22 @@ bool tac_unopterm(struct TACBuffer* buffer, struct UnOpTerm* u, struct Ctx* ctx)
 	}
 
 	return true;
+}
+
+bool tac_unopterm_addr(struct TACBuffer* buffer, struct UnOpTerm* u, struct Ctx* ctx) {
+
+	if (u->deref) {
+		fprintf(stderr, "%s: unsupported\n", __func__);
+		assert(false);
+	}
+	if (u->address_of) {
+		fprintf(stderr, "%s: unsupported\n", __func__);
+		assert(false);
+	}
+	if (u->term) {
+		return tac_term_addr(buffer, u->term, ctx);
+	}
+
+	fprintf(stderr, "%s: unsupported\n", __func__);
+	assert(false);
 }

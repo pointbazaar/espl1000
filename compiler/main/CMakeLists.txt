@@ -28,6 +28,8 @@ add_library("sd-base"
 	gen_tac/gen_tac_stmt.c
 	gen_tac/gen_tac_term.c
 	gen_tac/gen_tac_unopterm.c
+	gen_tac/gen_tac_deref.c
+	gen_tac/gen_tac_address_of.c
 	gen_tac/gen_tac_mdirect.c
 	gen_tac/gen_tac_variable.c
 	gen_tac/gen_tac_whilestmt.c
