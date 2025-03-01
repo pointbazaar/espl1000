@@ -1,0 +1,14 @@
+
+fn f(**int8 ptr) -> int8 {
+
+	return (*(*ptr) + 7);
+}
+
+fn main () -> int {
+
+	int8 x = 81;
+	*int8 y = &x;
+	**int8 z = &y;
+
+	return f(z);
+}
