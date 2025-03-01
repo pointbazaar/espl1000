@@ -47,8 +47,7 @@ bool tac_unopterm(struct TACBuffer* buffer, struct UnOpTerm* u, struct Ctx* ctx)
 bool tac_unopterm_addr(struct TACBuffer* buffer, struct UnOpTerm* u, struct Ctx* ctx) {
 
 	if (u->deref) {
-		fprintf(stderr, "%s: unsupported\n", __func__);
-		assert(false);
+		return tac_term(buffer, u->deref->term, ctx);
 	}
 	if (u->address_of) {
 		fprintf(stderr, "%s: unsupported\n", __func__);

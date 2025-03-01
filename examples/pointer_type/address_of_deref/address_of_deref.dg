@@ -1,0 +1,10 @@
+
+fn main () -> int {
+
+	local int8 x;
+	*int8 y = &x;
+
+	*int8 z = &(*y);
+
+	return 0;
+}
