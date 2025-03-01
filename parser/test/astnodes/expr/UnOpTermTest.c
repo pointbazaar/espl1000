@@ -3,7 +3,7 @@
 #include <assert.h>
 #include <parser/test/test_parser_util.h>
 
-#include "UnOpTermTest.h"
+#include "ParseExprTests.h"
 
 #include "expr/UnOpTerm.h"
 #include "var/Variable.h"

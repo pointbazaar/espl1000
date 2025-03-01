@@ -7,6 +7,8 @@ add_library(sd-parser-test
 	astnodes/expr/ExprTest.c
 	astnodes/expr/TermTest.c
 	astnodes/expr/UnOpTermTest.c
+	astnodes/expr/DerefTest.c
+	astnodes/expr/AddressOfTest.c
 	astnodes/expr/MDirectTest.c
 
 	astnodes/NamespaceTest.c
