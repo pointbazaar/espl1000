@@ -14,6 +14,9 @@
 
 bool tc_unopterm(struct UnOpTerm* uot, struct TCCtx* tcctx) {
 
+	if (uot->deref) { return tc_deref(uot->deref, tcctx); }
+	if (uot->address_of) { return tc_address_of(uot->address_of, tcctx); }
+
 	if (!tc_term(uot->term, tcctx)) { return false; }
 
 	struct Type* type = infer_type_term(tcctx->st, uot->term);

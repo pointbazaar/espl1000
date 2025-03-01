@@ -2,6 +2,8 @@
 
 #include <stdbool.h>
 
+#include "ast/ast_declare.h"
+
 struct TCCtx;
 
 struct Expr;
@@ -32,6 +34,8 @@ bool tc_forstmt(struct ForStmt* f, struct TCCtx* tcctx);
 
 bool tc_expr(struct Expr* expr, struct TCCtx* tcctx);
 bool tc_unopterm(struct UnOpTerm* uot, struct TCCtx* tcctx);
+bool tc_deref(struct Deref* d, struct TCCtx* tcctx);
+bool tc_address_of(struct AddressOf* ao, struct TCCtx* tcctx);
 bool tc_term(struct Term* term, struct TCCtx* tcctx);
 bool tc_mdirect(struct MDirect* mdirect, struct TCCtx* tcctx);
 

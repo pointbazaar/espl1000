@@ -11,7 +11,18 @@
 
 struct Type* infer_type_unopterm(struct ST* st, struct UnOpTerm* t) {
 
-	return infer_type_term(st, t->term);
+	if (t->term) {
+		return infer_type_term(st, t->term);
+	}
+	if (t->deref) {
+		return infer_type_deref(st, t->deref);
+	}
+	if (t->address_of) {
+		return infer_type_address_of(st, t->address_of);
+	}
+
+	fprintf(stderr, "[Typeinference][Error] %s\n", __func__);
+	return NULL;
 }
 
 struct Type* infer_type_term(struct ST* st, struct Term* t) {
@@ -33,7 +44,7 @@ struct Type* infer_type_term(struct ST* st, struct Term* t) {
 		case 13: return typeFromStrPrimitive(st, "uint8");
 
 		default:
-			printf("[Typeinference][Error] Fatal. (in typeinfer_term.c).\n");
+			fprintf(stderr, "[Typeinference][Error] Fatal. (in typeinfer_term.c).\n");
 			return NULL;
 	}
 }
