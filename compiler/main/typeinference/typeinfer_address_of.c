@@ -25,5 +25,5 @@ struct Type* infer_type_address_of(struct ST* st, struct AddressOf* ao) {
 
 	st_register_inferred_type(st, res);
 
-	return t;
+	return res;
 }
