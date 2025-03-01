@@ -27,3 +27,19 @@ bool tac_term(struct TACBuffer* buffer, struct Term* t, struct Ctx* ctx) {
 
 	return true;
 }
+
+bool tac_term_addr(struct TACBuffer* buffer, struct Term* t, struct Ctx* ctx) {
+
+	struct TAC* last = tacbuffer_get_last(buffer);
+	uint8_t width;
+
+	switch (t->kind) {
+		case 5: tac_expr_addr(buffer, t->ptr.m5, ctx); break;
+		case 6: tac_variable_addr(buffer, t->ptr.m6, ctx, &width); break;
+		default:
+			fprintf(stderr, "%s: unsupported: %d\n", __func__, t->kind);
+			return false;
+	}
+
+	return true;
+}

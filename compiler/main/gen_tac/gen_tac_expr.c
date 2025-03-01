@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <assert.h>
 
 #include "tac/tac.h"
 #include "tac/tacbuffer.h"
@@ -26,6 +27,15 @@ bool tac_expr(struct TACBuffer* buffer, struct Expr* expr, struct Ctx* ctx) {
 	}
 
 	return true;
+}
+
+// of course this only works if there is only one term,
+// and even then it depends on what kind of term that is
+bool tac_expr_addr(struct TACBuffer* buffer, struct Expr* expr, struct Ctx* ctx) {
+
+	assert(expr->term2 == NULL);
+
+	return tac_unopterm_addr(buffer, expr->term1, ctx);
 }
 
 static bool operator_immediate_applicable(enum TAC_OP op, int32_t immediate) {
