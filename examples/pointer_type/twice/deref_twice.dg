@@ -1,0 +1,11 @@
+
+fn main() -> int {
+
+	uint64 x = 83;
+
+	*uint64 y = &x;
+
+	**uint64 z = &(y);
+
+	return *(*z);
+}

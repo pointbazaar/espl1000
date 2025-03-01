@@ -35,7 +35,14 @@ bool tc_address_of(struct AddressOf* ao, struct TCCtx* tcctx) {
 		return false;
 	}
 
+	// TODO: check that whatever that is, that it is something
+	// which we can actually get the address of.
+
 	if (type->basic_type && type->basic_type->simple_type) {
+		return tc_term(ao->term, tcctx);
+	}
+
+	if (type->pointer_type) {
 		return tc_term(ao->term, tcctx);
 	}
 
