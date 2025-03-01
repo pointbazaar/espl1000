@@ -337,7 +337,7 @@ char* str_struct_type(struct StructType* s) {
 
 char* str_struct_decl(struct StructDecl* decl) {
 
-	char* name = str_simple_type(decl->type);
+	char* name = decl->type->struct_type->type_name;
 
 	uint16_t l = strlen("struct   { } ") + strlen(name);
 
@@ -360,7 +360,7 @@ char* str_struct_decl(struct StructDecl* decl) {
 		return NULL;
 	}
 
-	sprintf(res, "struct %s {", decl->type->struct_type->type_name);
+	sprintf(res, "struct %s {", name);
 
 	for (uint16_t i = 0; i < decl->count_members; i++) {
 
@@ -387,6 +387,8 @@ char* str_struct_member(struct StructMember* s) {
 	char* res;
 
 	asprintf(&res, "%s %s;", s1, s->name);
+
+	free(s1);
 
 	return res;
 }
