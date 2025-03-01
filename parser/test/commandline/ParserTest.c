@@ -4,9 +4,7 @@
 
 #include "../astnodes/const/ConstValueTest.h"
 
-#include "../astnodes/expr/ExprTest.h"
-#include "../astnodes/expr/UnOpTermTest.h"
-#include "../astnodes/expr/TermTest.h"
+#include "../astnodes/expr/ParseExprTests.h"
 
 #include "../astnodes/RangeTest.h"
 
@@ -34,7 +32,6 @@
 #include "../astnodes/statements/AssignStmtTest.h"
 
 #include "parser/test/astnodes/statements/MAssignStmtTest.h"
-#include "parser/test/astnodes/expr/MDirectTest.h"
 
 #include "test.h"
 
@@ -42,6 +39,9 @@ void test_parser_suite_unop() {
 
 	test_unop_without();
 	test_unop_with();
+
+	test_deref();
+	test_address_of();
 }
 
 void test_parser_suite_namespace() {

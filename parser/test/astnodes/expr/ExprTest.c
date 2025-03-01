@@ -3,7 +3,7 @@
 #include <assert.h>
 #include <parser/test/test_parser_util.h>
 
-#include "ExprTest.h"
+#include "ParseExprTests.h"
 
 #include "expr/Expr.h"
 
