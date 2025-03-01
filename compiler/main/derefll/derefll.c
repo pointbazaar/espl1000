@@ -92,12 +92,13 @@ struct DerefLL* derefll_ctor_simplevar(struct SimpleVar* sv, struct Ctx* ctx) {
 		return res;
 	}
 
-	// in case of pointer type, we need an additional deref,
-	// to get the pointer out of the stackframe
 	struct LVST* lvst = ctx_tables(ctx)->lvst;
 	struct LVSTLine* line = lvst_get(lvst, sv->name);
-	const bool is_simple = line->type->basic_type && line->type->basic_type->simple_type;
-	if (!is_simple) {
+
+	// In case of array type, we need an additional deref,
+	// to get the pointer out of the stackframe.
+	// Deref is implicit for array type
+	if (line->type->array_type) {
 		derefll_append(res, derefll_deref());
 	}
 
@@ -205,8 +206,14 @@ void derefll_annotate_types(struct DerefLL* dll, struct Ctx* ctx, struct Type* p
 		} break;
 
 		case DEREFLL_DEREF:
-			//prev_type must be array type, since we're dereferencing
-			current->type = prev_type->array_type->element_type;
+			//prev_type must be array/pointer type, since we're dereferencing
+			assert(prev_type->array_type || prev_type->pointer_type);
+			if (prev_type->array_type) {
+				current->type = prev_type->array_type->element_type;
+			}
+			if (prev_type->pointer_type) {
+				current->type = prev_type->pointer_type->element_type;
+			}
 			break;
 	}
 
