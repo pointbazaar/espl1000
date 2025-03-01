@@ -1,0 +1,12 @@
+
+fn main() -> int {
+
+	uint64 x = 33;
+
+	*uint64 y = &x;
+
+	//uint64 z = *y;
+
+	//return z;
+	return *y;
+}
