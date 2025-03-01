@@ -102,6 +102,8 @@ add_library("sd-base"
 	typechecker/tc_local_var_decl_stmt.c
 	typechecker/tc_expr.c
 	typechecker/tc_unopterm.c
+	typechecker/tc_address_of.c
+	typechecker/tc_deref.c
 	typechecker/tc_term.c
 	typechecker/tc_mdirect.c
 	typechecker/tc_var.c
@@ -121,6 +123,8 @@ add_library("sd-base"
 	typeinference/typeinfer_methodcall.c
 	typeinference/typeinfer_simplevar.c
 	typeinference/typeinfer_term.c
+	typeinference/typeinfer_deref.c
+	typeinference/typeinfer_address_of.c
 	typeinference/typeinfer_var.c
 	typeinference/typeinfer_const.c
 	typeinference/util/type_str.c

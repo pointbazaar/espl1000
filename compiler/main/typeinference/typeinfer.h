@@ -18,6 +18,10 @@ struct Type* infer_type_term(struct ST* st, struct Term* t);
 
 // @returns NULL on error
 struct Type* infer_type_unopterm(struct ST* st, struct UnOpTerm* t);
+// @returns NULL on error
+struct Type* infer_type_deref(struct ST* st, struct Deref* t);
+// @returns NULL on error
+struct Type* infer_type_address_of(struct ST* st, struct AddressOf* t);
 
 struct Type* infer_type_methodcall(struct ST* st, struct Call* m);
 

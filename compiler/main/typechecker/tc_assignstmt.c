@@ -58,6 +58,10 @@ bool tc_assignstmt(struct AssignStmt* a, struct TCCtx* tcctx) {
 
 static bool check_type_rules_assign(struct AssignStmt* a, struct TCCtx* tcctx) {
 
+	if (tcctx->debug) {
+		printf("[debug] typecheck assignment rules\n");
+	}
+
 	struct Type* right = infer_type_expr(tcctx->st, a->expr);
 
 	struct Type* left = a->opt_type;
