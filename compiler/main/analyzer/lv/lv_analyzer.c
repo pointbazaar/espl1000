@@ -70,7 +70,12 @@ static void lv_for_stmt(struct ST* st, struct ForStmt* l) {
 
 static void lv_assign_stmt(struct ST* st, struct AssignStmt* a) {
 
-	char* varName = a->var->simple_var->name;
+	if (a->lvalue->deref) {
+		// deref assignment can never declare a new variable
+		return;
+	}
+
+	char* varName = a->lvalue->var->simple_var->name;
 
 	if (lvst_contains(st->lvst, varName)) { return; }
 

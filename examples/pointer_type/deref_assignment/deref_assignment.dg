@@ -1,0 +1,10 @@
+
+fn main () -> int {
+
+	int8 x = 0;
+	*int8 y = &x;
+
+	*y = 36;
+
+	return x;
+}

@@ -18,6 +18,7 @@ enum OP;
 struct Term;
 struct Deref;
 struct AddressOf;
+struct LValue;
 struct Expr;
 struct UnOpTerm;
 struct Id;

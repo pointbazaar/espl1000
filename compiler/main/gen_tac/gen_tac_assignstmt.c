@@ -18,6 +18,7 @@
 static void case_default(struct TACBuffer* buffer, struct AssignStmt* a, struct Ctx* ctx);
 static void case_indices(struct TACBuffer* buffer, struct AssignStmt* a, struct Ctx* ctx, const uint8_t width);
 static void case_member(struct TACBuffer* buffer, struct AssignStmt* a, struct Ctx* ctx, const uint8_t width);
+static void case_variable(struct TACBuffer* buffer, struct AssignStmt* a, struct Ctx* ctx);
 
 void tac_assignstmt(struct TACBuffer* buffer, struct AssignStmt* a, struct Ctx* ctx) {
 
@@ -25,20 +26,42 @@ void tac_assignstmt(struct TACBuffer* buffer, struct AssignStmt* a, struct Ctx* 
 		printf("[debug] %s\n", __func__);
 	}
 
-	assert(a->var);
 	assert(a->expr);
-
 	tac_expr(buffer, a->expr, ctx);
+	const uint32_t texpr = tacbuffer_last_dest(buffer);
 
-	struct Type* member_type = infer_type_variable(ctx_tables(ctx), a->var);
+	struct Type* expr_type = infer_type_expr(ctx_tables(ctx), a->expr);
+	assert(expr_type != NULL);
+	const bool x86 = flags_x86(ctx_flags(ctx));
+	const uint8_t width = lvst_sizeof_type(expr_type, x86);
+
+	if (a->lvalue->var) {
+		case_variable(buffer, a, ctx);
+		return;
+	}
+	if (a->lvalue->deref) {
+
+		tac_term(buffer, a->lvalue->deref->term, ctx);
+		const uint32_t taddr = tacbuffer_last_dest(buffer);
+
+		tacbuffer_append(buffer, makeTACStore(taddr, texpr, width));
+		return;
+	}
+
+	assert(false);
+}
+
+static void case_variable(struct TACBuffer* buffer, struct AssignStmt* a, struct Ctx* ctx) {
+
+	struct Type* member_type = infer_type_variable(ctx_tables(ctx), a->lvalue->var);
 	assert(member_type != NULL);
 
 	const bool x86 = flags_x86(ctx_flags(ctx));
 	const uint8_t width = lvst_sizeof_type(member_type, x86);
 
-	if (a->var->member_access != NULL) {
+	if (a->lvalue->var->member_access != NULL) {
 		case_member(buffer, a, ctx, width);
-	} else if (a->var->simple_var->count_indices != 0) {
+	} else if (a->lvalue->var->simple_var->count_indices != 0) {
 		case_indices(buffer, a, ctx, width);
 	} else {
 		case_default(buffer, a, ctx);
@@ -47,7 +70,7 @@ void tac_assignstmt(struct TACBuffer* buffer, struct AssignStmt* a, struct Ctx* 
 
 static void case_default(struct TACBuffer* buffer, struct AssignStmt* a, struct Ctx* ctx) {
 
-	const uint32_t local_index = lvst_index_of(ctx_tables(ctx)->lvst, a->var->simple_var->name);
+	const uint32_t local_index = lvst_index_of(ctx_tables(ctx)->lvst, a->lvalue->var->simple_var->name);
 
 	struct TAC* t = makeTACStoreLocal(
 	    local_index,
@@ -60,11 +83,13 @@ static void case_indices(struct TACBuffer* buffer, struct AssignStmt* a, struct 
 
 	struct LVST* lvst = ctx_tables(ctx)->lvst;
 
-	const uint32_t local_index = lvst_index_of(lvst, a->var->simple_var->name);
-	struct LVSTLine* line = lvst_get(lvst, a->var->simple_var->name);
+	assert(a->lvalue->var);
+
+	const uint32_t local_index = lvst_index_of(lvst, a->lvalue->var->simple_var->name);
+	struct LVSTLine* line = lvst_get(lvst, a->lvalue->var->simple_var->name);
 	const bool x86 = flags_x86(ctx_flags(ctx));
 	const uint8_t addr_width = (x86) ? 8 : 2;
-	const uint8_t local_width = lvst_sizeof_var(lvst, a->var->simple_var->name, x86);
+	const uint8_t local_width = lvst_sizeof_var(lvst, a->lvalue->var->simple_var->name, x86);
 
 	//texpr = ...
 	//toffset = offset due to index 0
@@ -77,10 +102,10 @@ static void case_indices(struct TACBuffer* buffer, struct AssignStmt* a, struct 
 	tacbuffer_append(buffer, makeTACLoadLocalAddr(make_temp(), local_index, addr_width));
 	tacbuffer_append(buffer, makeTACLoad(t1, tacbuffer_last_dest(buffer), local_width));
 
-	for (int i = 0; i < a->var->simple_var->count_indices; i++) {
+	for (int i = 0; i < a->lvalue->var->simple_var->count_indices; i++) {
 		//calculate offset due to index
 		//toffset
-		tac_expr(buffer, a->var->simple_var->indices[0], ctx);
+		tac_expr(buffer, a->lvalue->var->simple_var->indices[0], ctx);
 		uint32_t toffset = tacbuffer_last_dest(buffer);
 
 		//add offset, t1 += toffset
@@ -95,8 +120,10 @@ static void case_member(struct TACBuffer* buffer, struct AssignStmt* a, struct C
 
 	uint32_t texpr = tacbuffer_last_dest(buffer);
 
+	assert(a->lvalue->var);
+
 	//find out the address of the variable
-	tac_variable_addr(buffer, a->var, ctx, NULL);
+	tac_variable_addr(buffer, a->lvalue->var, ctx, NULL);
 
 	uint32_t taddr = tacbuffer_last_dest(buffer);
 

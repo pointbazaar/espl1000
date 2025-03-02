@@ -119,7 +119,7 @@
 	<br>
 	<hr>
 
-	<a id="assignstmt">assignStmt</a> ::= <a href="#type">Type</a>? <a href="#variable">Variable</a> '=' <a href="#expr">Expr</a>';'
+	<a id="assignstmt">assignStmt</a> ::= <a href="#type">Type</a>? <a href="#lvalue">LValue</a> '=' <a href="#expr">Expr</a>';'
 	<br><br>
 
 	<a id="massignstmt">mAssignStmt</a> ::= <a href="#mdirect">MDirect</a> '=' <a href="#expr">Expr</a> ';'
@@ -131,6 +131,9 @@
 	<hr>
 
 	<h2>Expressions</h2>
+
+	<a id="lvalue">LValue</a> ::= <a href="#variable">Variable</a> | <a href="#deref">Deref</a>
+	<br><br>
 
 	<a id="expr">Expr</a> ::= <a href="#unopterm">UnOpTerm</a> (<a href="#op">Op</a> <a href="#unopterm">UnOpTerm</a>)*
 	<br><br>

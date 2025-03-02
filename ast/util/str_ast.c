@@ -645,6 +645,16 @@ char* str_mdirect(struct MDirect* m) {
 	return res;
 }
 
+char* str_lvalue(struct LValue* lv) {
+	if (lv->deref) {
+		return str_deref(lv->deref);
+	}
+	if (lv->var) {
+		return str_variable(lv->var);
+	}
+	return NULL;
+}
+
 char* str_stmt(struct Stmt* stmt) {
 
 	switch (stmt->kind) {
@@ -686,34 +696,34 @@ char* str_assign_stmt(struct AssignStmt* a) {
 		}
 	}
 
-	char* strVar = str_variable(a->var);
+	char* strLValue = str_lvalue(a->lvalue);
 
-	if (!strVar) {
+	if (!strLValue) {
 		return NULL;
 	}
 
 	char* strE = str_expr(a->expr);
 
 	if (!strE) {
-		free(strVar);
+		free(strLValue);
 		return NULL;
 	}
 
-	uint16_t l = strlen(strOptType) + strlen(strVar) + strlen(strE) + 1 + 4;
+	uint16_t l = strlen(strOptType) + strlen(strLValue) + strlen(strE) + 1 + 4;
 
 	char* res = malloc(sizeof(char) * l);
 
 	if (!res) {
-		free(strVar);
+		free(strLValue);
 		free(strE);
 		return NULL;
 	}
 
-	sprintf(res, "%s %s = %s", strOptType, strVar, strE);
+	sprintf(res, "%s %s = %s", strOptType, strLValue, strE);
 
 	if (a->opt_type != NULL) free(strOptType);
 
-	free(strVar);
+	free(strLValue);
 	free(strE);
 	return res;
 }

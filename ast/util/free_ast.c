@@ -175,7 +175,7 @@ void free_assign_stmt(struct AssignStmt* as) {
 	if (as->opt_type != NULL) {
 		free_type(as->opt_type);
 	}
-	free_variable(as->var);
+	free_lvalue(as->lvalue);
 	free_expr(as->expr);
 
 	free(as);
@@ -324,6 +324,16 @@ void free_struct_type(struct StructType* s) {
 void free_mdirect(struct MDirect* m) {
 	free_expr(m->expr);
 	free(m);
+}
+
+void free_lvalue(struct LValue* lv) {
+	if (lv->deref) {
+		free_deref(lv->deref);
+	}
+	if (lv->var) {
+		free_variable(lv->var);
+	}
+	free(lv);
 }
 
 void free_string_const(struct StringConst* s) {
