@@ -40,6 +40,7 @@ void free_un_op_term(struct UnOpTerm* t);
 void free_address_of(struct AddressOf* ao);
 void free_deref(struct Deref* d);
 void free_mdirect(struct MDirect* m);
+void free_lvalue(struct LValue* lv);
 
 //var
 void free_variable(struct Variable* var);

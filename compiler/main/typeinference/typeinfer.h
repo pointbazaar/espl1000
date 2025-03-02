@@ -22,6 +22,8 @@ struct Type* infer_type_unopterm(struct ST* st, struct UnOpTerm* t);
 struct Type* infer_type_deref(struct ST* st, struct Deref* t);
 // @returns NULL on error
 struct Type* infer_type_address_of(struct ST* st, struct AddressOf* t);
+// @returns NULL on error
+struct Type* infer_type_lvalue(struct ST* st, struct LValue* lv);
 
 struct Type* infer_type_methodcall(struct ST* st, struct Call* m);
 

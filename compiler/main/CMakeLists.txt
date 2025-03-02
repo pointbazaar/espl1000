@@ -127,6 +127,7 @@ add_library("sd-base"
 	typeinference/typeinfer_term.c
 	typeinference/typeinfer_deref.c
 	typeinference/typeinfer_address_of.c
+	typeinference/typeinfer_lvalue.c
 	typeinference/typeinfer_var.c
 	typeinference/typeinfer_const.c
 	typeinference/util/type_str.c

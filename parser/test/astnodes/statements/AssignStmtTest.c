@@ -178,9 +178,10 @@ int assignstmt_test_type_declaration_for_variable() {
 	if (a == NULL) { return 0; }
 
 	assert(a->opt_type != NULL);
-	if (a->var == NULL) { return 0; }
+	assert(a->lvalue->var);
+	if (a->lvalue->var == NULL) { return 0; }
 
-	assert(NULL == a->var->member_access);
+	assert(NULL == a->lvalue->var->member_access);
 	assert(0 == list_size(tokens));
 
 	free_assign_stmt(a);

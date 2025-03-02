@@ -45,6 +45,14 @@ struct AddressOf {
 	struct ASTNode super;
 	struct Term* term;
 };
+struct LValue {
+	struct ASTNode super;
+
+	// may be NULL
+	struct Deref* deref;
+	// may be NULL
+	struct Variable* var;
+};
 struct UnOpTerm {
 	struct ASTNode super;
 	//a term preceded by an unary operator.

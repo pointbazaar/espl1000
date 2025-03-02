@@ -66,6 +66,8 @@ char* str_deref(struct Deref* d);
 char* str_term(struct Term* t);
 // @returns NULL on error
 char* str_mdirect(struct MDirect* m);
+// @returns NULL on error
+char* str_lvalue(struct LValue* lv);
 
 //stmts
 // @returns NULL on error

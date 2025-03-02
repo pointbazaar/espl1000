@@ -35,11 +35,23 @@ bool tc_assignstmt(struct AssignStmt* a, struct TCCtx* tcctx) {
 	assert(tcctx != NULL);
 	assert(tcctx->st != NULL);
 	assert(tcctx->st->lvst != NULL);
-	assert(a->var != NULL);
-	assert(a->var->simple_var != NULL);
-	assert(a->var->simple_var->name != NULL);
+	assert(a->lvalue);
 
-	struct LVSTLine* line = lvst_get(tcctx->st->lvst, a->var->simple_var->name);
+	char* name;
+	if (a->lvalue->var) {
+
+		assert(a->lvalue->var->simple_var != NULL);
+		assert(a->lvalue->var->simple_var->name != NULL);
+
+		name = a->lvalue->var->simple_var->name;
+	} else {
+		assert(a->lvalue->deref);
+		struct Term* term = a->lvalue->deref->term;
+		assert(term->kind == 6);
+		name = term->ptr.m6->simple_var->name;
+	}
+
+	struct LVSTLine* line = lvst_get(tcctx->st->lvst, name);
 
 	if (!line) {
 		return false;
@@ -49,7 +61,12 @@ bool tc_assignstmt(struct AssignStmt* a, struct TCCtx* tcctx) {
 		error(tcctx, "variable can only be read but not written to.", TC_ERR_VAR_READONLY);
 	}
 
-	if (!tc_var(a->var, tcctx)) { return false; }
+	if (a->lvalue->var) {
+		if (!tc_var(a->lvalue->var, tcctx)) { return false; }
+	}
+	if (a->lvalue->deref) {
+		if (!tc_deref(a->lvalue->deref, tcctx)) { return false; }
+	}
 
 	if (!tc_expr(a->expr, tcctx)) { return false; }
 
@@ -67,7 +84,7 @@ static bool check_type_rules_assign(struct AssignStmt* a, struct TCCtx* tcctx) {
 	struct Type* left = a->opt_type;
 
 	if (a->opt_type == NULL) {
-		left = infer_type_variable(tcctx->st, a->var);
+		left = infer_type_lvalue(tcctx->st, a->lvalue);
 	}
 
 	if (left == NULL) {

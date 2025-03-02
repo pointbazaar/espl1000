@@ -46,6 +46,8 @@ static bool visit_un_op_term(struct UnOpTerm* u, VISITOR, ARG);
 static bool visit_address_of(struct AddressOf* u, VISITOR, ARG);
 // @returns false on error
 static bool visit_deref(struct Deref* d, VISITOR, ARG);
+// @returns false on error
+static bool visit_lvalue(struct LValue* lv, VISITOR, ARG);
 
 // @returns false on error
 static bool visit_term(struct Term* t, VISITOR, ARG);
@@ -223,7 +225,7 @@ static bool visit_assign_stmt(struct AssignStmt* a, VISITOR, void* arg) {
 
 	if (a->opt_type != NULL) { visit_type(a->opt_type, visitor, arg); }
 
-	if (!visit_variable(a->var, visitor, arg)) {
+	if (!visit_lvalue(a->lvalue, visitor, arg)) {
 		return false;
 	}
 
@@ -329,6 +331,19 @@ static bool visit_deref(struct Deref* d, VISITOR, ARG) {
 	visitor(d, NODE_DEREF, arg);
 
 	return visit_term(d->term, visitor, arg);
+}
+
+static bool visit_lvalue(struct LValue* lv, VISITOR, ARG) {
+
+	visitor(lv, NODE_LVALUE, arg);
+
+	if (lv->var) {
+		return visit_variable(lv->var, visitor, arg);
+	}
+	if (lv->deref) {
+		return visit_deref(lv->deref, visitor, arg);
+	}
+	return false;
 }
 
 static bool visit_term(struct Term* t, VISITOR, void* arg) {

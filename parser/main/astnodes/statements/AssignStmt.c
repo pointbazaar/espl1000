@@ -6,6 +6,7 @@
 
 #include "statements/AssignStmt.h"
 #include "expr/Expr.h"
+#include "expr/LValue.h"
 #include "var/Variable.h"
 #include "types/Type.h"
 
@@ -18,7 +19,7 @@
 #include "expr/Op.h"
 
 static int handle_assignment_operator(struct AssignStmt* res, int token_key, char* assign_op);
-static struct UnOpTerm* convert_left(struct Variable* myvar);
+static struct UnOpTerm* convert_left(struct LValue* myvar);
 static struct UnOpTerm* convert_right(struct Expr* expr);
 
 struct AssignStmt* makeAssignStmt(struct TokenList* tokens) {
@@ -37,8 +38,8 @@ struct AssignStmt* makeAssignStmt(struct TokenList* tokens) {
 	}
 	freeTokenListShallow(copy2);
 
-	res->var = makeVariable(copy);
-	if (res->var == NULL) {
+	res->lvalue = makeLValue2(copy);
+	if (res->lvalue == NULL) {
 		free(res);
 		freeTokenListShallow(copy);
 		return NULL;
@@ -53,7 +54,7 @@ struct AssignStmt* makeAssignStmt(struct TokenList* tokens) {
 	    tkn_assign->kind != ASSIGNOP_BITWISE_AND &&
 	    tkn_assign->kind != ASSIGNOP_BITWISE_OR &&
 	    tkn_assign->kind != ASSIGNOP_SIMPLE) {
-		free_variable(res->var);
+		free_lvalue(res->lvalue);
 		free(res);
 		freeTokenListShallow(copy);
 		return NULL;
@@ -62,7 +63,7 @@ struct AssignStmt* makeAssignStmt(struct TokenList* tokens) {
 
 	res->expr = makeExpr(copy);
 	if (res->expr == NULL) {
-		free_variable(res->var);
+		free_lvalue(res->lvalue);
 		free(res);
 		freeTokenListShallow(copy);
 		return NULL;
@@ -70,7 +71,7 @@ struct AssignStmt* makeAssignStmt(struct TokenList* tokens) {
 
 	if (!list_expect(copy, SEMICOLON)) {
 		free_expr(res->expr);
-		free_variable(res->var);
+		free_lvalue(res->lvalue);
 		free(res);
 		freeTokenListShallow(copy);
 		return NULL;
@@ -83,7 +84,7 @@ struct AssignStmt* makeAssignStmt(struct TokenList* tokens) {
 
 	if (status != 0) {
 		free_expr(res->expr);
-		free_variable(res->var);
+		free_lvalue(res->lvalue);
 		free(res);
 		freeTokenListShallow(copy);
 		return NULL;
@@ -95,20 +96,34 @@ struct AssignStmt* makeAssignStmt(struct TokenList* tokens) {
 	return res;
 }
 
-static struct UnOpTerm* convert_left(struct Variable* v) {
+static struct UnOpTerm* convert_left(struct LValue* lv) {
 
-	struct Variable* myvar = copy_variable(v);
+	if (lv->var) {
+		struct Variable* myvar = copy_variable(lv->var);
 
-	struct Term* myterm1 = make(Term);
-	myterm1->super = myvar->super;
-	myterm1->kind = 6;
-	myterm1->ptr.m6 = myvar;
+		struct Term* myterm1 = make(Term);
+		myterm1->super = myvar->super;
+		myterm1->kind = 6;
+		myterm1->ptr.m6 = myvar;
 
-	struct UnOpTerm* uop1 = make(UnOpTerm);
-	uop1->super = myvar->super;
-	uop1->op = OP_NONE;
-	uop1->term = myterm1;
-	return uop1;
+		struct UnOpTerm* uop1 = make(UnOpTerm);
+		uop1->super = myvar->super;
+		uop1->op = OP_NONE;
+		uop1->term = myterm1;
+
+		return uop1;
+	}
+	if (lv->deref) {
+		struct Deref* deref = copy_deref(lv->deref);
+
+		struct UnOpTerm* uop1 = make(UnOpTerm);
+		uop1->super = deref->super;
+		uop1->op = OP_NONE;
+		uop1->deref = deref;
+
+		return uop1;
+	}
+	return NULL;
 }
 static struct UnOpTerm* convert_right(struct Expr* expr) {
 
@@ -163,7 +178,7 @@ static int handle_assignment_operator(struct AssignStmt* res, int token_key, cha
 		return -1;
 	}
 
-	struct UnOpTerm* uop1 = convert_left(res->var);
+	struct UnOpTerm* uop1 = convert_left(res->lvalue);
 
 	struct UnOpTerm* uop2 = convert_right(res->expr);
 

@@ -43,6 +43,7 @@ struct Deref* copy_deref(struct Deref* d);
 struct UnOpTerm* copy_un_op_term(struct UnOpTerm* t);
 //struct Op*       copy_op(struct Op* op);
 struct MDirect* copy_mdirect(struct MDirect* m);
+struct LValue* copy_lvalue(struct LValue* lv);
 
 //var
 struct SimpleVar* copy_simple_var(struct SimpleVar* sv);

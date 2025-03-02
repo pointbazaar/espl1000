@@ -14,7 +14,7 @@ struct AssignStmt {
 
 	struct Type* opt_type; //may be NULL
 
-	struct Variable* var;
+	struct LValue* lvalue;
 
 	struct Expr* expr;
 };

@@ -148,18 +148,22 @@ struct Variable* copy_variable(struct Variable* var) {
 
 	return res;
 }
-/*
-struct Op* copy_op(struct Op* op){
-
-        struct Op* res = make(Op);
-        strcpy(res->op, op->op);
-        return res;
-}*/
 
 struct MDirect* copy_mdirect(struct MDirect* m) {
 	struct MDirect* res = make(MDirect);
 	res->expr = copy_expr(m->expr);
 	res->load_store_width = m->load_store_width;
+	return res;
+}
+
+struct LValue* copy_lvalue(struct LValue* lv) {
+
+	struct LValue* res = make(LValue);
+	if (!res) {
+		return NULL;
+	}
+	res->deref = lv->deref;
+	res->var = lv->var;
 	return res;
 }
 
@@ -354,7 +358,7 @@ struct AssignStmt* copy_assign_stmt(struct AssignStmt* a) {
 	}
 
 	res->expr = copy_expr(a->expr);
-	res->var = copy_variable(a->var);
+	res->lvalue = copy_lvalue(a->lvalue);
 
 	return res;
 }
