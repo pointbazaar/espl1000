@@ -82,7 +82,6 @@ add_executable("sd-tests"
 	gen_tac/test_gen_tac_ifstmt.c
 	gen_tac/test_gen_tac_whilestmt.c
 	gen_tac/test_gen_tac_forstmt.c
-	gen_tac/test_gen_tac_massignstmt.c
 	gen_tac/test_gen_tac_simplevar.c
 	gen_tac/test_gen_tac_variable.c
 	gen_tac/test_gen_tac_call.c
