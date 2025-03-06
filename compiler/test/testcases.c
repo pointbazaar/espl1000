@@ -414,9 +414,11 @@ void (*tests_avr_codegen[])() = {
 };
 
 void (*tests_tac_codegen[])() = {
-    // mdirect
-    test_gen_tac_mdirect_case_const_addr,
-    test_gen_tac_mdirect_case_variable_addr,
+    // deref
+    test_gen_tac_deref_case_const_addr,
+    test_gen_tac_deref_case_variable_addr,
+    test_gen_tac_deref_write_8bit_case_const_addr,
+    test_gen_tac_deref_write_16bit_case_const_addr,
 
     // assign stmt
     test_gen_tac_assignstmt_case_local_int_8bit,

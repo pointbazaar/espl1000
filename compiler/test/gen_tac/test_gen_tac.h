@@ -17,9 +17,11 @@ void test_gen_tac_massignstmt_case_const_addr_2_byte();
 void test_gen_tac_massignstmt_case_variable_addr_1_byte();
 void test_gen_tac_massignstmt_case_variable_addr_2_byte();
 
-// mdirect
-void test_gen_tac_mdirect_case_const_addr();
-void test_gen_tac_mdirect_case_variable_addr();
+// deref
+void test_gen_tac_deref_case_const_addr();
+void test_gen_tac_deref_case_variable_addr();
+void test_gen_tac_deref_write_8bit_case_const_addr();
+void test_gen_tac_deref_write_16bit_case_const_addr();
 
 // expr
 void test_gen_tac_expr_plus();
