@@ -623,26 +623,10 @@ char* str_term(struct Term* t) {
 		case 6: return str_variable(t->ptr.m6);
 		case 8: return str_string_const(t->ptr.m8);
 		case 12: return str_const_value(t->ptr.m12);
-		case 13: return str_mdirect(t->ptr.m13);
 	}
 
 	error("str_term");
 	return NULL;
-}
-
-char* str_mdirect(struct MDirect* m) {
-
-	char* se = str_expr(m->expr);
-
-	if (!se) {
-		return NULL;
-	}
-
-	char* res;
-	asprintf(&res, "[%s, %d]", se, m->load_store_width);
-
-	free(se);
-	return res;
 }
 
 char* str_lvalue(struct LValue* lv) {
@@ -665,7 +649,6 @@ char* str_stmt(struct Stmt* stmt) {
 		case 4: return str_ret_stmt(stmt->ptr.m4);
 		case 5: return str_assign_stmt(stmt->ptr.m5);
 		case 7: return str_for_stmt(stmt->ptr.m7);
-		case 9: return str_massign_stmt(stmt->ptr.m9);
 		case 99: {
 			//break,continue,throw,...
 			char* res = malloc(sizeof(char) * 30);
@@ -914,37 +897,6 @@ char* str_ret_stmt(struct RetStmt* r) {
 	sprintf(res, "return %s;", s);
 
 	free(s);
-
-	return res;
-}
-
-char* str_massign_stmt(struct MAssignStmt* m) {
-
-	char* s1 = str_mdirect(m->lhs);
-
-	if (!s1) {
-		return NULL;
-	}
-
-	char* s2 = str_expr(m->expr);
-
-	if (!s2) {
-		free(s1);
-		return NULL;
-	}
-
-	char* res = malloc(strlen(s1) + strlen(s2) + 6);
-
-	if (!res) {
-		free(s1);
-		free(s2);
-		return NULL;
-	}
-
-	sprintf(res, "%s = %s;", s1, s2);
-
-	free(s1);
-	free(s2);
 
 	return res;
 }

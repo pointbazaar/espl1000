@@ -17,7 +17,6 @@ add_library("sd-base"
 
 	gen_tac/gen_tac.c
 	gen_tac/gen_tac_assignstmt.c
-	gen_tac/gen_tac_massignstmt.c
 	gen_tac/gen_tac_call.c
 	gen_tac/gen_tac_constvalue.c
 	gen_tac/gen_tac_expr.c
@@ -30,7 +29,6 @@ add_library("sd-base"
 	gen_tac/gen_tac_unopterm.c
 	gen_tac/gen_tac_deref.c
 	gen_tac/gen_tac_address_of.c
-	gen_tac/gen_tac_mdirect.c
 	gen_tac/gen_tac_variable.c
 	gen_tac/gen_tac_whilestmt.c
 	gen_tac/helper_gen_tac_derefll.c
@@ -107,7 +105,6 @@ add_library("sd-base"
 	typechecker/tc_address_of.c
 	typechecker/tc_deref.c
 	typechecker/tc_term.c
-	typechecker/tc_mdirect.c
 	typechecker/tc_var.c
 	typechecker/util/tc_utils.c
 	typechecker/tc_range.c

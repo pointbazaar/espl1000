@@ -31,8 +31,6 @@
 #include "../astnodes/statements/StmtTest.h"
 #include "../astnodes/statements/AssignStmtTest.h"
 
-#include "parser/test/astnodes/statements/MAssignStmtTest.h"
-
 #include "test.h"
 
 void test_parser_suite_unop() {
@@ -62,9 +60,6 @@ void test_parser_suite_term() {
 	term_test_simple_term();
 	term_test_variable_term();
 	term_test_parentheses();
-	term_test_mdirect();
-
-	mdirect_test_1();
 }
 
 void test_parser_suite_expr() {
@@ -119,8 +114,6 @@ void test_parser_suite_stmts() {
 	whilestmt_test2();
 
 	for_test1();
-
-	massignstmt_test1();
 }
 
 void test_parser_suite_assignstmt() {

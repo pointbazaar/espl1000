@@ -65,8 +65,6 @@ char* str_deref(struct Deref* d);
 // @returns NULL on error
 char* str_term(struct Term* t);
 // @returns NULL on error
-char* str_mdirect(struct MDirect* m);
-// @returns NULL on error
 char* str_lvalue(struct LValue* lv);
 
 //stmts
@@ -85,8 +83,6 @@ char* str_while_stmt(struct WhileStmt* w);
 char* str_call(struct Call* m);
 // @returns NULL on error
 char* str_ret_stmt(struct RetStmt* r);
-// @returns NULL on error
-char* str_massign_stmt(struct MAssignStmt* m);
 
 //other
 // @returns NULL on error

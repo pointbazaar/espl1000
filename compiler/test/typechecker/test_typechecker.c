@@ -158,20 +158,6 @@ void test_typecheck_wrong_op_unop() {
 	free_tc_errors(errors);
 }
 
-void test_typecheck_index_not_integer_type() {
-
-	status_test_typechecker("typecheck index not integer type");
-	char* filename = "compiler/test/typechecker/test-src/index_not_integer_type.dg";
-
-	struct TCError* errors = typecheck_file(filename);
-
-	assert(errors != NULL);
-	assert(errors->err_kind == TC_ERR_INDEX_NOT_INTEGER_TYPE);
-	assert(errors->next == NULL);
-
-	free_tc_errors(errors);
-}
-
 void test_typecheck_too_many_indices() {
 
 	status_test_typechecker("typecheck too many indices");

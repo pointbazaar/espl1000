@@ -9,14 +9,10 @@ int expr_recognize_2_op_expr();
 int expr_test_comparison();
 int expr_test_3_terms();
 
-// mdirect
-bool mdirect_test_1();
-
 // term
 int term_test_simple_term();
 int term_test_variable_term();
 int term_test_parentheses();
-int term_test_mdirect();
 
 // unop
 int test_unop_with();

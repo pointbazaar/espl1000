@@ -79,15 +79,7 @@ struct Term {
 		struct Variable* m6;
 		struct StringConst* m8;
 		struct ConstValue* m12;
-		struct MDirect* m13;
 	} ptr;
 
-	uint8_t kind; // 4 .. 13
-};
-struct MDirect {
-	struct ASTNode super;
-	struct Expr* expr;
-
-	// width of the load/store, in bytes
-	uint8_t load_store_width;
+	uint8_t kind; // 4 .. 12
 };

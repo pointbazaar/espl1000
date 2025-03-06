@@ -10,7 +10,6 @@
 #include "RetStmt.h"
 #include "Call.h"
 #include "AssignStmt.h"
-#include "MAssignStmt.h"
 #include "LocalVarDeclStmt.h"
 
 #include "ast/util/free_ast.h"
@@ -198,13 +197,6 @@ static bool stmt_make_other(struct Stmt* res, struct TokenList* copy) {
 	res->ptr.m5 = makeAssignStmt(copy);
 
 	if (res->ptr.m5 != NULL) {
-		return true;
-	}
-
-	res->kind = 9;
-	res->ptr.m9 = makeMAssignStmt(copy);
-
-	if (res->ptr.m9 != NULL) {
 		return true;
 	}
 

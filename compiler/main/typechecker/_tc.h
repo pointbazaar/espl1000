@@ -37,7 +37,6 @@ bool tc_unopterm(struct UnOpTerm* uot, struct TCCtx* tcctx);
 bool tc_deref(struct Deref* d, struct TCCtx* tcctx);
 bool tc_address_of(struct AddressOf* ao, struct TCCtx* tcctx);
 bool tc_term(struct Term* term, struct TCCtx* tcctx);
-bool tc_mdirect(struct MDirect* mdirect, struct TCCtx* tcctx);
 
 bool tc_var(struct Variable* v, struct TCCtx* tcCtx);
 bool tc_simplevar(struct SimpleVar* v, struct TCCtx* tcctx);

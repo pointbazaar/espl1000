@@ -17,7 +17,6 @@
 #include "token/list/TokenList.h"
 #include "token/TokenKeys.h"
 #include "token/token/token.h"
-#include "MDirect.h"
 
 // --- private subroutines ---
 
@@ -65,14 +64,6 @@ struct Term* makeTerm(struct TokenList* tokens) {
 		if (!tryInitStringConst(res, copy)) {
 			return NULL;
 		}
-
-	} else if (tk_kind == LBRACKET) {
-
-		res->ptr.m13 = makeMDirect(copy);
-		if (res->ptr.m13 == NULL) {
-			goto exit_error;
-		}
-		res->kind = 13;
 
 	} else {
 		goto other_term;

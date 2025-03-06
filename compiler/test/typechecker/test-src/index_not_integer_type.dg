@@ -1,6 +1,0 @@
-
-fn main()~>int {
-
-	uint8 x = ['c', 1];
-	return 1;
-}
