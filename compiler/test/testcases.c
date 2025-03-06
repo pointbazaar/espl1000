@@ -415,7 +415,8 @@ void (*tests_avr_codegen[])() = {
 
 void (*tests_tac_codegen[])() = {
     // deref
-    test_gen_tac_deref_case_const_addr,
+    test_gen_tac_deref_read_8bit_case_const_addr,
+    test_gen_tac_deref_read_16bit_case_const_addr,
     test_gen_tac_deref_case_variable_addr,
     test_gen_tac_deref_write_8bit_case_const_addr,
     test_gen_tac_deref_write_16bit_case_const_addr,

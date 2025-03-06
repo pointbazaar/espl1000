@@ -5,42 +5,75 @@
 
 #include "test_gen_tac.h"
 
-void test_gen_tac_deref_case_const_addr() {
+static void test_gen_tac_deref_read_8bit_case_const_addr_single(uint16_t address, uint8_t value) {
 
-	status_test_codegen_tac("Deref - const Address");
+	char snippet[200];
+	sprintf(snippet, "fn main() -> int { *uint8 x = %d; uint8 y = *x; return 0; }", address);
 
-	for (uint16_t address = 0x100; address < 0x105; address++) {
-		const int8_t value = 0x34;
+	vmcu_system_t* system = prepare_vmcu_system_from_code_snippet(snippet);
 
-		char snippet[200];
-		sprintf(snippet, "fn main() -> int { *uint8 x = %d; uint8 y = *x; return 0; }", address);
+	vmcu_system_write_data(system, address, value);
 
-		vmcu_system_t* system = prepare_vmcu_system_from_code_snippet(snippet);
+	vmcu_system_step_n(system, 40);
 
-		//prepare a value in the location
-		vmcu_system_write_data(system, address, value);
+	//assert that the load has happened
+	//and that the value is in a register or in the stack frame
 
-		vmcu_system_step_n(system, 40);
+	bool found = false;
 
-		//assert that the load has happened
-		//and that the value is in a register or in the stack frame
-
-		bool found = false;
-
-		for (int i = 0; i < 32; i++) {
-			uint8_t value1 = vmcu_system_read_gpr(system, i);
-			if (value1 == value) found = true;
-		}
-
-		assert(found);
-
-		vmcu_system_dtor(system);
+	for (int i = 0; i < 32; i++) {
+		uint8_t value1 = vmcu_system_read_gpr(system, i);
+		if (value1 == value) found = true;
 	}
+
+	assert(found);
+
+	vmcu_system_dtor(system);
+}
+
+void test_gen_tac_deref_read_8bit_case_const_addr() {
+
+	status_test_codegen_tac("Deref - 8 bit read - const Address");
+
+	test_gen_tac_deref_read_8bit_case_const_addr_single(0x100, 0x34);
+	test_gen_tac_deref_read_8bit_case_const_addr_single(0x101, 0x83);
+	test_gen_tac_deref_read_8bit_case_const_addr_single(0x102, 0x29);
+	test_gen_tac_deref_read_8bit_case_const_addr_single(0x103, 0x58);
+}
+
+void test_gen_tac_deref_read_16bit_case_const_addr() {
+
+	status_test_codegen_tac("Deref - 16 bit read - const Address");
+	const uint16_t address = 0x100;
+
+	char snippet[200];
+	sprintf(snippet, "fn main() -> int { *uint16 x = %d; uint16 y = *x; return 0; }", address);
+
+	vmcu_system_t* system = prepare_vmcu_system_from_code_snippet(snippet);
+
+	vmcu_system_write_data16(system, address, 0x3923);
+
+	vmcu_system_step_n(system, 40);
+
+	//assert that the load has happened
+	//and that the value is in a register or in the stack frame
+
+	bool found = false;
+
+	for (int i = 0; i < 32; i++) {
+		if (vmcu_system_read_gpr(system, i) == 0x23 && vmcu_system_read_gpr(system, i + 1) == 0x39) {
+			found = true;
+		}
+	}
+
+	assert(found);
+
+	vmcu_system_dtor(system);
 }
 
 void test_gen_tac_deref_case_variable_addr() {
 
-	status_test_codegen_tac("Deref - variable Address");
+	status_test_codegen_tac("Deref - 8 bit read - variable Address");
 
 	//we need an address here which is small enough
 	//to fit into a register. 0xc7 is usable.
@@ -90,7 +123,7 @@ static void test_gen_tac_deref_write_case_const_addr_single(uint16_t address, ui
 
 void test_gen_tac_deref_write_8bit_case_const_addr() {
 
-	status_test_codegen_tac("Deref - 8bit write - const Address");
+	status_test_codegen_tac("Deref - 8 bit write - const Address");
 
 	test_gen_tac_deref_write_case_const_addr_single(0x100, 0x45);
 	test_gen_tac_deref_write_case_const_addr_single(0x101, 0x83);
@@ -100,7 +133,7 @@ void test_gen_tac_deref_write_8bit_case_const_addr() {
 
 void test_gen_tac_deref_write_16bit_case_const_addr() {
 
-	status_test_codegen_tac("Deref - 16bit write - const Address");
+	status_test_codegen_tac("Deref - 16 bit write - const Address");
 
 	const uint16_t address = 0x100;
 	const uint16_t value = 0x3893;
