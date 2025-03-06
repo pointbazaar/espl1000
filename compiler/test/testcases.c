@@ -282,7 +282,6 @@ void (*tests_typechecker[])() = {
     test_typecheck_condition_requires_bool,
     test_typecheck_range_requires_int,
     test_typecheck_wrong_op_unop,
-    test_typecheck_index_not_integer_type,
     test_typecheck_too_many_indices,
     test_typecheck_local_var_not_a_subroutine,
     test_typecheck_var_not_found,

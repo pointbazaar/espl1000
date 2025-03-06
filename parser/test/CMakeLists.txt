@@ -9,7 +9,6 @@ add_library(sd-parser-test
 	astnodes/expr/UnOpTermTest.c
 	astnodes/expr/DerefTest.c
 	astnodes/expr/AddressOfTest.c
-	astnodes/expr/MDirectTest.c
 
 	astnodes/NamespaceTest.c
 
@@ -18,7 +17,6 @@ add_library(sd-parser-test
 	astnodes/StmtBlockTest.c
 
 	astnodes/statements/AssignStmtTest.c
-	astnodes/statements/MAssignStmtTest.c
 	astnodes/statements/CallTest.c
 	astnodes/statements/ForStmtTest.c
 	astnodes/statements/IfStmtTest.c

@@ -98,7 +98,6 @@ struct Term* copy_term(struct Term* t) {
 		case 6: res->ptr.m6 = copy_variable(t->ptr.m6); break;
 		case 8: res->ptr.m8 = copy_string_const(t->ptr.m8); break;
 		case 12: res->ptr.m12 = copy_const_value(t->ptr.m12); break;
-		case 13: res->ptr.m13 = copy_mdirect(t->ptr.m13); break;
 		default:
 			fprintf(stderr, "[AST][Error] copy_term(...), kind was: %d\n", t->kind);
 			return NULL;
@@ -146,13 +145,6 @@ struct Variable* copy_variable(struct Variable* var) {
 		res->member_access = copy_variable(var->member_access);
 	}
 
-	return res;
-}
-
-struct MDirect* copy_mdirect(struct MDirect* m) {
-	struct MDirect* res = make(MDirect);
-	res->expr = copy_expr(m->expr);
-	res->load_store_width = m->load_store_width;
 	return res;
 }
 
@@ -318,7 +310,6 @@ struct Stmt* copy_stmt(struct Stmt* stmt) {
 		case 4: res->ptr.m4 = copy_ret_stmt(stmt->ptr.m4); break;
 		case 5: res->ptr.m5 = copy_assign_stmt(stmt->ptr.m5); break;
 		case 7: res->ptr.m7 = copy_for_stmt(stmt->ptr.m7); break;
-		case 9: res->ptr.m9 = copy_massign_stmt(stmt->ptr.m9); break;
 		default:
 			res->is_break = stmt->is_break;
 			res->is_continue = stmt->is_continue;
@@ -394,19 +385,6 @@ struct ForStmt* copy_for_stmt(struct ForStmt* f) {
 	asprintf(&(res->index_name), "%s", f->index_name);
 	res->range = copy_range(f->range);
 	res->block = copy_stmt_block(f->block);
-
-	return res;
-}
-
-struct MAssignStmt* copy_massign_stmt(struct MAssignStmt* m) {
-
-	struct MAssignStmt* res = make(MAssignStmt);
-
-	res->super.line_num = m->super.line_num;
-	res->super.annotations = m->super.annotations;
-
-	res->lhs = copy_mdirect(m->lhs);
-	res->expr = copy_expr(m->expr);
 
 	return res;
 }

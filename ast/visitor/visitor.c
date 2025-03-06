@@ -30,8 +30,6 @@ static bool visit_assign_stmt(struct AssignStmt* a, VISITOR, ARG);
 static bool visit_call(struct Call* m, VISITOR, ARG);
 // @returns false on error
 static bool visit_ret_stmt(struct RetStmt* r, VISITOR, ARG);
-// @returns false on error
-static bool visit_massign_stmt(struct MAssignStmt* m, VISITOR, ARG);
 static void visit_local_var_decl_stmt(struct LocalVarDeclStmt* lvds, VISITOR, ARG);
 static void visit_break_stmt(VISITOR, ARG);
 static void visit_continue_stmt(VISITOR, ARG);
@@ -51,9 +49,6 @@ static bool visit_lvalue(struct LValue* lv, VISITOR, ARG);
 
 // @returns false on error
 static bool visit_term(struct Term* t, VISITOR, ARG);
-
-// @returns false on error
-static bool visit_mdirect(struct MDirect* m, VISITOR, ARG);
 
 //const
 static void visit_const_value(struct ConstValue* cv, VISITOR, ARG);
@@ -167,8 +162,6 @@ static bool visit_stmt(struct Stmt* s, VISITOR, void* arg) {
 			return visit_assign_stmt(s->ptr.m5, visitor, arg);
 		case 7:
 			return visit_for_stmt(s->ptr.m7, visitor, arg);
-		case 9:
-			return visit_massign_stmt(s->ptr.m9, visitor, arg);
 		case 10:
 			visit_local_var_decl_stmt(s->ptr.m10, visitor, arg);
 			break;
@@ -254,17 +247,6 @@ static bool visit_ret_stmt(struct RetStmt* r, VISITOR, void* arg) {
 	visitor(r, NODE_RETSTMT, arg);
 
 	return visit_expr(r->return_value, visitor, arg);
-}
-
-static bool visit_massign_stmt(struct MAssignStmt* m, VISITOR, ARG) {
-
-	visitor(m, NODE_MASSIGNSTMT, arg);
-
-	if (!visit_mdirect(m->lhs, visitor, arg)) {
-		return false;
-	}
-
-	return visit_expr(m->expr, visitor, arg);
 }
 
 static void visit_local_var_decl_stmt(struct LocalVarDeclStmt* l, VISITOR, ARG) {
@@ -363,8 +345,6 @@ static bool visit_term(struct Term* t, VISITOR, void* arg) {
 		case 12:
 			visit_const_value(t->ptr.m12, visitor, arg);
 			break;
-		case 13:
-			return visit_mdirect(t->ptr.m13, visitor, arg);
 		default:
 			fprintf(stderr, "[Visitor][Error] Fatal(2)\n");
 			return false;
@@ -372,13 +352,6 @@ static bool visit_term(struct Term* t, VISITOR, void* arg) {
 	}
 
 	return true;
-}
-
-static bool visit_mdirect(struct MDirect* m, VISITOR, ARG) {
-
-	visitor(m, NODE_MDIRECT, arg);
-
-	return visit_expr(m->expr, visitor, arg);
 }
 
 static void visit_const_value(struct ConstValue* cv, VISITOR, void* arg) {

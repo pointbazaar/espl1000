@@ -39,7 +39,6 @@ bool free_term(struct Term* t);
 void free_un_op_term(struct UnOpTerm* t);
 void free_address_of(struct AddressOf* ao);
 void free_deref(struct Deref* d);
-void free_mdirect(struct MDirect* m);
 void free_lvalue(struct LValue* lv);
 
 //var
@@ -55,7 +54,6 @@ void free_ret_stmt(struct RetStmt* rs);
 bool free_stmt(struct Stmt* s);
 void free_while_stmt(struct WhileStmt* ws);
 void free_for_stmt(struct ForStmt* fstmt);
-void free_massign_stmt(struct MAssignStmt* m);
 void free_local_var_decl_stmt(struct LocalVarDeclStmt* m);
 
 //c_types_util

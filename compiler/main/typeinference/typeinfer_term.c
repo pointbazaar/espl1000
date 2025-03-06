@@ -40,9 +40,6 @@ struct Type* infer_type_term(struct ST* st, struct Term* t) {
 
 		case 12: return infer_type_constvalue(st, t->ptr.m12);
 
-		//MDirect is of type uint8
-		case 13: return typeFromStrPrimitive(st, "uint8");
-
 		default:
 			fprintf(stderr, "[Typeinference][Error] Fatal. (in typeinfer_term.c).\n");
 			return NULL;

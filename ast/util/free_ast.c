@@ -124,7 +124,6 @@ bool free_term(struct Term* t) {
 		case 6: free_variable(t->ptr.m6); break;
 		case 8: free_string_const(t->ptr.m8); break;
 		case 12: free_const_value(t->ptr.m12); break;
-		case 13: free_mdirect(t->ptr.m13); break;
 		default:
 			fprintf(stderr, "Error in free_term(...)\n");
 			free(t);
@@ -235,9 +234,6 @@ bool free_stmt(struct Stmt* s) {
 		case 7:
 			free_for_stmt(s->ptr.m7);
 			break;
-		case 9:
-			free_massign_stmt(s->ptr.m9);
-			break;
 		case 10:
 			free_local_var_decl_stmt(s->ptr.m10);
 			break;
@@ -321,11 +317,6 @@ void free_struct_type(struct StructType* s) {
 	free(s);
 }
 
-void free_mdirect(struct MDirect* m) {
-	free_expr(m->expr);
-	free(m);
-}
-
 void free_lvalue(struct LValue* lv) {
 	if (lv->deref) {
 		free_deref(lv->deref);
@@ -352,13 +343,6 @@ void free_for_stmt(struct ForStmt* fstmt) {
 	free_stmt_block(fstmt->block);
 	free(fstmt->index_name);
 	free(fstmt);
-}
-
-void free_massign_stmt(struct MAssignStmt* m) {
-
-	free_mdirect(m->lhs);
-	free_expr(m->expr);
-	free(m);
 }
 
 void free_local_var_decl_stmt(struct LocalVarDeclStmt* l) {

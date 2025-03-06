@@ -21,7 +21,6 @@ struct RetStmt* copy_ret_stmt(struct RetStmt* r);
 struct Stmt* copy_stmt(struct Stmt* stmt);
 struct WhileStmt* copy_while_stmt(struct WhileStmt* w);
 struct ForStmt* copy_for_stmt(struct ForStmt* f);
-struct MAssignStmt* copy_massign_stmt(struct MAssignStmt* m);
 
 //c_types_util
 struct Type* copy_type(struct Type* t);
@@ -42,7 +41,6 @@ struct AddressOf* copy_address_of(struct AddressOf* ao);
 struct Deref* copy_deref(struct Deref* d);
 struct UnOpTerm* copy_un_op_term(struct UnOpTerm* t);
 //struct Op*       copy_op(struct Op* op);
-struct MDirect* copy_mdirect(struct MDirect* m);
 struct LValue* copy_lvalue(struct LValue* lv);
 
 //var

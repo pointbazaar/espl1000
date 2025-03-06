@@ -17,7 +17,6 @@ add_library(dragon-parser-base
 	astnodes/expr/AddressOf.c
 	astnodes/expr/Deref.c
 	astnodes/expr/LValue.c
-	astnodes/expr/MDirect.c
 
 	astnodes/Identifier.c
 	astnodes/Namespace.c
@@ -25,7 +24,6 @@ add_library(dragon-parser-base
 	astnodes/StmtBlock.c
 
 	astnodes/statements/AssignStmt.c
-	astnodes/statements/MAssignStmt.c
 	astnodes/statements/Call.c
 	astnodes/statements/ForStmt.c
 	astnodes/statements/IfStmt.c

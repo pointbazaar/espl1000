@@ -15,8 +15,6 @@ bool tac_whilestmt(struct TACBuffer* buffer, struct WhileStmt* w, struct Ctx* ct
 
 void tac_assignstmt(struct TACBuffer* buffer, struct AssignStmt* a, struct Ctx* ctx);
 
-void tac_massignstmt(struct TACBuffer* buffer, struct MAssignStmt* m, struct Ctx* ctx);
-
 // @returns false on error
 bool tac_stmt(struct TACBuffer* buffer, struct Stmt* stmt, struct Ctx* ctx);
 
@@ -51,8 +49,6 @@ bool tac_expr_addr(struct TACBuffer* buffer, struct Expr* expr, struct Ctx* ctx)
 
 bool tac_term(struct TACBuffer* buffer, struct Term* t, struct Ctx* ctx);
 bool tac_term_addr(struct TACBuffer* buffer, struct Term* t, struct Ctx* ctx);
-
-void tac_mdirect(struct TACBuffer* buffer, struct MDirect* m, struct Ctx* ctx);
 
 void tac_constvalue(struct TACBuffer* buffer, struct ConstValue* c);
 
