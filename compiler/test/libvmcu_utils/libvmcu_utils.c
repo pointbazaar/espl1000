@@ -98,6 +98,12 @@ uint64_t vmcu_system_read_data64(vmcu_system_t* system, uint16_t addr) {
 	return (high << 32) | low;
 }
 
+void vmcu_system_write_data16(vmcu_system_t* system, uint16_t addr, uint16_t value) {
+
+	vmcu_system_write_data(system, addr, value & 0xff);
+	vmcu_system_write_data(system, addr + 1, (value >> 8) & 0xff);
+}
+
 uint16_t vmcu_system_read_2_gpr(vmcu_system_t* system, const int low_reg) {
 
 	const uint8_t low = vmcu_system_read_gpr(system, low_reg);
