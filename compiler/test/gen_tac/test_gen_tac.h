@@ -11,12 +11,6 @@ void test_gen_tac_assignstmt_case_local_int_16bit();
 void test_gen_tac_assignstmt_case_local_struct();
 void test_gen_tac_assignstmt_case_local_array();
 
-// massign stmt
-void test_gen_tac_massignstmt_case_const_addr_1_byte();
-void test_gen_tac_massignstmt_case_const_addr_2_byte();
-void test_gen_tac_massignstmt_case_variable_addr_1_byte();
-void test_gen_tac_massignstmt_case_variable_addr_2_byte();
-
 // deref
 void test_gen_tac_deref_read_8bit_case_const_addr();
 void test_gen_tac_deref_read_16bit_case_const_addr();
