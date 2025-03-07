@@ -25,7 +25,7 @@
 
 void compile_and_write_x86_single_function(struct Method* m, struct Ctx* ctx, struct IBuffer* ibu) {
 
-	if (has_annotation(m->super.annotations, ANNOT_EXTERN)) {
+	if (has_annotation(m->super.annotations, ANNOT_EXTERN) || has_annotation(m->super.annotations, ANNOT_SYSCALL)) {
 		return;
 	}
 

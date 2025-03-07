@@ -1,5 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <assert.h>
+#include <string.h>
 
 #include "ibuffer/ibuffer_x86.h"
 #include "rat/rat_x86.h"
@@ -11,6 +13,8 @@
 #include "tac/tac.h"
 
 #include "compile_tac.h"
+
+#include "x86_code_gen/syscalls/syscalls.h"
 
 bool compile_tac_call_x86(struct RAT* rat, struct TAC* tac, struct IBuffer* ibu, struct Ctx* ctx, char* current_function_name) {
 
@@ -25,11 +29,18 @@ bool compile_tac_call_x86(struct RAT* rat, struct TAC* tac, struct IBuffer* ibu,
 		return false;
 	}
 
-	char* function_name = sst_at(sst, tac_arg1(tac))->name;
+	const struct SSTLine* line = sst_at(sst, tac_arg1(tac));
+
+	char* function_name = line->name;
 
 	const uint32_t arg_count = sst_args_count(sst, current_function_name);
 
-	call(function_name, c);
+	if (line->is_syscall) {
+		mov_const(SD_REG_RAX, syscall_number(line->name), c);
+		x86_syscall(c);
+	} else {
+		call(function_name, c);
+	}
 
 	mov_regs(reg_dest, SD_REG_RAX, c);
 

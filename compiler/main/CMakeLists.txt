@@ -80,6 +80,10 @@ add_library("sd-base"
 	x86_code_gen/compile_ir/compile_tac_store.c
 	x86_code_gen/compile_ir/compile_tac_load_function_ptr.c
 
+	# Linux syscall definitions
+	x86_code_gen/syscalls/syscalls.c
+	x86_code_gen/syscalls/table.c
+
 	#DerefLL implementation
 	derefll/derefll.c
 
