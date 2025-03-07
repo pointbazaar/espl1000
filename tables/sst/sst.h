@@ -44,6 +44,8 @@ struct SSTLine {
 
 	//-- encapsulation
 	bool is_private;
+
+	bool is_syscall;
 };
 
 //-------------

@@ -149,4 +149,9 @@
 // Do not error if the function is not defined.
 // This annotation can be used to link against e.g. C code.
 #define ANNOT_EXTERN 95
-#define _ANNOT_END_ 96
+
+// This annotation is for syscalls. They are implicitely extern.
+// The calling convention is slightly different for syscalls
+#define ANNOT_SYSCALL 96
+
+#define _ANNOT_END_ 97

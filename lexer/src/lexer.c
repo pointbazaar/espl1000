@@ -236,6 +236,7 @@ static int handler2(const char* buf, FILE* o, size_t nchars_remain) {
 		H2OUT_NOSTR(buf, "@public", ANNOT_PUBLIC, o);
 		H2OUT_NOSTR(buf, "@deprecated", ANNOT_DEPRECATED, o);
 		H2OUT_NOSTR(buf, "@extern", ANNOT_EXTERN, o);
+		H2OUT_NOSTR(buf, "@syscall", ANNOT_SYSCALL, o);
 	}
 	if (buf[0] == '#') {
 		if (strncmp(buf, "#include <", 10) == 0) {

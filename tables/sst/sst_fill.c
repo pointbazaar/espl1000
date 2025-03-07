@@ -18,6 +18,8 @@ void sst_fill(struct ST* st, struct SST* sst, struct Namespace* ns) {
 
 		struct SSTLine* line = sst_line_ctor2(m, t, ns->name);
 
+		line->is_syscall = has_annotation(m->super.annotations, ANNOT_SYSCALL);
+
 		sst_add(sst, line);
 	}
 }

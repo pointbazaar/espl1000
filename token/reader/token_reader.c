@@ -122,6 +122,7 @@ static struct Token* recognizeTokenInnerNoStr(int tkn_id) {
 		case ANNOT_PUBLIC:
 		case ANNOT_DEPRECATED:
 		case ANNOT_EXTERN:
+		case ANNOT_SYSCALL:
 
 		//SECTION: KEYWORDS
 		case RETURN:
