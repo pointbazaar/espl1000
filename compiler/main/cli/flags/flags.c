@@ -171,7 +171,7 @@ static int make_flags_inner(struct Flags* flags, size_t i, size_t argc, char** a
 
 	if (arg[0] != '-') {
 
-		flags->filenames[flags->count_filenames] = arg;
+		flags->filenames[flags->count_filenames] = strdup(arg);
 		flags->count_filenames += 1;
 		return 1;
 	}
@@ -207,7 +207,19 @@ static void make_associated_filenames(struct Flags* flags) {
 	flags->obj_filename = make_obj_filename(flags_filenames(flags, 0));
 }
 
-struct Flags* makeFlags(int argc, char** argv) {
+static void flags_add_stdlib(struct Flags* flags) {
+
+#define STRINGIFY(x) #x
+#define TOSTRING(x) STRINGIFY(x)
+	char* base_path = (ESPL_STDLIB_PATH);
+
+	char* path;
+	asprintf(&path, "%s/syscalls.dg", base_path);
+
+	flags->filenames[flags->count_filenames++] = path;
+}
+
+struct Flags* makeFlags(int argc, char** argv, bool add_stdlib) {
 
 	struct Flags* flags = malloc(sizeof(struct Flags));
 
@@ -221,8 +233,9 @@ struct Flags* makeFlags(int argc, char** argv) {
 	flags->count_filenames = 0;
 
 	//a capacity of argc guarantees that all
-	//filenames will fit
-	flags->capacity_filenames = argc;
+	//filenames will fit, but also:
+	// - stdlib/syscalls.dg
+	flags->capacity_filenames = argc + 1;
 	flags->filenames = malloc(sizeof(char*) * argc);
 
 	if (!flags->filenames) {
@@ -239,6 +252,8 @@ struct Flags* makeFlags(int argc, char** argv) {
 
 		i += consumed;
 	}
+
+	flags_add_stdlib(flags);
 
 	if (flags_set(flags, "help") || flags_set(flags, "version") || flags_set(flags, "rat")) {
 		return flags;
@@ -259,7 +274,7 @@ struct Flags* makeFlags(int argc, char** argv) {
 struct Flags* makeFlagsSingleFile(char* filename) {
 
 	char* argv[] = {"program", filename};
-	return makeFlags(2, argv);
+	return makeFlags(2, argv, false);
 }
 
 void freeFlags(struct Flags* flags) {
@@ -269,6 +284,9 @@ void freeFlags(struct Flags* flags) {
 	free(flags->hex_filename);
 	free(flags->token_filename);
 	free(flags->obj_filename);
+	for (size_t i = 0; i < flags->count_filenames; i++) {
+		free(flags->filenames[i]);
+	}
 	free(flags->filenames);
 	free(flags);
 }
