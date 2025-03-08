@@ -202,7 +202,11 @@ static struct Token* recognizeTokenInner(int tkn_id, char* tkn, char* part2) {
 			r = makeTokenStringConst(tkn + 3);
 			break;
 		case CCONST:
-			r = makeToken2(CCONST, tkn + 3);
+			if (strcmp(tkn + 3, "'\\n'") == 0) {
+				r = makeToken2(CCONST, "'\n'");
+			} else {
+				r = makeToken2(CCONST, tkn + 3);
+			}
 			break;
 		case ANYTYPE:
 		//CONSTANTS
