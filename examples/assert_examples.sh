@@ -1,16 +1,16 @@
-#!/bin/bash
+#!/bin/sh
 
 # Counter for results
 PASS=0
 FAIL=0
 
 echo ""
-echo "running example programs (assert exit code)"
+echo "Running example programs (assert exit code)"
 
 for test_file in $(find . -name '*.dg'); do
 	expected_exit_file="${test_file%.*}.exitcode"
 
-	if [ ! -f "$expected_exit_file" ]; then
+	if [[ ! -f "$expected_exit_file" ]]; then
 		# echo "Missing expected exit code file for $test_file"
 		# echo ${expected_exit_file}
 		# FAIL=$((FAIL + 1))
@@ -19,24 +19,50 @@ for test_file in $(find . -name '*.dg'); do
 
 	expected_exit=$(cat "$expected_exit_file")
 
-	# Compile the test
 	sd -x86 -o /tmp/program "$test_file"
-	if [ $? -ne 0 ]; then
+	if [[ $? -ne 0 ]]; then
 		echo "Compile failed for $test_file"
 		FAIL=$((FAIL + 1))
 		continue
 	fi
 
-	# Run the compiled program
-	/tmp/program
+	/tmp/program > /dev/null
 	actual_exit=$?
 
-	# Compare results
-	if [ "$actual_exit" -eq "$expected_exit" ]; then
-		echo "[PASS] $test_file"
+	if [[ "$actual_exit" -eq "$expected_exit" ]]; then
+		echo "[PASS][EXITCODE] $test_file"
 		PASS=$((PASS + 1))
 	else
-		echo "[FAIL] $test_file (expected: $expected_exit, got: $actual_exit)"
+		echo "[FAIL][EXITCODE] $test_file (expected: $expected_exit, got: $actual_exit)"
+		FAIL=$((FAIL + 1))
+	fi
+done
+
+echo "Running example programs (assert stdout)"
+
+for test_file in $(find . -name '*.dg'); do
+	expected_stdout_file="${test_file%.*}.stdout"
+
+	if [[ ! -f "$expected_stdout_file" ]]; then
+		continue
+	fi
+
+	sd -x86 -o /tmp/program "$test_file"
+	if [[ $? -ne 0 ]]; then
+		echo "Compile failed for $test_file"
+		FAIL=$((FAIL + 1))
+		continue
+	fi
+
+	/tmp/program > /tmp/program_stdout
+
+	diff /tmp/program_stdout "$expected_stdout_file"
+	stdout_res=$?
+	if [[ stdout_res -eq 0 ]]; then
+		echo "[PASS][STDOUT] $test_file"
+		PASS=$((PASS + 1))
+	else
+		echo "[FAIL][STDOUT] $test_file"
 		FAIL=$((FAIL + 1))
 	fi
 done
