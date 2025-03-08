@@ -1,0 +1,16 @@
+
+
+fn main () ~> int {
+
+	local char c;
+	local *char ptr;
+	*char ptr = &c;
+
+	c = 'x';
+	write(1, ptr, 1);
+
+	c = '\n';
+	write(1, ptr, 1);
+
+	return 0;
+}
