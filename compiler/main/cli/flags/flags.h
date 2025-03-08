@@ -8,7 +8,7 @@ struct Flags;
 void sd_print_help();
 
 // @returns NULL in error case
-struct Flags* makeFlags(int argc, char** argv);
+struct Flags* makeFlags(int argc, char** argv, bool add_stdlib);
 
 // @returns NULL in error case
 struct Flags* makeFlagsSingleFile(char* filename);

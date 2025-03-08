@@ -27,7 +27,7 @@ vmcu_system_t* prepare_vmcu_system_from_code_snippet(char* code_snippet) {
 
 	char* argv[] = {"program", ".file.dg"};
 	int argc = 2;
-	struct Flags* flags = makeFlags(argc, argv);
+	struct Flags* flags = makeFlags(argc, argv, false);
 
 	assert(flags);
 

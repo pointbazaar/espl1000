@@ -424,7 +424,7 @@ static struct sd_uc_engine* sd_uc_engine_from_tacbuffer_common(struct TACBuffer*
 		argv = argv_common;
 		argc = 2;
 	}
-	struct Flags* flags = makeFlags(argc, argv);
+	struct Flags* flags = makeFlags(argc, argv, false);
 	assert(flags != NULL);
 
 	struct Ctx* ctx = ctx_ctor(flags, st_ctor());

@@ -1,4 +1,7 @@
 
+set(ESPL_STDLIB_PATH "${CMAKE_SOURCE_DIR}/stdlib")
+add_definitions(-DESPL_STDLIB_PATH="${ESPL_STDLIB_PATH}")
+
 add_library("sd-base"
 	compiler.c
 

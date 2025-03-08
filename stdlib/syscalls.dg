@@ -1,0 +1,5 @@
+
+
+@syscall
+fn write(uint fd, *char buf, uint64 count) -> int {}
+
