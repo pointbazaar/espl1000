@@ -26,6 +26,19 @@ struct DataTable* data_ctor() {
 	return res;
 }
 
+void data_dtor(struct DataTable* data) {
+
+	for (size_t i = 0; i < data->count_entries; i++) {
+		struct DataEntry* entry = data->entries[i];
+
+		free(entry->symbol);
+		free(entry->value);
+		free(entry);
+	}
+	free(data->entries);
+	free(data);
+}
+
 static void data_resize(struct DataTable* data) {
 
 	if ((data->count_entries + 1) >= data->capacity) {

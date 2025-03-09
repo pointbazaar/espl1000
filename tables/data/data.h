@@ -14,6 +14,7 @@ struct DataEntry {
 };
 
 struct DataTable* data_ctor();
+void data_dtor(struct DataTable* data);
 
 // @returns   the count of entries in data table
 size_t data_count(struct DataTable* data);
