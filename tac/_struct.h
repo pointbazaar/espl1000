@@ -30,6 +30,8 @@ struct TAC {
 
 	enum TAC_OP op;
 
+	// used for TAC_CONST_VALUE (literal value)
+	// used for TAC_CONST_DATA (as data table offset)
 	int64_t const_value;
 
 	// only used for TAC_PARAM.

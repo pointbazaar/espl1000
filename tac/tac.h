@@ -59,6 +59,10 @@ enum TAC_KIND {
 
 	TAC_CONST_VALUE,
 
+	// Load a symbol from .data segment into register.
+	// The assembler will figure out the rest here.
+	TAC_CONST_DATA,
+
 	TAC_CALL, //call to a label (string) without anything else
 	TAC_ICALL, // call to a temporary 't1 = call t2'.
 	           // So we can comput arbitrary address to call.

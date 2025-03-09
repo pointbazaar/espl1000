@@ -12,6 +12,8 @@ add_library("sd-tables" STATIC
         stst/stst.c
 	stst/stst_print.c
 
+	data/data.c
+
         symtable/symtable.c
 )
 

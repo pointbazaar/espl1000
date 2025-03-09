@@ -11,8 +11,8 @@ bool tac_term(struct TACBuffer* buffer, struct Term* t, struct Ctx* ctx) {
 		case 5: tac_expr(buffer, t->ptr.m5, ctx); break;
 		case 6: tac_variable(buffer, t->ptr.m6, ctx); break;
 		case 8:
-			fprintf(stderr, "string const currently unsupported\n");
-			return false;
+			tac_const_data(buffer, t->ptr.m8);
+			break;
 		case 11:
 			fprintf(stderr, "Fatal Error. Lambdas should not exist at this stage.\n");
 			return false;

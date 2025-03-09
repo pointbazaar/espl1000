@@ -115,6 +115,10 @@ char* tac_tostring(struct TAC* t, struct SST* sst, struct LVST* lvst) {
 			sprintf(buf, "t%d = %ld", dest, const_value);
 			break;
 
+		case TAC_CONST_DATA:
+			sprintf(buf, "t%d = %ld (DATA table offset)", dest, const_value);
+			break;
+
 		case TAC_COPY:
 			sprintf(buf, "t%d = t%lu", dest, arg1);
 			break;

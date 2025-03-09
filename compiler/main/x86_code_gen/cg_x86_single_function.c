@@ -69,7 +69,10 @@ void compile_and_write_x86_single_function(struct Method* m, struct Ctx* ctx, st
 		rat_print(rat);
 	}
 
-	emit_asm_x86_basic_block(root, ctx, ibu, rat, current_function_name);
+	bool success = emit_asm_x86_basic_block(root, ctx, ibu, rat, current_function_name);
+
+	// TODO: propagate this error
+	assert(success);
 
 	//delete the basic block graph
 	for (int i = 0; i < nblocks; i++) {

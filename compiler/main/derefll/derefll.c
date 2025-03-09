@@ -96,9 +96,10 @@ struct DerefLL* derefll_ctor_simplevar(struct SimpleVar* sv, struct Ctx* ctx) {
 	struct LVSTLine* line = lvst_get(lvst, sv->name);
 
 	// In case of array type, we need an additional deref,
-	// to get the pointer out of the stackframe.
-	// Deref is implicit for array type
-	if (line->type->array_type) {
+	// to get the pointer out of the stackframe, in case indices are present.
+	// That Deref is implicit for array type
+
+	if (line->type->array_type && sv->count_indices) {
 		derefll_append(res, derefll_deref());
 	}
 

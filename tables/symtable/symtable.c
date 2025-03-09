@@ -31,6 +31,8 @@ struct ST* st_ctor() {
 	st->stst = stst_ctor();
 	st->lvst = lvst_ctor();
 
+	st->data = data_ctor();
+
 	return st;
 }
 

@@ -5,6 +5,7 @@
 #include "tables/lvst/lvst.h"
 #include "tables/sst/sst.h"
 #include "tables/stst/stst.h"
+#include "tables/data/data.h"
 
 struct ST {
 	//struct SymTable
@@ -17,6 +18,9 @@ struct ST {
 	struct LVST* lvst; //may be NULL
 	struct SST* sst; //may be NULL
 	struct STST* stst; //may be NULL
+
+	// things which should be in .data segment
+	struct DataTable* data;
 
 	// -----------------------------
 
