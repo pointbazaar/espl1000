@@ -10,9 +10,7 @@ bool tac_term(struct TACBuffer* buffer, struct Term* t, struct Ctx* ctx) {
 		case 4: tac_call(buffer, t->ptr.m4, ctx); break;
 		case 5: tac_expr(buffer, t->ptr.m5, ctx); break;
 		case 6: tac_variable(buffer, t->ptr.m6, ctx); break;
-		case 8:
-			tac_const_data(buffer, t->ptr.m8);
-			break;
+		case 8: return tac_const_data(buffer, t->ptr.m8, ctx);
 		case 11:
 			fprintf(stderr, "Fatal Error. Lambdas should not exist at this stage.\n");
 			return false;

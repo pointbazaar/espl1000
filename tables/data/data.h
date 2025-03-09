@@ -29,3 +29,8 @@ void data_insert(struct DataTable* data, char* str);
 // for string "hello" stored in table
 // @returns NULL if entry is not found
 char* data_symbol(struct DataTable* data, uint32_t offset);
+
+// @brief returns offset of string in data table
+// @param str     The string from 'struct StringConst'
+// @returns < 0   on error
+int32_t data_string_offset(struct DataTable* data, char* str);

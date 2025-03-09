@@ -1,9 +1,14 @@
 fn main () ~> int {
 
-	[char] filename = "Hello, World!";
-	*char ptr = filename;
+	[char] str1 = "Hello, ";
+	*char ptr = str1;
 
-	write(1, ptr, 12);
+	write(1, ptr, 7);
+
+	[char] str2 = "World!";
+	ptr = str2;
+
+	write(1, ptr, 6);
 
 	return 0;
 }

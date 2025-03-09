@@ -1,0 +1,17 @@
+fn main () ~> int {
+
+	[char] filename = "read_file.dg";
+	int fd = open(filename, 0, 0);
+
+	if fd  < 0 {
+		return 1;
+	}
+
+	char c = ' ';
+
+	read(fd, &c, 1);
+
+	write(1, &c, 1);
+
+	return 0;
+}
