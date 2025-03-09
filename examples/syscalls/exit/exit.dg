@@ -1,0 +1,7 @@
+
+fn main() ~> int {
+
+	exit(84);
+
+	return 0;
+}
