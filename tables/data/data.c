@@ -53,25 +53,29 @@ static void data_resize(struct DataTable* data) {
 //        that can be used as a label in the assembly.
 //        The result needs to be freed.
 // @param str   any string
-static char* data_make_symbol(char* str) {
+static char* data_make_symbol(const char* str) {
 
 	const size_t len = strlen(str);
-	char* res = calloc(len + 1, sizeof(char));
+
+	char* res = calloc(len * 3 + 10, sizeof(char));
+	if (!res) return NULL;
 
 	sprintf(res, "str_");
-	int j = strlen(res);
+	size_t j = strlen(res);
 
-	for (int i = 0; i < len; i++) {
+	for (size_t i = 0; i < len; i++) {
 		char c = str[i];
 		if (isalnum(c)) {
 			res[j++] = c;
-		} else {
-			//TODO: make this bijective to the actual string.
-			//Currently, this would collapse "ab?" and "ab*"
-			//to the same symbol
+		} else if (c == '_') {
 			res[j++] = '_';
+		} else {
+			// Add '$' to signal that an escape code follows
+			sprintf(res + j, "$%02X", (unsigned char)c);
+			j += 3;
 		}
 	}
+
 	return res;
 }
 
