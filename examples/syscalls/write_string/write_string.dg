@@ -1,0 +1,9 @@
+fn main () ~> int {
+
+	[char] filename = "Hello, World!";
+	*char ptr = filename;
+
+	write(1, ptr, 12);
+
+	return 0;
+}
