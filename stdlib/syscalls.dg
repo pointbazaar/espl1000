@@ -4,4 +4,10 @@
 fn write(uint fd, *char buf, uint64 count) -> int {}
 
 @syscall
+fn open([char] filename, int flags, int mode) -> int {}
+
+@syscall
+fn read(int fd, *char buf, uint64 count) -> int {}
+
+@syscall
 fn exit(int code) -> int {}

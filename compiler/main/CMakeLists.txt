@@ -11,6 +11,7 @@ add_library("sd-base"
 	analyzer/fn/fn_analyzer.c
 	analyzer/halts/halt_analyzer.c
 	analyzer/lv/lv_analyzer.c
+	analyzer/data/data_analyzer.c
 
 	#liveness
 	liveness/liveness.c
@@ -22,6 +23,7 @@ add_library("sd-base"
 	gen_tac/gen_tac_assignstmt.c
 	gen_tac/gen_tac_call.c
 	gen_tac/gen_tac_constvalue.c
+	gen_tac/gen_tac_const_data.c
 	gen_tac/gen_tac_expr.c
 	gen_tac/gen_tac_forstmt.c
 	gen_tac/gen_tac_ifstmt.c
@@ -67,6 +69,7 @@ add_library("sd-base"
 	x86_code_gen/compile_ir/compile_tac_call.c
 	x86_code_gen/compile_ir/compile_tac_icall.c
 	x86_code_gen/compile_ir/compile_tac_const_value.c
+	x86_code_gen/compile_ir/compile_tac_const_data.c
 	x86_code_gen/compile_ir/compile_tac_copy.c
 	x86_code_gen/compile_ir/compile_tac_goto.c
 	x86_code_gen/compile_ir/compile_tac_if_goto.c

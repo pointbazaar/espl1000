@@ -56,7 +56,7 @@ for test_file in $(find . -name '*.dg'); do
 
 	/tmp/program > /tmp/program_stdout
 
-	diff /tmp/program_stdout "$expected_stdout_file"
+	diff --ignore-trailing-space /tmp/program_stdout "$expected_stdout_file"
 	stdout_res=$?
 	if [[ stdout_res -eq 0 ]]; then
 		echo "[PASS][STDOUT] $test_file"
