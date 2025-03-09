@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
+#include <assert.h>
 
 #include "tables/symtable/symtable.h"
 
@@ -91,6 +92,10 @@ bool compile_and_write_avr(struct AST* ast, struct Ctx* ctx) {
 
 	{
 		emit_defs(fout);
+
+		//TODO: figure out how to support something like .data on AVR.
+		assert(data_count(ctx_tables(ctx)->data) == 0);
+
 		ibu_write(ibu, fout);
 	}
 

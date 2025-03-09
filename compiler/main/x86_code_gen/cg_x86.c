@@ -82,6 +82,8 @@ bool compile_and_write_x86(struct AST* ast, struct Ctx* ctx) {
 		return false;
 	}
 
+	data_write_data_segment(ctx_tables(ctx)->data, fout);
+
 	fprintf(fout, "section .text\n");
 	fprintf(fout, "global _start\n\n");
 

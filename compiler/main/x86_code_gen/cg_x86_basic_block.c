@@ -16,13 +16,15 @@
 #include "x86_code_gen/compile_ir/compile_tac.h"
 #include "cg_x86_basic_block.h"
 
-void emit_asm_x86_basic_block(struct BasicBlock* block, struct Ctx* ctx, struct IBuffer* ibu, struct RAT* rat, char* current_function_name) {
+bool emit_asm_x86_basic_block(struct BasicBlock* block, struct Ctx* ctx, struct IBuffer* ibu, struct RAT* rat, char* current_function_name) {
+
+	bool success = false;
 
 	if (block == NULL) {
-		return;
+		return true;
 	}
 	if (block->visited_emit_asm) {
-		return;
+		return true;
 	}
 
 	block->visited_emit_asm = true;
@@ -30,13 +32,25 @@ void emit_asm_x86_basic_block(struct BasicBlock* block, struct Ctx* ctx, struct 
 	for (size_t i = 0; i < tacbuffer_count(block->buffer); i++) {
 		struct TAC* t = tacbuffer_get(block->buffer, i);
 
-		emit_asm_x86_single_tac(rat, t, ctx, ibu, current_function_name);
+		success = emit_asm_x86_single_tac(rat, t, ctx, ibu, current_function_name);
+
+		if (!success) {
+			return false;
+		}
 	}
 
 	//false/default branch gets emitted first,
 	//because there is no label for it in a lot of cases
 	//this way we can avoid an extra jump that's really
 	//not necessary.
-	emit_asm_x86_basic_block(block->branch_2, ctx, ibu, rat, current_function_name);
-	emit_asm_x86_basic_block(block->branch_1, ctx, ibu, rat, current_function_name);
+	success = emit_asm_x86_basic_block(block->branch_2, ctx, ibu, rat, current_function_name);
+	if (!success) {
+		return false;
+	}
+	success = emit_asm_x86_basic_block(block->branch_1, ctx, ibu, rat, current_function_name);
+	if (!success) {
+		return false;
+	}
+
+	return true;
 }

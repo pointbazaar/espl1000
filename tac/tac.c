@@ -12,6 +12,7 @@ int32_t tac_opt_dest(struct TAC* tac) {
 
 	switch (tac->kind) {
 		case TAC_CONST_VALUE:
+		case TAC_CONST_DATA:
 		case TAC_BINARY_OP:
 		case TAC_CALL:
 		case TAC_ICALL:
@@ -37,7 +38,7 @@ int32_t tac_opt_dest(struct TAC* tac) {
 			return -1;
 
 		default:
-			fprintf(stderr, "%s: unhandled case %d\n", __func__, tac->kind);
+			fprintf(stderr, "%s:%s: unhandled case %d\n", __FILE__, __func__, tac->kind);
 			return -1;
 	}
 }
@@ -61,9 +62,10 @@ int32_t tac_dest(struct TAC* tac) {
 		case TAC_UNARY_OP:
 		case TAC_COPY:
 		case TAC_CONST_VALUE:
+		case TAC_CONST_DATA:
 			break;
 		default:
-			fprintf(stderr, "[TAC] invalid access (kind == %d)\n", tac_kind(tac));
+			fprintf(stderr, "[TAC] invalid access (kind == %d):%s\n", tac_kind(tac), __func__);
 			return -1;
 	}
 	return tac->dest;
@@ -98,9 +100,10 @@ int64_t tac_const_value(struct TAC* tac) {
 		case TAC_SETUP_STACKFRAME:
 		case TAC_LOAD:
 		case TAC_CONST_VALUE:
+		case TAC_CONST_DATA:
 			break;
 		default:
-			fprintf(stderr, "[TAC] invalid access (kind == %d)\n", tac_kind(tac));
+			fprintf(stderr, "[TAC] invalid access (kind == %d), %s\n", tac_kind(tac), __func__);
 			assert(false);
 	}
 	return tac->const_value;
@@ -163,6 +166,7 @@ int32_t tac_max_temp(struct TAC* tac) {
 		case TAC_LOAD_LOCAL_ADDR:
 		case TAC_LOAD_FUNCTION_PTR:
 		case TAC_CONST_VALUE:
+		case TAC_CONST_DATA:
 			return tac->dest;
 		case TAC_IF_GOTO:
 		case TAC_STORE_LOCAL:
@@ -176,7 +180,7 @@ int32_t tac_max_temp(struct TAC* tac) {
 			return 0;
 
 		default:
-			fprintf(stderr, "%s: unexpected case %u\n", __func__, tac->kind);
+			fprintf(stderr, "%s:%s: unexpected case %u\n", __FILE__, __func__, tac->kind);
 			return -1;
 	}
 }
@@ -210,6 +214,7 @@ bool tac_needs_register(struct TAC* tac) {
 	switch (tac->kind) {
 
 		case TAC_CONST_VALUE:
+		case TAC_CONST_DATA:
 		case TAC_LOAD_LOCAL_ADDR:
 		case TAC_LOAD_FUNCTION_PTR:
 		case TAC_COPY:
@@ -219,11 +224,25 @@ bool tac_needs_register(struct TAC* tac) {
 		case TAC_CALL:
 		case TAC_ICALL:
 			return true;
-			break;
+
+		case TAC_GOTO:
+		case TAC_IF_GOTO:
+		case TAC_IF_CMP_GOTO:
+		case TAC_STORE_LOCAL:
+		case TAC_PARAM:
+		case TAC_RETURN:
+		case TAC_SETUP_STACKFRAME:
+		case TAC_SETUP_SP:
+		case TAC_NOP:
+		case TAC_LABEL_INDEXED:
+		case TAC_LABEL_FUNCTION:
+		case TAC_STORE:
+			return false;
 
 		default:
+			fprintf(stderr, "[TAC] unhandled case (kind == %d): %s\n", tac_kind(tac), __func__);
+			assert(false);
 			return false;
-			break;
 	}
 }
 
@@ -273,11 +292,12 @@ int tac_mark_used(struct TAC* tac, bool* used_map, size_t map_size) {
 		case TAC_LOAD_FUNCTION_PTR:
 		case TAC_NOP:
 		case TAC_CONST_VALUE:
+		case TAC_CONST_DATA:
 		case TAC_ICALL:
 			return 0;
 
 		default:
-			fprintf(stderr, "%s: unexpected case %u\n", __func__, tac->kind);
+			fprintf(stderr, "%s:%s: unexpected case %u\n", __FILE__, __func__, tac->kind);
 			return 1;
 	}
 }
@@ -307,6 +327,7 @@ int tac_mark_defines(struct TAC* tac, bool* defines_map, size_t map_size) {
 		case TAC_LOAD_LOCAL_ADDR:
 		case TAC_LOAD_FUNCTION_PTR:
 		case TAC_CONST_VALUE:
+		case TAC_CONST_DATA:
 		case TAC_ICALL:
 			check_bounds(tac->kind, tac->dest, map_size);
 			defines_map[tac->dest] = true;
@@ -314,7 +335,7 @@ int tac_mark_defines(struct TAC* tac, bool* defines_map, size_t map_size) {
 			break;
 
 		default:
-			fprintf(stderr, "%s: unexpected case %u\n", __func__, tac->kind);
+			fprintf(stderr, "%s:%s: unexpected case %u\n", __FILE__, __func__, tac->kind);
 			return 1;
 	}
 }

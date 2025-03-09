@@ -68,6 +68,11 @@ static bool tc_pointer_type_contains(struct PointerType* expect, struct Type* ac
 
 	// integers can be used as pointers
 	if (actual->pointer_type == NULL) {
+
+		if (actual->array_type != NULL) {
+			return eq_type(expect->element_type, actual->array_type->element_type);
+		}
+
 		return is_integer_type(actual);
 	}
 

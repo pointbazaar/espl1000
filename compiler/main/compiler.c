@@ -25,6 +25,7 @@
 #include "analyzer/dead/dead_analyzer.h"
 #include "analyzer/halts/halt_analyzer.h"
 #include "analyzer/annotation/annotation_analyzer.h"
+#include "analyzer/data/data_analyzer.h"
 
 bool compile(struct Flags* flags) {
 
@@ -114,6 +115,7 @@ bool compile(struct Flags* flags) {
 	analyze_dead_code(ctx_tables(ctx), ast);
 	analyze_termination(ctx_tables(ctx));
 	analyze_annotations(ctx_tables(ctx), ast);
+	analyze_data(ctx_tables(ctx), ast);
 
 	bool success;
 	if (flags_x86(flags)) {
