@@ -83,11 +83,39 @@ size_t data_count(struct DataTable* data) {
 	return data->count_entries;
 }
 
+void data_print_escaped_str(FILE* fout, const char* str) {
+	while (*str) {
+		switch (*str) {
+			case '\n': fprintf(fout, "\\n"); break;
+			case '\t': fprintf(fout, "\\t"); break;
+			case '\r': fprintf(fout, "\\r"); break;
+			case '\b': fprintf(fout, "\\b"); break;
+			case '\f': fprintf(fout, "\\f"); break;
+			case '\"': fprintf(fout, "\\\""); break;
+			case '\\': fprintf(fout, "\\\\"); break;
+			default:
+				if (isprint((unsigned char)*str)) {
+					// Printable character -> write as-is
+					fputc(*str, fout);
+				} else {
+					// Non-printable character -> use hex notation
+					fprintf(fout, "\\x%02X", (unsigned char)*str);
+				}
+				break;
+		}
+		str++;
+	}
+}
+
 static void data_write_data_segment_entry(struct DataEntry* e, FILE* fout) {
 
 	// The ',0' at the end NULL-terminates the string.
 
-	fprintf(fout, "%s: db \"%s\",0\n", e->symbol, e->value);
+	fprintf(fout, "%s: db ", e->symbol);
+	fprintf(fout, "`");
+	data_print_escaped_str(fout, e->value);
+	fprintf(fout, "`");
+	fprintf(fout, ",0\n");
 }
 
 void data_write_data_segment(struct DataTable* data, FILE* fout) {

@@ -5,10 +5,10 @@ fn main () ~> int {
 
 	write(1, ptr, 7);
 
-	[char] str2 = "World!";
+	[char] str2 = "World!\n";
 	ptr = str2;
 
-	write(1, ptr, 6);
+	write(1, ptr, 7);
 
 	return 0;
 }

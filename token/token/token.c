@@ -47,16 +47,27 @@ struct Token* makeTokenStringConst(char* value) {
 
 	res->kind = STRINGCONST;
 
-	res->value_ptr = malloc(sizeof(char) * (strlen(value) + 1));
+	res->value_ptr = calloc(sizeof(char) * (strlen(value) + 1), sizeof(char));
 
 	if (!res->value_ptr) {
 		free(res);
 		return NULL;
 	}
 
-	//extra '"' at start and end
-	strcpy(res->value_ptr, value + 1);
-	res->value_ptr[strlen(res->value_ptr) - 1] = '\0';
+	// extra '"' at start and end
+	const size_t len = strlen(value) - 1;
+	int j = 0;
+	for (int i = 1; i < len; i++) {
+		char c = value[i];
+
+		// unescape '\n'
+		if (c == '\\' && i + 1 < len && value[i + 1] == 'n') {
+			res->value_ptr[j++] = '\n';
+			i++;
+		} else {
+			res->value_ptr[j++] = c;
+		}
+	}
 
 	res->line_num = -1;
 
