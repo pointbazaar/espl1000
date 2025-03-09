@@ -6,6 +6,7 @@
 #include "tables/lvst/lvst.h"
 #include "tables/sst/sst.h"
 #include "tables/stst/stst.h"
+#include "tables/data/data.h"
 #include "symtable.h"
 
 struct ST* st_ctor() {
@@ -41,6 +42,7 @@ void st_free(struct ST* st) {
 	if (st->sst != NULL) { sst_free(st->sst); }
 	if (st->lvst != NULL) { lvst_free(st->lvst); }
 	if (st->stst != NULL) { stst_free(st->stst); }
+	data_dtor(st->data);
 
 	for (int i = 0; i < st->inferred_types_count; i++) {
 		free_type(st->inferred_types[i]);
