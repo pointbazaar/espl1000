@@ -145,8 +145,8 @@ void test_tac_tostring() {
 	assert_str(makeTACLabel(1), "L1:");
 	assert_str(makeTACLoadLocalAddr(1, 0, 8), "load t1 = &l0 (x) (8 bytes)");
 	assert_str(makeTACStoreLocal(0, 2), "store l0 (x) = t2");
-	assert_str(makeTACLoad(2, 1, 2), "t2 = [t1]");
-	assert_str(makeTACStore(2, 1, 2), "[t2] = t1");
+	assert_str(makeTACLoad(2, 1, 2), "t2 = [t1] (2 bytes)");
+	assert_str(makeTACStore(2, 1, 2), "[t2] = t1 (2 bytes)");
 
 	assert_str(makeTACBinOp(2, TAC_OP_ADD, 1), "t2 += t1");
 	assert_str(makeTACBinOp(2, TAC_OP_SUB, 1), "t2 -= t1");

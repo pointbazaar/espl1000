@@ -1,13 +1,13 @@
 
 
 @syscall
-fn write(uint fd, *char buf, uint64 count) -> int {}
+fn write(uint fd, *char buf, uint64 count) -> int64 {}
 
 @syscall
-fn open([char] filename, int flags, int mode) -> int {}
+fn open(*char filename, int flags, int mode) -> int {}
 
 @syscall
-fn read(int fd, *char buf, uint64 count) -> int {}
+fn read(int fd, *char buf, uint64 count) -> int64 {}
 
 @syscall
 fn exit(int code) -> int {}

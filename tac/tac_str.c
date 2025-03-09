@@ -134,12 +134,16 @@ char* tac_tostring(struct TAC* t, struct SST* sst, struct LVST* lvst) {
 			sprintf(buf, "store l%d (%s) = t%lu", dest, name, arg1);
 		} break;
 
-		case TAC_LOAD:
-			sprintf(buf, "t%d = [t%lu]", dest, arg1);
+		case TAC_LOAD: {
+			const uint8_t width = tac_load_store_width(t);
+			sprintf(buf, "t%d = [t%lu] (%d bytes)", dest, arg1, width);
 			break;
-		case TAC_STORE:
-			sprintf(buf, "[t%d] = t%lu", dest, arg1);
+		}
+		case TAC_STORE: {
+			const uint8_t width = tac_load_store_width(t);
+			sprintf(buf, "[t%d] = t%lu (%d bytes)", dest, arg1, width);
 			break;
+		}
 
 		case TAC_NOP:
 			sprintf(buf, "%s", "nop");

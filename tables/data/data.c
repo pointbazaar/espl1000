@@ -83,15 +83,19 @@ size_t data_count(struct DataTable* data) {
 	return data->count_entries;
 }
 
+static void data_write_data_segment_entry(struct DataEntry* e, FILE* fout) {
+
+	// The ',0' at the end NULL-terminates the string.
+
+	fprintf(fout, "%s: db \"%s\",0\n", e->symbol, e->value);
+}
+
 void data_write_data_segment(struct DataTable* data, FILE* fout) {
 
 	fprintf(fout, "section .data\n");
 
 	for (size_t i = 0; i < data->count_entries; i++) {
-		struct DataEntry* e = data->entries[i];
-		size_t len = strlen(e->value);
-
-		fprintf(fout, "%s: db \"%s\", %ld\n", e->symbol, e->value, len);
+		data_write_data_segment_entry(data->entries[i], fout);
 	}
 }
 
