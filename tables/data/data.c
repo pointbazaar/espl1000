@@ -118,3 +118,16 @@ char* data_symbol(struct DataTable* data, uint32_t offset) {
 
 	return data->entries[offset]->symbol;
 }
+
+int32_t data_string_offset(struct DataTable* data, char* str) {
+
+	for (size_t i = 0; i < data->count_entries; i++) {
+		struct DataEntry* e = data->entries[i];
+
+		if (strcmp(str, e->value) == 0) {
+			return i;
+		}
+	}
+
+	return -1;
+}
