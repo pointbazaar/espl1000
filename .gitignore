@@ -20,3 +20,6 @@ tags
 build/
 
 .cache/
+
+# local TODO file
+TODO
