@@ -11,37 +11,37 @@
 
 #include "../../token/TokenKeys.h"
 
-void out_nostr(FILE* outFile, int id) {
-	fprintf(outFile, "%d\n", id);
+void out_nostr(int outFd, int id) {
+	dprintf(outFd, "%d\n", id);
 }
 
-void out(FILE* outFile, int id, char* str) {
+void out(int outFd, int id, char* str) {
 	char* s = str;
 	if (str == NULL) {
 		s = "";
 	}
-	fprintf(outFile, "%d %s\n", id, s);
+	dprintf(outFd, "%d %s\n", id, s);
 }
-void out_length(FILE* outFile, int id, char* str, int length) {
+void out_length(int outFd, int id, char* str, int length) {
 	char* s = str;
 	if (str == NULL) {
 		s = "";
 	}
-	fprintf(outFile, "%d %.*s\n", id, length, s);
+	dprintf(outFd, "%d %.*s\n", id, length, s);
 }
 
-void out2(FILE* outFile, int id, int id2) {
-	fprintf(outFile, "%d %d\n", id, id2);
+void out2(int outFd, int id, int id2) {
+	dprintf(outFd, "%d %d\n", id, id2);
 }
 
-void out_plus_plus(FILE* outFile) {
-	out(outFile, ASSIGNOP_PLUS, "+=");
-	out(outFile, INTEGER, "1");
+void out_plus_plus(int outFd) {
+	out(outFd, ASSIGNOP_PLUS, "+=");
+	out(outFd, INTEGER, "1");
 }
 
-void out_minus_minus(FILE* outFile) {
-	out(outFile, ASSIGNOP_MINUS, "-=");
-	out(outFile, INTEGER, "1");
+void out_minus_minus(int outFd) {
+	out(outFd, ASSIGNOP_MINUS, "-=");
+	out(outFd, INTEGER, "1");
 }
 
 char* lexer_make_tkn_filename(char* filename) {

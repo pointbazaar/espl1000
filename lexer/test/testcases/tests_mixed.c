@@ -12,7 +12,8 @@ void test_mixed_1() {
 	printt("test mixed 1");
 
 	char* str = "struct MyStruct { uint a, MyStruct b} ";
-	struct Token** tokens = lex(str);
+	size_t count = 0;
+	struct Token** tokens = lex(str, &count);
 
 	assert(tokens[2]->kind == LCURLY);
 
@@ -31,7 +32,8 @@ void test_mixed_2() {
 	printt("test mixed 2");
 
 	char* str = ") f)~> ";
-	struct Token** tokens = lex(str);
+	size_t count = 0;
+	struct Token** tokens = lex(str, &count);
 
 	assert(tokens[0]->kind == RPARENS);
 
@@ -50,7 +52,8 @@ void test_mixed_3() {
 	printt("test mixed 3");
 
 	char* str = "if(x ";
-	struct Token** tokens = lex(str);
+	size_t count = 0;
+	struct Token** tokens = lex(str, &count);
 
 	assert(tokens[0]->kind == IF);
 	assert(tokens[1]->kind == LPARENS);
@@ -64,7 +67,8 @@ void test_mixed_4() {
 	printt("test mixed 4");
 
 	char* str = "while(x uint n ";
-	struct Token** tokens = lex(str);
+	size_t count = 0;
+	struct Token** tokens = lex(str, &count);
 
 	assert(tokens[0]->kind == WHILE);
 	assert(tokens[1]->kind == LPARENS);
@@ -80,7 +84,8 @@ void test_mixed_5() {
 	printt("test mixed 5");
 
 	char* str = "]='d'; ";
-	struct Token** tokens = lex(str);
+	size_t count = 0;
+	struct Token** tokens = lex(str, &count);
 
 	assert(tokens[0]->kind == RBRACKET);
 	assert(tokens[1]->kind == ASSIGNOP_SIMPLE);
@@ -95,7 +100,8 @@ void test_mixed_6() {
 	printt("test mixed 6");
 
 	char* str = "MyStruct s} ";
-	struct Token** tokens = lex(str);
+	size_t count = 0;
+	struct Token** tokens = lex(str, &count);
 
 	assert(tokens[0]->kind == TYPEID);
 	assert(tokens[1]->kind == ID);
@@ -109,7 +115,8 @@ void test_mixed_7() {
 	printt("test mixed 7");
 
 	char* str = "(1<2) ";
-	struct Token** tokens = lex(str);
+	size_t count = 0;
+	struct Token** tokens = lex(str, &count);
 
 	assert(tokens[0]->kind == LPARENS);
 	assert(tokens[1]->kind == INTEGER);
@@ -125,7 +132,8 @@ void test_mixed_8() {
 	printt("test mixed 8");
 
 	char* str = "putchar('1') ";
-	struct Token** tokens = lex(str);
+	size_t count = 0;
+	struct Token** tokens = lex(str, &count);
 
 	assert(tokens[0]->kind == ID);
 	assert(tokens[1]->kind == LPARENS);
@@ -140,7 +148,8 @@ void test_mixed_9() {
 	printt("test mixed 9");
 
 	char* str = "putchar('-') ";
-	struct Token** tokens = lex(str);
+	size_t count = 0;
+	struct Token** tokens = lex(str, &count);
 
 	assert(tokens[0]->kind == ID);
 	assert(tokens[1]->kind == LPARENS);
@@ -155,7 +164,8 @@ void test_mixed_10() {
 	printt("test mixed 10");
 
 	char* str = ";\n 	i=0; ";
-	struct Token** tokens = lex(str);
+	size_t count = 0;
+	struct Token** tokens = lex(str, &count);
 
 	assert(tokens[0]->kind == SEMICOLON);
 
@@ -173,7 +183,8 @@ void test_mixed_11() {
 	printt("test mixed 11");
 
 	char* str = "uint i, char j ";
-	struct Token** tokens = lex(str);
+	size_t count = 0;
+	struct Token** tokens = lex(str, &count);
 
 	assert(tokens[0]->kind == TYPEID_PRIMITIVE_UINT);
 	assert(tokens[1]->kind == ID);
@@ -189,7 +200,8 @@ void test_mixed_12() {
 	printt("test mixed 12");
 
 	char* str = "( x < 31) ";
-	struct Token** tokens = lex(str);
+	size_t count = 0;
+	struct Token** tokens = lex(str, &count);
 
 	assert(tokens[0]->kind == LPARENS);
 	assert(tokens[1]->kind == ID);
@@ -205,7 +217,8 @@ void test_mixed_13() {
 	printt("test mixed 13");
 
 	char* str = "println(\"vector sum:\"); ";
-	struct Token** tokens = lex(str);
+	size_t count = 0;
+	struct Token** tokens = lex(str, &count);
 
 	assert(tokens[0]->kind == ID);
 	assert(tokens[1]->kind == LPARENS);
@@ -223,7 +236,8 @@ void test_mixed_14() {
 	printt("test mixed 14");
 
 	char* str = "struct MyStruct{ int a, int b}";
-	struct Token** tokens = lex(str);
+	size_t count = 0;
+	struct Token** tokens = lex(str, &count);
 
 	assert(tokens[0]->kind == STRUCT);
 	assert(tokens[1]->kind == TYPEID);
@@ -248,7 +262,8 @@ void test_mixed_15() {
 	printt("test mixed 15");
 
 	char* str = "struct MyStruct{\n\tint a,\n\tint b\n}";
-	struct Token** tokens = lex(str);
+	size_t count = 0;
+	struct Token** tokens = lex(str, &count);
 
 	assert(tokens[0]->kind == STRUCT);
 	assert(tokens[0]->line_num == 1);
@@ -276,7 +291,8 @@ void test_mixed_16() {
 	printt("test mixed 16");
 
 	char* str = "((uint) -> bool) member ";
-	struct Token** tokens = lex(str);
+	size_t count = 0;
+	struct Token** tokens = lex(str, &count);
 
 	assert(tokens[0]->kind == LPARENS);
 	assert(tokens[1]->kind == LPARENS);

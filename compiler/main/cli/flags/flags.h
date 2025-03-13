@@ -30,6 +30,7 @@ bool flags_parser(struct Flags* flags);
 bool flags_nolink(struct Flags* flags);
 bool flags_rat(struct Flags* flags);
 char* flags_output_filename(struct Flags* flags);
+bool flags_dump_tokens(struct Flags* flags);
 
 //generated filenames for later on
 char* flags_asm_filename(struct Flags* ctx);

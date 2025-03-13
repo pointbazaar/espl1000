@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <inttypes.h>
+#include <unistd.h>
 
 #include "lexer_test_utils.h"
 
@@ -12,33 +13,47 @@
 #include "../src/lexer_main.h"
 #include "lexer/src/lexer_flags.h"
 
-struct Token** lex(char* source) {
+struct Token** lex(char* source, size_t* out_count) {
 
 	//make a file with the source
 	//run the lexer
 	//read out the tokens
 
 	char* fname_src = "/tmp/temporary-smalldragon.dg";
-	char* fname_tks = "/tmp/.temporary-smalldragon.dg.tokens";
 
-	//make a file with the source
-	FILE* f = fopen(fname_src, "w");
-	fprintf(f, "%s", source);
-	fclose(f);
+	{
+		FILE* f = fopen(fname_src, "w");
+
+		if (f == NULL) {
+			fprintf(stderr, "Lexer: could not write to %s\n", fname_src);
+			return NULL;
+		}
+
+		fprintf(f, "%s", source);
+		fclose(f);
+	}
 
 	struct LexerFlags flags;
 	flags.filename = fname_src;
+	flags.write_token_file = false;
 
-	if (lexer_main(&flags) != 0) {
+	int fd = lexer_main(&flags);
+
+	if (fd < 0) {
 		fprintf(stderr, "error lexing %s\n", fname_src);
 		return NULL;
 	}
 
-	FILE* ftks = fopen(fname_tks, "r");
+	struct TokenList* list = read_tokens_from_tokens_file(fd, fname_src);
 
-	struct TokenList* list = read_tokens_from_tokens_file(ftks, fname_tks);
+	if (list == NULL) {
+		fprintf(stderr, "Lexer: could not read from fd %d\n", fd);
+		close(fd);
+		return NULL;
+	}
 
 	uint32_t capacity = list_size(list);
+	*out_count = list_size(list);
 	struct Token** tks = malloc(sizeof(struct Token*) * capacity);
 
 	for (uint32_t count = 0; count < capacity; count++) {
@@ -46,8 +61,6 @@ struct Token** lex(char* source) {
 	}
 
 	freeTokenListShallow(list);
-
-	fclose(ftks);
 
 	return tks;
 }

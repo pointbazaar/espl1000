@@ -89,6 +89,13 @@ struct Flag all_flags[] = {
 	.arg_default_value = "a.out",
 	.is_set = false,
     },
+    {
+	.name = "dump-tokens",
+	.description = "dump .tokens file from lexer",
+	.has_arg = false,
+	.arg_default_value = NULL,
+	.is_set = false,
+    },
 };
 
 size_t all_flags_count() {

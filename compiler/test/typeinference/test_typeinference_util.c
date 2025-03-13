@@ -2,6 +2,7 @@
 #include <stdio.h>
 
 #include <invoke/invoke.h>
+#include <unistd.h>
 #include <util/fileutils/fileutils.h>
 #include <tables/symtable/symtable.h>
 #include <util/fill_tables.h>
@@ -25,9 +26,9 @@ struct Type* typeinfer_in_file(char* filename) {
 	 */
 
 	bool s = true;
-	int status = invoke_lexer(filename);
+	int fd = invoke_lexer(filename, false);
 
-	if (WEXITSTATUS(status) != 0) {
+	if (fd < 0) {
 		printf("[Error] lexer exited with nonzero exit code\n");
 		s = false;
 		goto end;
@@ -39,7 +40,7 @@ end:;
 
 	struct Ctx* ctx = ctx_ctor(makeFlagsSingleFile(filename), st_ctor(false));
 
-	struct AST* ast = build_ast(flags_token_filename(ctx_flags(ctx)));
+	struct AST* ast = build_ast(fd, flags_token_filename(ctx_flags(ctx)));
 
 	assert(ast != NULL);
 
@@ -69,6 +70,8 @@ end:;
 	ctx_dtor(ctx);
 
 	free_ast(ast);
+
+	close(fd);
 
 	return copy;
 }

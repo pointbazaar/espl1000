@@ -1,6 +1,13 @@
+#define _GNU_SOURCE
+#include <unistd.h>
+#include <assert.h>
+#include <fcntl.h>
 #include <stdio.h>
 #include <stdbool.h>
 #include <stdlib.h>
+
+#include <sys/types.h>
+#include <sys/mman.h>
 
 #include "driver.h"
 #include "lexer_flags.h"
@@ -14,16 +21,15 @@ int lexer_main(struct LexerFlags* myargs) {
 
 	if (myargs->filename == NULL) {
 		fprintf(stderr, "[Lexer] expected a filename of the file to tokenize\n");
-		return 1;
+		return -1;
 	}
 
 	char* filename = myargs->filename;
 
-	//configure input source
 	FILE* yyin = fopen(filename, "r");
 	if (yyin == NULL) {
 		fprintf(stderr, "[Lexer] error: could not open %s\n", filename);
-		return 1;
+		return -1;
 	}
 
 	if (debug) {
@@ -32,25 +38,34 @@ int lexer_main(struct LexerFlags* myargs) {
 
 	char* buffer = lexer_make_tkn_filename(filename);
 
-	FILE* outFile = fopen(buffer, "w");
-	if (outFile == NULL) {
-		fprintf(stderr, "[Lexer] error: could not open %s\n", buffer);
-		return 1;
+	assert(buffer);
+
+	int outFd;
+
+	if (myargs->write_token_file) {
+		outFd = open(buffer, O_CREAT | O_RDWR, S_IWUSR | S_IRUSR | S_IWGRP | S_IRGRP | S_IROTH);
+		if (outFd < 0) {
+			fprintf(stderr, "[Lexer] error: could not open %s\n", buffer);
+			return -1;
+		}
+	} else {
+		outFd = memfd_create((const char*)buffer, 0);
+
+		if (outFd < 0) {
+			fprintf(stderr, "[Lexer] error: could not create memfd for %s\n", buffer);
+			return -1;
+		}
 	}
 
 	if (debug) {
 		fprintf(stderr, "[Lexer] opened output file %s\n", buffer);
 	}
 
-	//full buffering for better performance
-	setvbuf(outFile, NULL, _IOFBF, BUFSIZ);
-
-	status = lexer_impl(yyin, outFile);
+	status = lexer_impl(yyin, outFd);
 
 	fclose(yyin);
 
-	fclose(outFile);
 	free(buffer);
 
-	return status;
+	return outFd;
 }

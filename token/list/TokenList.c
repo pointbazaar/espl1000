@@ -31,6 +31,10 @@ struct TokenList {
 
 struct TokenList* makeTokenList2(char* filename) {
 
+	if (filename == NULL) {
+		return NULL;
+	}
+
 	const int initial_size = 20;
 
 	struct TokenList* res = malloc(sizeof(struct TokenList));

@@ -6,4 +6,4 @@
 struct TokenList;
 
 // @returns NULL on error
-struct TokenList* read_tokens_from_tokens_file(FILE* file, char* tokensFile);
+struct TokenList* read_tokens_from_tokens_file(int fd, char* tokensFile);

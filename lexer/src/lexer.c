@@ -11,7 +11,7 @@
 
 int line_no = 1;
 
-static int h2out(const char* buffer, char* str, int token, FILE* fileout) {
+static int h2out(const char* buffer, char* str, int token, int fileout) {
 	if (strncmp(buffer, str, strlen(str)) == 0) {
 		out(fileout, token, str);
 		return strlen(str);
@@ -19,7 +19,7 @@ static int h2out(const char* buffer, char* str, int token, FILE* fileout) {
 	return 0;
 }
 
-static int h2out_nostr(const char* buffer, char* str, int token, FILE* fileout) {
+static int h2out_nostr(const char* buffer, char* str, int token, int fileout) {
 	if (strncmp(buffer, str, strlen(str)) == 0) {
 		out_nostr(fileout, token);
 		return strlen(str);
@@ -27,7 +27,7 @@ static int h2out_nostr(const char* buffer, char* str, int token, FILE* fileout) 
 	return 0;
 }
 
-static int h2out_char(const char* buffer, char c, int token, FILE* fileout) {
+static int h2out_char(const char* buffer, char c, int token, int fileout) {
 	if (buffer[0] == c) {
 		out_nostr(fileout, token);
 		return 1;
@@ -59,7 +59,7 @@ static ssize_t h2_find_delim(const char* buf, size_t length) {
 	return -1;
 }
 
-static int handler2_intconst(const char* buf, FILE* o, size_t nchars_remain) {
+static int handler2_intconst(const char* buf, int o, size_t nchars_remain) {
 
 	int i = 0;
 	while (isdigit(buf[i]) && i < nchars_remain) {
@@ -69,7 +69,7 @@ static int handler2_intconst(const char* buf, FILE* o, size_t nchars_remain) {
 	return i;
 }
 
-static int handler2_binconst(const char* buf, FILE* o, size_t nchars_remain) {
+static int handler2_binconst(const char* buf, int o, size_t nchars_remain) {
 
 	int i = 0;
 	while ((buf[i + 2] == '0' || buf[i + 2] == '1') && i < nchars_remain) {
@@ -79,7 +79,7 @@ static int handler2_binconst(const char* buf, FILE* o, size_t nchars_remain) {
 	return i + 2;
 }
 
-static int handler2_hexconst(const char* buf, FILE* o, size_t nchars_remain) {
+static int handler2_hexconst(const char* buf, int o, size_t nchars_remain) {
 
 	int i = 0;
 	while (isxdigit(buf[i + 2]) && i < nchars_remain) {
@@ -89,7 +89,7 @@ static int handler2_hexconst(const char* buf, FILE* o, size_t nchars_remain) {
 	return i + 2;
 }
 
-static int handler2_stringconst(const char* buf, FILE* o, size_t nchars_remain) {
+static int handler2_stringconst(const char* buf, int o, size_t nchars_remain) {
 
 	int i = 1;
 	while (buf[i] != '"' && i < nchars_remain) {
@@ -99,7 +99,7 @@ static int handler2_stringconst(const char* buf, FILE* o, size_t nchars_remain) 
 	return i + 1;
 }
 
-static int handler2_charconst(const char* buf, FILE* o, size_t nchars_remain) {
+static int handler2_charconst(const char* buf, int o, size_t nchars_remain) {
 
 	if (buf[2] == '\'') {
 		out_length(o, CCONST, (char*)buf, 3);
@@ -113,7 +113,7 @@ static int handler2_charconst(const char* buf, FILE* o, size_t nchars_remain) {
 	return -1;
 }
 
-static int handler2_multiline_comment(const char* buf, FILE* o, size_t nchars_remain) {
+static int handler2_multiline_comment(const char* buf, int o, size_t nchars_remain) {
 
 	int i = 2;
 	while ((strncmp(buf + i, "*/", 2) != 0) && i < nchars_remain) {
@@ -122,7 +122,7 @@ static int handler2_multiline_comment(const char* buf, FILE* o, size_t nchars_re
 	return i + 2;
 }
 
-static int handler2_comment(const char* buf, FILE* o, size_t nchars_remain) {
+static int handler2_comment(const char* buf, int o, size_t nchars_remain) {
 
 	int i = 0;
 	while (buf[i + 2] != '\n' && (i + 2) < nchars_remain) {
@@ -131,7 +131,7 @@ static int handler2_comment(const char* buf, FILE* o, size_t nchars_remain) {
 	return i + 2;
 }
 
-static int handler2_newline(const char* buf, FILE* o, size_t nchars_remain) {
+static int handler2_newline(const char* buf, int o, size_t nchars_remain) {
 
 	line_no++;
 	char linebuf[20];
@@ -140,7 +140,7 @@ static int handler2_newline(const char* buf, FILE* o, size_t nchars_remain) {
 	return 1;
 }
 
-static int handler2_include_decl(const char* buf, FILE* o, size_t nchars_remain) {
+static int handler2_include_decl(const char* buf, int o, size_t nchars_remain) {
 
 	int i = 10;
 	while (buf[i] != '>' && i < nchars_remain) {
@@ -150,7 +150,7 @@ static int handler2_include_decl(const char* buf, FILE* o, size_t nchars_remain)
 	return i + 1;
 }
 
-static int handler2(const char* buf, FILE* o, size_t nchars_remain) {
+static int handler2(const char* buf, int o, size_t nchars_remain) {
 
 	int n;
 
@@ -312,7 +312,7 @@ static int handler2(const char* buf, FILE* o, size_t nchars_remain) {
 	return -1;
 }
 
-int lexer_impl(FILE* infile, FILE* outfile) {
+int lexer_impl(FILE* infile, int outFd) {
 
 	struct stat sb;
 	const int fd = fileno(infile);
@@ -338,7 +338,7 @@ int lexer_impl(FILE* infile, FILE* outfile) {
 	char c;
 	for (size_t i = 0; i < length;) {
 		size_t nchars_remain = length - i;
-		int ntokens = handler2(addr + i, outfile, nchars_remain);
+		int ntokens = handler2(addr + i, outFd, nchars_remain);
 		if (ntokens <= 0) {
 			fprintf(stderr, "[Lexer] could not scan token at index %ld\n", i);
 			fprintf(stderr, "%c\n", addr[i]);

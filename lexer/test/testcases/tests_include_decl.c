@@ -11,7 +11,8 @@ void test_include_decl() {
 	printt("test #include <file.h>");
 
 	char* str = "#include <file.h>";
-	struct Token** tokens = lex(str);
+	size_t count = 0;
+	struct Token** tokens = lex(str, &count);
 
 	assert(tokens != NULL);
 

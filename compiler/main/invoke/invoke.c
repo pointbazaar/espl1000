@@ -15,33 +15,17 @@ int asprintf(char** restrict strp, const char* restrict fmt, ...);
 
 #include "lexer/src/lexer_main.h"
 
-int invoke_lexer(char* filename) {
+int invoke_lexer(char* filename, bool write_token_file) {
 
 	struct LexerFlags flags;
+	flags.write_token_file = write_token_file;
 	flags.filename = filename;
 	return lexer_main(&flags);
 }
 
-struct Namespace* invoke_parser(char* filename) {
+struct Namespace* invoke_parser(int tokensFd, char* filename_display) {
 
-	char* fnamecpy = malloc(strlen(filename) + 1);
-
-	if (!fnamecpy) {
-		return NULL;
-	}
-
-	strcpy(fnamecpy, filename);
-
-	char* base_name = basename(fnamecpy);
-	char* dir_name = dirname(fnamecpy);
-
-	char* cmd2;
-	asprintf(&cmd2, "%s/.%s.tokens", dir_name, base_name);
-
-	struct Namespace* ns = build_namespace(cmd2);
-
-	free(cmd2);
-	free(fnamecpy);
+	struct Namespace* ns = build_namespace(tokensFd, filename_display);
 
 	return ns;
 }

@@ -12,6 +12,8 @@ static void test_gen_tac_deref_read_8bit_case_const_addr_single(uint16_t address
 
 	vmcu_system_t* system = prepare_vmcu_system_from_code_snippet(snippet);
 
+	assert(system);
+
 	vmcu_system_write_data(system, address, value);
 
 	vmcu_system_step_n(system, 40);

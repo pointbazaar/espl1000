@@ -12,7 +12,8 @@ void test_operators() {
 	printt("test operators");
 
 	char* str = "+ - * / ";
-	struct Token** tokens = lex(str);
+	size_t count = 0;
+	struct Token** tokens = lex(str, &count);
 
 	assert(tokens != NULL);
 	assert(tokens[0] != NULL);
@@ -30,7 +31,8 @@ void test_operators_cmp() {
 	printt("test operators_cmp");
 
 	char* str = "<= >= == != < >";
-	struct Token** tokens = lex(str);
+	size_t count = 0;
+	struct Token** tokens = lex(str, &count);
 
 	assert(tokens != NULL);
 	assert(tokens[0] != NULL);
@@ -50,7 +52,8 @@ void test_operators_logical() {
 	printt("test operators_logical");
 
 	char* str = "&& || ";
-	struct Token** tokens = lex(str);
+	size_t count = 0;
+	struct Token** tokens = lex(str, &count);
 
 	assert(tokens != NULL);
 	assert(tokens[0] != NULL);
@@ -67,7 +70,8 @@ void test_operators_bitwise() {
 	printt("test operators_bitwise");
 
 	char* str = "| & << >> ^ ~";
-	struct Token** tokens = lex(str);
+	size_t count = 0;
+	struct Token** tokens = lex(str, &count);
 
 	assert(tokens != NULL);
 	assert(tokens[0] != NULL);
@@ -87,7 +91,8 @@ void test_assign_operators() {
 	printt("test_assign_operators");
 
 	char* str = "= += -= >>= <<= &= |=";
-	struct Token** tokens = lex(str);
+	size_t count = 0;
+	struct Token** tokens = lex(str, &count);
 
 	assert(tokens != NULL);
 	assert(tokens[0] != NULL);

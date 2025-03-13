@@ -3,6 +3,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <malloc.h>
+#include <unistd.h>
 
 #include "Namespace.h"
 
@@ -18,9 +19,7 @@
 #define ERR_FATAL "[Parser] Fatal.\n"
 #define ERR_TOKENS_LEFT "[Parser] there were tokens left when parsing.\n"
 
-static char* extract_namespace_name(char* filename_tokens);
-
-struct AST* build_ast(char* tokensFile) {
+struct AST* build_ast(int tokensFd, char* filename_display) {
 
 	struct AST* ast = make(AST);
 
@@ -29,7 +28,7 @@ struct AST* build_ast(char* tokensFile) {
 	if (!ast->namespaces) {
 		return NULL;
 	}
-	ast->namespaces[0] = build_namespace(tokensFile);
+	ast->namespaces[0] = build_namespace(tokensFd, filename_display);
 
 	if (ast->namespaces[0] == NULL)
 		return NULL;
@@ -37,35 +36,26 @@ struct AST* build_ast(char* tokensFile) {
 	return ast;
 }
 
-struct Namespace* build_namespace(char* tokensFile) {
+struct Namespace* build_namespace(int tokensFd, char* filename_display) {
 
-	FILE* file = fopen(tokensFile, "r");
-
-	if (file == NULL) {
-		fprintf(stderr, ERR_COULD_NOT_OPEN_FILE, tokensFile);
+	if (filename_display == NULL) {
 		return NULL;
 	}
 
-	//full buffering for performance
-	setvbuf(file, NULL, _IOFBF, BUFSIZ);
+	if (tokensFd < 0) {
+		fprintf(stderr, "could not open fd %d", tokensFd);
+		return NULL;
+	}
 
-	struct TokenList* tokens = read_tokens_from_tokens_file(file, tokensFile);
+	struct TokenList* tokens = read_tokens_from_tokens_file(tokensFd, filename_display);
 
 	if (!tokens) {
 		return NULL;
 	}
 
-	fclose(file);
+	close(tokensFd);
 
-	//get just the namespace name from .FILENAME.dg.tokens
-	char* ns_name = extract_namespace_name(tokensFile);
-	if (!ns_name) {
-		goto error;
-	}
-
-	struct Namespace* ns = makeNamespace(tokens, ns_name);
-
-	free(ns_name);
+	struct Namespace* ns = makeNamespace(tokens, filename_display);
 
 	if (!ns) {
 		goto error_namespace;
@@ -84,45 +74,7 @@ struct Namespace* build_namespace(char* tokensFile) {
 error_tokens_left:
 	free_namespace(ns);
 error_namespace:
-	free(ns_name);
 error:
 	freeTokenList(tokens);
 	return NULL;
-}
-
-static char* extract_namespace_name(char* filename_tokens) {
-
-	//?.FILENAME.dg.tokens
-	// ^        ^
-	//dot1      dot2
-
-	char* last = filename_tokens + strlen(filename_tokens) - 1;
-
-	while (last[0] != '.') {
-		last--;
-	}
-	last--;
-
-	while (last[0] != '.') {
-		last--;
-	}
-	char* dot2 = last;
-	last--;
-
-	while (last[0] != '.') {
-		last--;
-	}
-	char* dot1 = last;
-	last--;
-
-	int l = (int)(dot2 - dot1);
-
-	char* res = malloc(l + 1);
-	if (!res) {
-		return NULL;
-	}
-	memset(res, 0, l + 1);
-	strncpy(res, dot1 + 1, l - 1);
-
-	return res;
 }
