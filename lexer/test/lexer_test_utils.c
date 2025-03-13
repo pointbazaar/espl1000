@@ -10,6 +10,7 @@
 #include "../../token/list/TokenList.h"
 
 #include "../src/lexer_main.h"
+#include "lexer/src/lexer_flags.h"
 
 struct Token** lex(char* source) {
 
@@ -25,8 +26,10 @@ struct Token** lex(char* source) {
 	fprintf(f, "%s", source);
 	fclose(f);
 
-	char* argv[] = {"programname", fname_src};
-	if (lexer_main(2, argv) != 0) {
+	struct LexerFlags flags;
+	flags.filename = fname_src;
+
+	if (lexer_main(&flags) != 0) {
 		fprintf(stderr, "error lexing %s\n", fname_src);
 		return NULL;
 	}
