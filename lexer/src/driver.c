@@ -44,32 +44,6 @@ void out_minus_minus(FILE* outFile) {
 	out(outFile, INTEGER, "1");
 }
 
-struct LexerFlags* handle_arguments(int argc, char** argv) {
-
-	struct LexerFlags* res = malloc(sizeof(struct LexerFlags));
-
-	if (!res) {
-		return NULL;
-	}
-
-	res->filename = NULL;
-
-	for (int i = 1; i < argc; i++) {
-
-		char* arg = argv[i];
-		if (arg[0] == '-') {
-
-			fprintf(stderr, "[Lexer] unrecognized flag: %s\n", arg);
-			free(res);
-			return NULL;
-		} else {
-			res->filename = arg;
-		}
-	}
-
-	return res;
-}
-
 char* lexer_make_tkn_filename(char* filename) {
 
 	//because basename,dirname may modify their args

@@ -1,3 +1,4 @@
+#include "lexer/src/lexer_flags.h"
 #define _XOPEN_SOURCE
 
 #include <stdbool.h>
@@ -9,7 +10,6 @@
 
 int asprintf(char** restrict strp, const char* restrict fmt, ...);
 
-#include "util/fileutils/fileutils.h"
 #include "invoke.h"
 #include "parser/main/util/parser.h"
 
@@ -17,10 +17,9 @@ int asprintf(char** restrict strp, const char* restrict fmt, ...);
 
 int invoke_lexer(char* filename) {
 
-	char* argv[] = {"programname", filename};
-	int status = lexer_main(2, argv);
-
-	return status;
+	struct LexerFlags flags;
+	flags.filename = filename;
+	return lexer_main(&flags);
 }
 
 struct Namespace* invoke_parser(char* filename) {

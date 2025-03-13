@@ -7,11 +7,10 @@
 #include "lexer_main.h"
 #include "lexer.h"
 
-int lexer_main(int argc, char* argv[]) {
+int lexer_main(struct LexerFlags* myargs) {
 
 	int status = 0;
 	bool debug = false;
-	struct LexerFlags* myargs = handle_arguments(argc, argv);
 
 	if (myargs->filename == NULL) {
 		fprintf(stderr, "[Lexer] expected a filename of the file to tokenize\n");
@@ -49,7 +48,6 @@ int lexer_main(int argc, char* argv[]) {
 	status = lexer_impl(yyin, outFile);
 
 	fclose(yyin);
-	free(myargs);
 
 	fclose(outFile);
 	free(buffer);

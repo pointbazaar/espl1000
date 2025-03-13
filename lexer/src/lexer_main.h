@@ -1,4 +1,6 @@
 #pragma once
 
+struct LexerFlags;
+
 // @returns  0 on success
-int lexer_main(int argc, char* argv[]);
+int lexer_main(struct LexerFlags* flags);
