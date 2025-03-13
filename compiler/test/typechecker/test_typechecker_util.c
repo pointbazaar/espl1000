@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include <unistd.h>
 
 #include "invoke/invoke.h"
 #include "util/fileutils/fileutils.h"
@@ -20,9 +21,9 @@ struct TCError* typecheck_file(char* filename) {
 	 * without having to build up the entire AST.
 	 */
 
-	int status = invoke_lexer(filename);
+	int fd = invoke_lexer(filename, false);
 
-	if (status != 0) {
+	if (fd < 0) {
 		printf("[Error] lexer exited with nonzero exit code\n");
 		fflush(stdout);
 		return NULL;
@@ -30,7 +31,7 @@ struct TCError* typecheck_file(char* filename) {
 
 	struct Ctx* ctx = ctx_ctor(makeFlagsSingleFile(filename), st_ctor(false));
 
-	struct AST* ast = build_ast(flags_token_filename(ctx_flags(ctx)));
+	struct AST* ast = build_ast(fd, flags_token_filename(ctx_flags(ctx)));
 
 	if (ast == NULL) { return NULL; }
 
@@ -41,6 +42,8 @@ struct TCError* typecheck_file(char* filename) {
 	ctx_dtor(ctx);
 
 	free_ast(ast);
+
+	close(fd);
 
 	return errors;
 }

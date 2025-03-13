@@ -15,9 +15,16 @@ static struct Token* recognizeTokenInner(int tkn_id, char* tkn, char* part2);
 
 static struct Token* recognizeToken(char* tkn, bool* isLineNo, uint32_t* line_num);
 
-struct TokenList* read_tokens_from_tokens_file(FILE* file, char* tokensFile) {
+// @brief: closes 'fd'
+// @param fd           the input file descriptor
+// @param tokensFile   filename, only for display, not read from it!
+struct TokenList* read_tokens_from_tokens_file(int fd, char* tokensFile) {
 
 	struct TokenList* tks = makeTokenList2(tokensFile);
+
+	if (!tks) {
+		return NULL;
+	}
 
 	size_t size = 50;
 	char* line = malloc(size);
@@ -27,6 +34,15 @@ struct TokenList* read_tokens_from_tokens_file(FILE* file, char* tokensFile) {
 	}
 
 	uint32_t line_num = 1;
+
+	FILE* file = fdopen(fd, "r");
+
+	if (file == NULL) {
+		fprintf(stderr, "could not fdopen fd %d\n", fd);
+		return NULL;
+	}
+
+	fseek(file, 0, SEEK_SET);
 
 	while (getline(&line, &size, file) > 0) {
 
@@ -44,11 +60,14 @@ struct TokenList* read_tokens_from_tokens_file(FILE* file, char* tokensFile) {
 		if (tkn != NULL) {
 			list_add(tks, tkn);
 		} else {
+			fprintf(stderr, "could not recognize '%s'\n", line);
 			break;
 		}
 	}
 
 	free(line);
+
+	fclose(file);
 
 	return tks;
 }

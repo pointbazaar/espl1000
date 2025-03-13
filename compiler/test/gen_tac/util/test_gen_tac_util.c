@@ -13,7 +13,9 @@
 vmcu_system_t* prepare_vmcu_system_from_code_snippet(char* code_snippet) {
 
 	//write snippet to .file.dg
-	FILE* fout = fopen(".file.dg", "w");
+	char* filename = ".file.dg";
+
+	FILE* fout = fopen(filename, "w");
 
 	if (fout == NULL) {
 		fprintf(stderr, "error with opening file, exiting.");
@@ -25,7 +27,7 @@ vmcu_system_t* prepare_vmcu_system_from_code_snippet(char* code_snippet) {
 
 	fclose(fout);
 
-	char* argv[] = {"program", ".file.dg"};
+	char* argv[] = {"program", filename};
 	int argc = 2;
 	struct Flags* flags = makeFlags(argc, argv, false);
 
@@ -58,6 +60,8 @@ vmcu_system_t* prepare_vmcu_system_from_code_snippet(char* code_snippet) {
 	if (system == NULL) {
 		fprintf(stderr, "[Error] could not prepare vmcu_system_t. Exiting.\n");
 	}
+
+	return system;
 
 exit_vmcu_model:
 	vmcu_model_dtor(model);

@@ -12,7 +12,8 @@ void test_if_else() {
 	printt("test if else");
 
 	char* str = "if else{ ";
-	struct Token** tokens = lex(str);
+	size_t count = 0;
+	struct Token** tokens = lex(str, &count);
 
 	assert(tokens[0]->kind == IF);
 	assert(tokens[1]->kind == ELSE);
@@ -26,7 +27,8 @@ void test_break() {
 	printt("test break");
 
 	char* str = "break; int x";
-	struct Token** tokens = lex(str);
+	size_t count = 0;
+	struct Token** tokens = lex(str, &count);
 
 	assert(tokens[0]->kind == KEYWORD_BREAK);
 	assert(tokens[1]->kind == SEMICOLON);
@@ -40,7 +42,8 @@ void test_for() {
 	printt("test_for");
 
 	char* str = "for for{ ";
-	struct Token** tokens = lex(str);
+	size_t count = 0;
+	struct Token** tokens = lex(str, &count);
 
 	assert(tokens[0]->kind == FOR);
 	assert(tokens[1]->kind == FOR);
@@ -54,7 +57,8 @@ void test_in() {
 	printt("test_in");
 
 	char* str = "in; in{ ";
-	struct Token** tokens = lex(str);
+	size_t count = 0;
+	struct Token** tokens = lex(str, &count);
 
 	assert(tokens[0]->kind == KEYWORD_IN);
 	assert(tokens[1]->kind == SEMICOLON);

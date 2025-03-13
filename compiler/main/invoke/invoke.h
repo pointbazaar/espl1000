@@ -3,5 +3,8 @@
 #include <stdbool.h>
 struct Namespace;
 
-int invoke_lexer(char* filename);
-struct Namespace* invoke_parser(char* filename);
+// @returns < 0 on error
+// @returns  valid file descriptor on success
+int invoke_lexer(char* filename, bool write_token_file);
+
+struct Namespace* invoke_parser(int tokensFd, char* filename_display);

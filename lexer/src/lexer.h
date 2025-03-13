@@ -2,4 +2,4 @@
 
 #include <stdio.h>
 
-int lexer_impl(FILE* infile, FILE* outfile);
+int lexer_impl(FILE* infile, int outFd);

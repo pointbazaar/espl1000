@@ -12,7 +12,8 @@ void test_single_line_comment() {
 	printt("single line comment");
 
 	char* str = "x1 //hello there \n x2 ";
-	struct Token** tokens = lex(str);
+	size_t count = 0;
+	struct Token** tokens = lex(str, &count);
 
 	assert(tokens[0]->kind == ID);
 	assert(tokens[1]->kind == ID);
@@ -28,7 +29,8 @@ void test_multi_line_comment() {
 	printt("multi line comment");
 
 	char* str = "x1 /*hello //there \n now*/ x2 ";
-	struct Token** tokens = lex(str);
+	size_t count = 0;
+	struct Token** tokens = lex(str, &count);
 
 	assert(tokens[0]->kind == ID);
 	assert(tokens[1]->kind == ID);

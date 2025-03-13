@@ -13,8 +13,10 @@ void test_plus_plus_minus_minus() {
 
 	char* str = "Char ++ -- ";
 	//should expand: "Char += 1 -= 1"
-	struct Token** tokens = lex(str);
+	size_t count = 0;
+	struct Token** tokens = lex(str, &count);
 
+	assert(count >= 3);
 	assert(tokens != NULL);
 	assert(tokens[0] != NULL);
 
@@ -35,7 +37,8 @@ void test_can_see_line_with_semicolon() {
 	printt("test can see line with semicolon");
 
 	char* str = "Char x; ";
-	struct Token** tokens = lex(str);
+	size_t count = 0;
+	struct Token** tokens = lex(str, &count);
 
 	assert(tokens != NULL);
 	assert(tokens[0] != NULL);
@@ -54,7 +57,8 @@ void test_can_see_line_with_operators() {
 	printt("can see line with operators");
 
 	char* str = "x = x+x; ";
-	struct Token** tokens = lex(str);
+	size_t count = 0;
+	struct Token** tokens = lex(str, &count);
 
 	assert(tokens != NULL);
 	assert(tokens[0] != NULL);
@@ -73,7 +77,8 @@ void test_lexes_return_statement_favorably() {
 	printt("lexes return statement favorably");
 
 	char* str = "return (-5)*n; ";
-	struct Token** tokens = lex(str);
+	size_t count = 0;
+	struct Token** tokens = lex(str, &count);
 
 	assert(tokens != NULL);
 	assert(tokens[0] != NULL);
@@ -97,7 +102,8 @@ void test_lexes_other_return_statement() {
 	printt("lexes other return statement");
 
 	char* str = "return (n*faculty(n-1)); ";
-	struct Token** tokens = lex(str);
+	size_t count = 0;
+	struct Token** tokens = lex(str, &count);
 
 	assert(tokens[0]->kind == RETURN);
 
@@ -121,7 +127,8 @@ void test_identifier_1() {
 	printt("test identifier token:1");
 
 	char* str = "main ";
-	struct Token** tokens = lex(str);
+	size_t count = 0;
+	struct Token** tokens = lex(str, &count);
 
 	assert(tokens[0]->kind == ID);
 	assert(strcmp(tokens[0]->value_ptr, "main") == 0);
@@ -134,7 +141,8 @@ void test_identifier_2() {
 	printt("test identifier token:2");
 
 	char* str = "arg_ls ";
-	struct Token** tokens = lex(str);
+	size_t count = 0;
+	struct Token** tokens = lex(str, &count);
 
 	assert(tokens[0]->kind == ID);
 	assert(strcmp(tokens[0]->value_ptr, "arg_ls") == 0);
@@ -147,7 +155,8 @@ void test_struct() {
 	printt("test struct token");
 
 	char* str = "struct ";
-	struct Token** tokens = lex(str);
+	size_t count = 0;
+	struct Token** tokens = lex(str, &count);
 
 	assert(tokens[0]->kind == STRUCT);
 
@@ -159,7 +168,8 @@ void test_return() {
 	printt("test return token");
 
 	char* str = "return ";
-	struct Token** tokens = lex(str);
+	size_t count = 0;
+	struct Token** tokens = lex(str, &count);
 
 	assert(tokens[0]->kind == RETURN);
 
@@ -171,7 +181,8 @@ void test_string_1() {
 	printt("test string token:1");
 
 	char* str = "\"hi\" ";
-	struct Token** tokens = lex(str);
+	size_t count = 0;
+	struct Token** tokens = lex(str, &count);
 
 	assert(tokens[0]->kind == STRINGCONST);
 
@@ -185,7 +196,8 @@ void test_typeidentifier() {
 	printt("test typeidentifier token:1");
 
 	char* str = "Carrot ";
-	struct Token** tokens = lex(str);
+	size_t count = 0;
+	struct Token** tokens = lex(str, &count);
 
 	assert(tokens[0]->kind == TYPEID);
 	assert(strcmp(tokens[0]->value_ptr, "Carrot") == 0);
@@ -199,7 +211,8 @@ void test_typeidentifier_primitive() {
 
 	char* str = "int uint int8 uint8 int16 uint16";
 
-	struct Token** tokens = lex(str);
+	size_t count = 0;
+	struct Token** tokens = lex(str, &count);
 
 	int expect_kind[] = {
 	    TYPEID_PRIMITIVE_INT,
@@ -221,7 +234,7 @@ void test_typeidentifier_primitive() {
 	//------------------------------
 	char* str2 = "char bool ";
 
-	struct Token** tokens2 = lex(str2);
+	struct Token** tokens2 = lex(str2, &count);
 
 	assert(tokens2[0]->kind == TYPEID_PRIMITIVE_CHAR);
 	assert(tokens2[1]->kind == TYPEID_PRIMITIVE_BOOL);
@@ -234,7 +247,8 @@ void test_typeparameter_1() {
 	printt("test typeparameter token");
 
 	char* str = "?T0 ?T1 (?T2";
-	struct Token** tokens = lex(str);
+	size_t count = 0;
+	struct Token** tokens = lex(str, &count);
 
 	assert(tokens[0]->kind == TPARAM);
 	assert(tokens[1]->kind == TPARAM);
@@ -249,7 +263,8 @@ void test_comma() {
 	printt("test comma token");
 
 	char* str = ",, ";
-	struct Token** tokens = lex(str);
+	size_t count = 0;
+	struct Token** tokens = lex(str, &count);
 
 	assert(tokens[0]->kind == COMMA);
 	assert(tokens[1]->kind == COMMA);
@@ -262,7 +277,8 @@ void test_arrow() {
 	printt("test arrow token");
 
 	char* str = "-> ~> ";
-	struct Token** tokens = lex(str);
+	size_t count = 0;
+	struct Token** tokens = lex(str, &count);
 
 	assert(tokens[0]->kind == ARROW_NO_SIDE_EFFECT);
 	assert(tokens[1]->kind == ARROW_SIDE_EFFECT);
@@ -275,7 +291,8 @@ void test_rangeop_1() {
 	printt("test_rangeop_1");
 
 	char* str = ".. a.... ";
-	struct Token** tokens = lex(str);
+	size_t count = 0;
+	struct Token** tokens = lex(str, &count);
 
 	assert(tokens[0]->kind == RANGEOP);
 	assert(tokens[1]->kind == ID);
@@ -290,7 +307,8 @@ void test_rangeop_2() {
 	printt("test_rangeop_1");
 
 	char* str = "0 .. 3 a .. b ";
-	struct Token** tokens = lex(str);
+	size_t count = 0;
+	struct Token** tokens = lex(str, &count);
 
 	assert(tokens[0]->kind == INTEGER);
 	assert(tokens[1]->kind == RANGEOP);
@@ -308,7 +326,8 @@ void test_member_access() {
 	printt("test_member_access");
 
 	char* str = "s.member= ";
-	struct Token** tokens = lex(str);
+	size_t count = 0;
+	struct Token** tokens = lex(str, &count);
 
 	assert(tokens[0]->kind == ID);
 	assert(tokens[1]->kind == STRUCTMEMBERACCESS);
@@ -324,7 +343,8 @@ void test_brackets() {
 	printt("test_brackets");
 
 	char* str = "[](){}< > ";
-	struct Token** tokens = lex(str);
+	size_t count = 0;
+	struct Token** tokens = lex(str, &count);
 
 	assert(tokens[0]->kind == LBRACKET);
 	assert(tokens[1]->kind == RBRACKET);

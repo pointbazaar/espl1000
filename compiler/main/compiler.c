@@ -1,8 +1,10 @@
+#include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
 #include <malloc.h>
+#include <unistd.h>
 
 #include "ast/ast.h"
 #include "ast/util/free_ast.h"
@@ -51,19 +53,25 @@ bool compile(struct Flags* flags) {
 		return false;
 	}
 
+	int* tokensFds = calloc(count_filenames, sizeof(int));
+
+	assert(tokensFds);
+
 	for (int i = 0; i < count_filenames; i++) {
 
 		char* filename = flags_filenames(flags, i);
 
-		int status = invoke_lexer(filename);
+		int tokensFd = invoke_lexer(filename, flags_dump_tokens(flags));
 
-		if (status != 0) {
+		if (tokensFd < 0) {
 			fprintf(stderr, "[Error] lexer exited with nonzero exit code\n");
 			free(ast->namespaces);
 			free(ast);
 			freeFlags(flags);
 			return false;
 		}
+
+		tokensFds[i] = tokensFd;
 	}
 
 	if (flags_lexer(flags)) {
@@ -77,7 +85,7 @@ bool compile(struct Flags* flags) {
 
 		char* filename = flags_filenames(flags, i);
 
-		struct Namespace* ns = invoke_parser(filename);
+		struct Namespace* ns = invoke_parser(tokensFds[i], filename);
 
 		if (ns == NULL) {
 			fprintf(stderr, "[Error] parser exited with nonzero exit code\n");
@@ -129,6 +137,11 @@ bool compile(struct Flags* flags) {
 	if (!success) {
 		return false;
 	}
+
+	for (int i = 0; i < count_filenames; i++) {
+		close(tokensFds[i]);
+	}
+	free(tokensFds);
 
 	int status = 0;
 

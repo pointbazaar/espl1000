@@ -1,4 +1,4 @@
 #pragma once
 
-struct AST* build_ast(char* tokensFile);
-struct Namespace* build_namespace(char* tokensFile);
+struct AST* build_ast(int tokensFd, char* filename_display);
+struct Namespace* build_namespace(int tokensFd, char* filename_display);
