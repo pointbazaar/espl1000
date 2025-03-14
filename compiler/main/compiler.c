@@ -61,7 +61,7 @@ bool compile(struct Flags* flags) {
 
 		char* filename = flags_filenames(flags, i);
 
-		struct TokenList* list = invoke_lexer(filename, flags_dump_tokens(flags));
+		struct TokenList* list = invoke_lexer(filename, flags_dump_tokens(flags), flags_debug(flags));
 
 		if (!list) {
 			fprintf(stderr, "[Error] lexer exited with nonzero exit code\n");

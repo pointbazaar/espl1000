@@ -26,7 +26,7 @@ struct Type* typeinfer_in_file(char* filename) {
 	 */
 
 	bool s = true;
-	struct TokenList* list = invoke_lexer(filename, false);
+	struct TokenList* list = invoke_lexer(filename, false, false);
 
 	if (!list) {
 		fprintf(stderr, "[Error] lexer exited with nonzero exit code\n");

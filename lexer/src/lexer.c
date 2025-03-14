@@ -340,7 +340,7 @@ static int handler2(const char* buf, struct TokenList* o, size_t nchars_remain) 
 	return -1;
 }
 
-struct TokenList* lexer_impl(FILE* infile, int outFd) {
+struct TokenList* lexer_impl(FILE* infile) {
 
 	struct stat sb;
 	const int fd = fileno(infile);

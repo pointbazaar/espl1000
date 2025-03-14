@@ -8,4 +8,4 @@
 extern uint32_t line_no;
 
 // @returns NULL on error
-struct TokenList* lexer_impl(FILE* infile, int outFd);
+struct TokenList* lexer_impl(FILE* infile);

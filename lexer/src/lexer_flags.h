@@ -6,4 +6,5 @@ struct LexerFlags {
 
 	char* filename;
 	bool write_token_file;
+	bool debug;
 };

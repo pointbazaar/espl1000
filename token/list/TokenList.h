@@ -36,6 +36,8 @@ char* list_code(struct TokenList* list);
 
 void list_print(struct TokenList* list);
 
+void list_dump_to_file(struct TokenList* list, int fd);
+
 char* list_rel_path(struct TokenList* list);
 
 void freeTokenList(struct TokenList* list);
