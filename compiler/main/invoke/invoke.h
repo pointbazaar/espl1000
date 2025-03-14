@@ -1,10 +1,13 @@
 #pragma once
 
 #include <stdbool.h>
+
+#include "token/list/TokenList.h"
+
 struct Namespace;
 
-// @returns < 0 on error
-// @returns  valid file descriptor on success
-int invoke_lexer(char* filename, bool write_token_file);
+// @returns NULL on error
+struct TokenList* invoke_lexer(char* filename, bool write_token_file);
 
-struct Namespace* invoke_parser(int tokensFd, char* filename_display);
+// @returns NULL on error
+struct Namespace* invoke_parser(struct TokenList* list, char* filename_display);

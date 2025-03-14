@@ -47,7 +47,7 @@ void test_can_see_line_with_semicolon() {
 	assert(tokens[1]->kind == ID);
 	assert(tokens[2]->kind == SEMICOLON);
 
-	assert(strcmp(tokens[1]->value_ptr, "x") == 0);
+	assert_eq(tokens[1]->value_ptr, "x");
 
 	free_tokens(tokens, 3);
 }
@@ -186,7 +186,7 @@ void test_string_1() {
 
 	assert(tokens[0]->kind == STRINGCONST);
 
-	assert(strcmp(tokens[0]->value_ptr, "hi") == 0);
+	assert_eq(tokens[0]->value_ptr, "hi");
 
 	free_tokens(tokens, 1);
 }

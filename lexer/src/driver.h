@@ -3,14 +3,16 @@
 #include <stdio.h>
 #include <stdbool.h>
 
-void out_nostr(int outFd, int id);
-void out(int outFd, int id, char* str);
-void out_length(int outFd, int id, char* str, int length);
+#include "token/list/TokenList.h"
+
+void out_nostr(struct TokenList* list, int id);
+void out(struct TokenList* list, int id, char* str);
+void out_length(struct TokenList* list, int id, char* str, int length);
 
 void out2(int outFd, int id, int id2);
 
-void out_plus_plus(int outFd);
-void out_minus_minus(int outFd);
+void out_plus_plus(struct TokenList* list);
+void out_minus_minus(struct TokenList* list);
 
 // @returns NULL on error
 struct LexerFlags* handle_arguments(int argc, char** argv);

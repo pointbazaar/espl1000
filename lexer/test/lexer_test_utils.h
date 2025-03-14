@@ -6,3 +6,5 @@
 struct Token** lex(char* source, size_t* out_count);
 
 void free_tokens(struct Token** tokens, unsigned int count);
+
+void assert_eq(char* actual, char* expected);

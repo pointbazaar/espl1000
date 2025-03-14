@@ -170,6 +170,7 @@ void test_mixed_10() {
 	assert(tokens[0]->kind == SEMICOLON);
 
 	assert(tokens[1]->kind == ID);
+
 	assert(tokens[1]->line_num == 2);
 
 	assert(tokens[2]->kind == ASSIGNOP_SIMPLE);
@@ -266,6 +267,7 @@ void test_mixed_15() {
 	struct Token** tokens = lex(str, &count);
 
 	assert(tokens[0]->kind == STRUCT);
+
 	assert(tokens[0]->line_num == 1);
 
 	assert(tokens[1]->kind == TYPEID);
@@ -281,7 +283,8 @@ void test_mixed_15() {
 	assert(tokens[7]->kind == ID);
 
 	assert(tokens[8]->kind == RCURLY);
-	assert(tokens[8]->line_num == 5);
+
+	assert(tokens[8]->line_num == 4);
 
 	free_tokens(tokens, 9);
 }

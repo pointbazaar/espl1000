@@ -26,23 +26,24 @@ struct Type* typeinfer_in_file(char* filename) {
 	 */
 
 	bool s = true;
-	int fd = invoke_lexer(filename, false);
+	struct TokenList* list = invoke_lexer(filename, false);
 
-	if (fd < 0) {
-		printf("[Error] lexer exited with nonzero exit code\n");
+	if (!list) {
+		fprintf(stderr, "[Error] lexer exited with nonzero exit code\n");
 		s = false;
-		goto end;
+		return NULL;
 	}
 
-end:;
 	bool success = s;
 	assert(success);
 
 	struct Ctx* ctx = ctx_ctor(makeFlagsSingleFile(filename), st_ctor(false));
 
-	struct AST* ast = build_ast(fd, flags_token_filename(ctx_flags(ctx)));
+	struct AST* ast = build_ast(list, flags_token_filename(ctx_flags(ctx)));
 
 	assert(ast != NULL);
+
+	assert(ast->count_namespaces >= 1);
 
 	fill_tables(ast, ctx);
 
@@ -71,7 +72,7 @@ end:;
 
 	free_ast(ast);
 
-	close(fd);
+	freeTokenList(list);
 
 	return copy;
 }

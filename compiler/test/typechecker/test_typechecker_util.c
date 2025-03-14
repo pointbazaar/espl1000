@@ -21,9 +21,9 @@ struct TCError* typecheck_file(char* filename) {
 	 * without having to build up the entire AST.
 	 */
 
-	int fd = invoke_lexer(filename, false);
+	struct TokenList* list = invoke_lexer(filename, false);
 
-	if (fd < 0) {
+	if (!list) {
 		printf("[Error] lexer exited with nonzero exit code\n");
 		fflush(stdout);
 		return NULL;
@@ -31,7 +31,7 @@ struct TCError* typecheck_file(char* filename) {
 
 	struct Ctx* ctx = ctx_ctor(makeFlagsSingleFile(filename), st_ctor(false));
 
-	struct AST* ast = build_ast(fd, flags_token_filename(ctx_flags(ctx)));
+	struct AST* ast = build_ast(list, flags_token_filename(ctx_flags(ctx)));
 
 	if (ast == NULL) { return NULL; }
 
@@ -43,7 +43,7 @@ struct TCError* typecheck_file(char* filename) {
 
 	free_ast(ast);
 
-	close(fd);
+	freeTokenList(list);
 
 	return errors;
 }

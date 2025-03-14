@@ -8,3 +8,5 @@ add_library(lexer-lib
 )
 
 target_compile_options(lexer-lib PRIVATE ${COMMON_OPTS} )
+
+target_include_directories(lexer-lib PUBLIC "../../")

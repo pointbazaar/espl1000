@@ -14,14 +14,14 @@
 #include "lexer_main.h"
 #include "lexer.h"
 
-int lexer_main(struct LexerFlags* myargs) {
+struct TokenList* lexer_main(struct LexerFlags* myargs) {
 
 	int status = 0;
 	bool debug = false;
 
 	if (myargs->filename == NULL) {
 		fprintf(stderr, "[Lexer] expected a filename of the file to tokenize\n");
-		return -1;
+		return NULL;
 	}
 
 	char* filename = myargs->filename;
@@ -29,7 +29,7 @@ int lexer_main(struct LexerFlags* myargs) {
 	FILE* yyin = fopen(filename, "r");
 	if (yyin == NULL) {
 		fprintf(stderr, "[Lexer] error: could not open %s\n", filename);
-		return -1;
+		return NULL;
 	}
 
 	if (debug) {
@@ -46,14 +46,14 @@ int lexer_main(struct LexerFlags* myargs) {
 		outFd = open(buffer, O_CREAT | O_RDWR, S_IWUSR | S_IRUSR | S_IWGRP | S_IRGRP | S_IROTH);
 		if (outFd < 0) {
 			fprintf(stderr, "[Lexer] error: could not open %s\n", buffer);
-			return -1;
+			return NULL;
 		}
 	} else {
 		outFd = memfd_create((const char*)buffer, 0);
 
 		if (outFd < 0) {
 			fprintf(stderr, "[Lexer] error: could not create memfd for %s\n", buffer);
-			return -1;
+			return NULL;
 		}
 	}
 
@@ -61,11 +61,11 @@ int lexer_main(struct LexerFlags* myargs) {
 		fprintf(stderr, "[Lexer] opened output file %s\n", buffer);
 	}
 
-	status = lexer_impl(yyin, outFd);
+	struct TokenList* list = lexer_impl(yyin, outFd);
 
 	fclose(yyin);
 
 	free(buffer);
 
-	return outFd;
+	return list;
 }
