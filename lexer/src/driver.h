@@ -9,8 +9,6 @@ void out_nostr(struct TokenList* list, int id);
 void out(struct TokenList* list, int id, char* str);
 void out_length(struct TokenList* list, int id, char* str, int length);
 
-void out2(int outFd, int id, int id2);
-
 void out_plus_plus(struct TokenList* list);
 void out_minus_minus(struct TokenList* list);
 

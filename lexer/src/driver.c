@@ -40,10 +40,6 @@ void out_length(struct TokenList* list, int id, char* str, int length) {
 	free(limited);
 }
 
-void out2(int outFd, int id, int id2) {
-	dprintf(outFd, "%d %d\n", id, id2);
-}
-
 void out_plus_plus(struct TokenList* list) {
 	out(list, ASSIGNOP_PLUS, "+=");
 	out(list, INTEGER, "1");
