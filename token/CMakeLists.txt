@@ -1,6 +1,5 @@
 add_library(sd-token STATIC
 	list/TokenList.c
-	reader/token_reader.c
 	token/token.c
 )
 
