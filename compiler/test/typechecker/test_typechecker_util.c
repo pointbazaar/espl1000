@@ -2,7 +2,6 @@
 #include <stdio.h>
 #include <unistd.h>
 
-#include "invoke/invoke.h"
 #include "util/fileutils/fileutils.h"
 #include "tables/symtable/symtable.h"
 #include "util/fill_tables.h"

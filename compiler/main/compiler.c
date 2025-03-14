@@ -18,7 +18,6 @@
 #include "util/fileutils/fileutils.h"
 
 #include "util/ctx.h"
-#include "invoke/invoke.h"
 #include "compiler.h"
 #include "tables/symtable/symtable.h"
 
@@ -31,6 +30,7 @@
 #include "analyzer/data/data_analyzer.h"
 
 #include "lexer/src/lexer_main.h"
+#include "parser/main/util/parser.h"
 
 bool compile(struct Flags* flags) {
 
@@ -94,7 +94,7 @@ bool compile(struct Flags* flags) {
 
 		char* filename = flags_filenames(flags, i);
 
-		struct Namespace* ns = invoke_parser(tokenLists[i], filename);
+		struct Namespace* ns = build_namespace(tokenLists[i], filename);
 
 		if (ns == NULL) {
 			fprintf(stderr, "[Error] parser exited with nonzero exit code\n");
