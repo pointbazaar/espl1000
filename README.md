@@ -19,25 +19,12 @@ The Compiler is Work in Progress and still a long way from being functional.
 ## Documentation
 ### [espl1000.org](https://espl1000.org)
 
-## How to build it
-
-## Build Instructions (other Linux)
-
-0. clone the repository
-1. get required packages via your distributions package manager
-   which would be:
-   gcc cmake make valgrind flex avra
-2. modify your $PATH environment variable to include
-   lexer/build , parser/build and compiler/ directories.
-3. make
-
-## Build Instructions (Debian/Ubuntu)
-
-It has been tested/is being developed on Ubuntu 20.04.
+## Build Instructions (Linux)
 
 0. ```git clone git@github.com:pointbazaar/espl1000.git```
-1. ```sudo apt-get install -y gcc cmake make valgrind flex avra```
-2. Add
-   ```PATH=~/espl1000/compiler/build:~/espl1000/lexer/build:~/espl1000/parser/build:$PATH```
-   to your ```~/.bashrc``` so that the binaries can be found.
-3. ```make```
+1. get required packages via your distributions package manager:
+   gcc cmake make valgrind flex avra
+2. modify your $PATH environment variable to include
+   ```PATH=~/espl1000/build/compiler/main:$PATH```
+3. make
+
