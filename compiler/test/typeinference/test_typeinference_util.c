@@ -1,7 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-#include <invoke/invoke.h>
 #include <unistd.h>
 #include <util/fileutils/fileutils.h>
 #include <tables/symtable/symtable.h>

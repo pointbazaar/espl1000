@@ -100,9 +100,6 @@ add_library("sd-base"
 	avr_code_gen/cg_avr_single_tac.c
 	avr_code_gen/cg_avr_single_function.c
 
-	#invoke
-	invoke/invoke.c
-
 	#typechecker
 	typechecker/typecheck.c
 	typechecker/util/tc_errors.c
