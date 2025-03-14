@@ -10,6 +10,7 @@
 #include "ast/util/free_ast.h"
 
 #include "avr_code_gen/cg_avr.h"
+#include "lexer/src/lexer_flags.h"
 #include "x86_code_gen/cg_x86.h"
 
 #include "cli/flags/flags.h"
@@ -28,6 +29,8 @@
 #include "analyzer/halts/halt_analyzer.h"
 #include "analyzer/annotation/annotation_analyzer.h"
 #include "analyzer/data/data_analyzer.h"
+
+#include "lexer/src/lexer_main.h"
 
 bool compile(struct Flags* flags) {
 
@@ -61,7 +64,13 @@ bool compile(struct Flags* flags) {
 
 		char* filename = flags_filenames(flags, i);
 
-		struct TokenList* list = invoke_lexer(filename, flags_dump_tokens(flags), flags_debug(flags));
+		struct LexerFlags lexer_flags;
+
+		lexer_flags.write_token_file = flags_dump_tokens(flags);
+		lexer_flags.filename = filename;
+		lexer_flags.debug = flags_debug(flags);
+
+		struct TokenList* list = lexer_main(&lexer_flags);
 
 		if (!list) {
 			fprintf(stderr, "[Error] lexer exited with nonzero exit code\n");

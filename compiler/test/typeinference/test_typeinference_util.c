@@ -17,6 +17,9 @@
 #include "compiler/main/util/ctx.h"
 #include "parser/main/util/parser.h"
 
+#include "lexer/src/lexer_flags.h"
+#include "lexer/src/lexer_main.h"
+
 struct Type* typeinfer_in_file(char* filename) {
 
 	/*
@@ -26,7 +29,13 @@ struct Type* typeinfer_in_file(char* filename) {
 	 */
 
 	bool s = true;
-	struct TokenList* list = invoke_lexer(filename, false, false);
+
+	struct LexerFlags flags;
+	flags.write_token_file = false;
+	flags.filename = filename;
+	flags.debug = false;
+
+	struct TokenList* list = lexer_main(&flags);
 
 	if (!list) {
 		fprintf(stderr, "[Error] lexer exited with nonzero exit code\n");

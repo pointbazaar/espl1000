@@ -12,6 +12,8 @@
 
 #include "compiler/main/util/ctx.h"
 #include "parser/main/util/parser.h"
+#include "lexer/src/lexer_flags.h"
+#include "lexer/src/lexer_main.h"
 
 struct TCError* typecheck_file(char* filename) {
 
@@ -21,7 +23,12 @@ struct TCError* typecheck_file(char* filename) {
 	 * without having to build up the entire AST.
 	 */
 
-	struct TokenList* list = invoke_lexer(filename, false, false);
+	struct LexerFlags flags;
+	flags.write_token_file = false;
+	flags.filename = filename;
+	flags.debug = false;
+
+	struct TokenList* list = lexer_main(&flags);
 
 	if (!list) {
 		printf("[Error] lexer exited with nonzero exit code\n");
