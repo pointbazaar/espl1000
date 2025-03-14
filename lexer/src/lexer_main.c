@@ -17,7 +17,6 @@
 struct TokenList* lexer_main(struct LexerFlags* myargs) {
 
 	int status = 0;
-	bool debug = false;
 
 	if (myargs->filename == NULL) {
 		fprintf(stderr, "[Lexer] expected a filename of the file to tokenize\n");
@@ -32,40 +31,33 @@ struct TokenList* lexer_main(struct LexerFlags* myargs) {
 		return NULL;
 	}
 
-	if (debug) {
+	if (myargs->debug) {
 		fprintf(stderr, "[Lexer] opened input file %s\n", filename);
 	}
 
-	char* buffer = lexer_make_tkn_filename(filename);
+	struct TokenList* list = lexer_impl(yyin);
 
-	assert(buffer);
+	if (list && myargs->write_token_file) {
+		char* buffer = lexer_make_tkn_filename(filename);
 
-	int outFd;
+		assert(buffer);
 
-	if (myargs->write_token_file) {
-		outFd = open(buffer, O_CREAT | O_RDWR, S_IWUSR | S_IRUSR | S_IWGRP | S_IRGRP | S_IROTH);
+		if (myargs->debug) {
+			fprintf(stderr, "[Lexer] opened output file %s\n", buffer);
+		}
+
+		int outFd = open(buffer, O_CREAT | O_RDWR, S_IWUSR | S_IRUSR | S_IWGRP | S_IRGRP | S_IROTH);
 		if (outFd < 0) {
 			fprintf(stderr, "[Lexer] error: could not open %s\n", buffer);
 			return NULL;
 		}
-	} else {
-		outFd = memfd_create((const char*)buffer, 0);
 
-		if (outFd < 0) {
-			fprintf(stderr, "[Lexer] error: could not create memfd for %s\n", buffer);
-			return NULL;
-		}
+		list_dump_to_file(list, outFd);
+
+		free(buffer);
 	}
-
-	if (debug) {
-		fprintf(stderr, "[Lexer] opened output file %s\n", buffer);
-	}
-
-	struct TokenList* list = lexer_impl(yyin, outFd);
 
 	fclose(yyin);
-
-	free(buffer);
 
 	return list;
 }

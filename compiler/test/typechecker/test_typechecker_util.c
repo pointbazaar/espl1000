@@ -21,7 +21,7 @@ struct TCError* typecheck_file(char* filename) {
 	 * without having to build up the entire AST.
 	 */
 
-	struct TokenList* list = invoke_lexer(filename, false);
+	struct TokenList* list = invoke_lexer(filename, false, false);
 
 	if (!list) {
 		printf("[Error] lexer exited with nonzero exit code\n");
