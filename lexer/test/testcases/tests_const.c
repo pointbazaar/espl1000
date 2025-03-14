@@ -17,7 +17,7 @@ void test_lexes_escaped_char() {
 
 	assert(tokens[0]->kind == RETURN);
 	assert(tokens[1]->kind == CCONST);
-	assert(strcmp(tokens[1]->value_ptr, "'\n'") == 0);
+	assert_eq(tokens[1]->value_ptr, "'\n'");
 
 	free_tokens(tokens, 2);
 }

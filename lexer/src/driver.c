@@ -8,40 +8,50 @@
 
 #include "driver.h"
 #include "lexer_flags.h"
+#include "lexer.h"
 
-#include "../../token/TokenKeys.h"
+#include "token/TokenKeys.h"
+#include "token/list/TokenList.h"
+#include "token/token/token.h"
 
-void out_nostr(int outFd, int id) {
-	dprintf(outFd, "%d\n", id);
+void out_nostr(struct TokenList* list, int id) {
+	list_add(list, makeTokenLineNo(id, line_no));
 }
 
-void out(int outFd, int id, char* str) {
+void out(struct TokenList* list, int id, char* str) {
+	char* s = str;
+	if (str == NULL) {
+		list_add(list, makeTokenLineNo(id, line_no));
+	} else {
+		list_add(list, makeToken2LineNo(id, s, line_no));
+	}
+}
+
+void out_length(struct TokenList* list, int id, char* str, int length) {
 	char* s = str;
 	if (str == NULL) {
 		s = "";
 	}
-	dprintf(outFd, "%d %s\n", id, s);
-}
-void out_length(int outFd, int id, char* str, int length) {
-	char* s = str;
-	if (str == NULL) {
-		s = "";
-	}
-	dprintf(outFd, "%d %.*s\n", id, length, s);
+	char* limited = calloc(length + 1, 1);
+	memcpy(limited, s, length);
+
+	list_add(list, makeToken2LineNo(id, limited, line_no));
+
+	free(limited);
 }
 
 void out2(int outFd, int id, int id2) {
 	dprintf(outFd, "%d %d\n", id, id2);
 }
 
-void out_plus_plus(int outFd) {
-	out(outFd, ASSIGNOP_PLUS, "+=");
-	out(outFd, INTEGER, "1");
+void out_plus_plus(struct TokenList* list) {
+	out(list, ASSIGNOP_PLUS, "+=");
+	out(list, INTEGER, "1");
 }
 
-void out_minus_minus(int outFd) {
-	out(outFd, ASSIGNOP_MINUS, "-=");
-	out(outFd, INTEGER, "1");
+void out_minus_minus(struct TokenList* list) {
+	out(list, ASSIGNOP_MINUS, "-=");
+	out(list, INTEGER, "1");
 }
 
 char* lexer_make_tkn_filename(char* filename) {

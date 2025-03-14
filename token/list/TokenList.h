@@ -10,6 +10,7 @@ struct TokenList* makeTokenList();
 // @returns NULL on error
 struct TokenList* makeTokenList2(char* filename);
 
+// @brief   appends the token to the list
 void list_add(struct TokenList* list, struct Token* token);
 
 void list_consume(struct TokenList* list, int amount);

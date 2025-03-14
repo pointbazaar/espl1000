@@ -29,9 +29,20 @@ bool token_equals(struct Token* a, struct Token* b);
 //           caller does not need to free it
 char* token_str(struct Token* tk);
 
+// @returns NULL on error
 struct Token* makeToken(int kind);
+
+// @param line_num    line number in source file
+// @returns NULL on error
+struct Token* makeTokenLineNo(int kind, uint32_t line_num);
+
 // @returns NULL on error
 struct Token* makeToken2(int kind, char* value);
+
+// @param line_num    line number in source file
+// @returns NULL on error
+struct Token* makeToken2LineNo(int kind, char* value, uint32_t line_num);
+
 struct Token* makeTokenStringConst(char* value);
 
 void freeToken(struct Token* token);

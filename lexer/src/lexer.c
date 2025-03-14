@@ -1,4 +1,5 @@
 #include <ctype.h>
+#include <stdlib.h>
 #include <string.h>
 #include <sys/stat.h>
 #include <sys/mman.h>
@@ -9,27 +10,27 @@
 
 #include "../../token/TokenKeys.h"
 
-int line_no = 1;
+uint32_t line_no = 1;
 
-static int h2out(const char* buffer, char* str, int token, int fileout) {
+static int h2out(const char* buffer, char* str, int token, struct TokenList* list) {
 	if (strncmp(buffer, str, strlen(str)) == 0) {
-		out(fileout, token, str);
+		out(list, token, str);
 		return strlen(str);
 	}
 	return 0;
 }
 
-static int h2out_nostr(const char* buffer, char* str, int token, int fileout) {
+static int h2out_nostr(const char* buffer, char* str, int token, struct TokenList* list) {
 	if (strncmp(buffer, str, strlen(str)) == 0) {
-		out_nostr(fileout, token);
+		out_nostr(list, token);
 		return strlen(str);
 	}
 	return 0;
 }
 
-static int h2out_char(const char* buffer, char c, int token, int fileout) {
+static int h2out_char(const char* buffer, char c, int token, struct TokenList* list) {
 	if (buffer[0] == c) {
-		out_nostr(fileout, token);
+		out_nostr(list, token);
 		return 1;
 	}
 	return 0;
@@ -59,7 +60,7 @@ static ssize_t h2_find_delim(const char* buf, size_t length) {
 	return -1;
 }
 
-static int handler2_intconst(const char* buf, int o, size_t nchars_remain) {
+static int handler2_intconst(const char* buf, struct TokenList* o, size_t nchars_remain) {
 
 	int i = 0;
 	while (isdigit(buf[i]) && i < nchars_remain) {
@@ -69,7 +70,7 @@ static int handler2_intconst(const char* buf, int o, size_t nchars_remain) {
 	return i;
 }
 
-static int handler2_binconst(const char* buf, int o, size_t nchars_remain) {
+static int handler2_binconst(const char* buf, struct TokenList* o, size_t nchars_remain) {
 
 	int i = 0;
 	while ((buf[i + 2] == '0' || buf[i + 2] == '1') && i < nchars_remain) {
@@ -79,7 +80,7 @@ static int handler2_binconst(const char* buf, int o, size_t nchars_remain) {
 	return i + 2;
 }
 
-static int handler2_hexconst(const char* buf, int o, size_t nchars_remain) {
+static int handler2_hexconst(const char* buf, struct TokenList* o, size_t nchars_remain) {
 
 	int i = 0;
 	while (isxdigit(buf[i + 2]) && i < nchars_remain) {
@@ -89,21 +90,51 @@ static int handler2_hexconst(const char* buf, int o, size_t nchars_remain) {
 	return i + 2;
 }
 
-static int handler2_stringconst(const char* buf, int o, size_t nchars_remain) {
+static int handler2_stringconst(const char* buf, struct TokenList* o, size_t nchars_remain) {
 
 	int i = 1;
 	while (buf[i] != '"' && i < nchars_remain) {
 		i++;
 	}
-	out_length(o, STRINGCONST, (char*)buf, i + 1);
+
+	char* plain = calloc(i, sizeof(char));
+	strncpy(plain, buf + 1, i - 1);
+
+	size_t len = i - 1;
+	char* plain_escaped = calloc(i, sizeof(char));
+
+	// unescape "\\n" -> "\n"
+
+	int escaped_index = 0;
+	for (int i = 0; i < len; i++) {
+		char c = plain[i];
+		if (c == '\\' && i + 1 < len && plain[i + 1] == 'n') {
+			plain_escaped[escaped_index] = '\n';
+			i++;
+		} else {
+			plain_escaped[escaped_index] = c;
+		}
+		escaped_index++;
+	}
+
+	free(plain);
+
+	out_length(o, STRINGCONST, plain_escaped, escaped_index);
+
+	free(plain_escaped);
+
 	return i + 1;
 }
 
-static int handler2_charconst(const char* buf, int o, size_t nchars_remain) {
+static int handler2_charconst(const char* buf, struct TokenList* o, size_t nchars_remain) {
 
 	if (buf[2] == '\'') {
 		out_length(o, CCONST, (char*)buf, 3);
 		return 3;
+	}
+	if (buf[1] == '\\' && buf[2] == 'n') {
+		out_length(o, CCONST, "'\n'", 3);
+		return 4;
 	}
 	if (buf[1] == '\\' && buf[3] == '\'') {
 		out_length(o, CCONST, (char*)buf, 4);
@@ -113,7 +144,7 @@ static int handler2_charconst(const char* buf, int o, size_t nchars_remain) {
 	return -1;
 }
 
-static int handler2_multiline_comment(const char* buf, int o, size_t nchars_remain) {
+static int handler2_multiline_comment(const char* buf, struct TokenList* o, size_t nchars_remain) {
 
 	int i = 2;
 	while ((strncmp(buf + i, "*/", 2) != 0) && i < nchars_remain) {
@@ -122,7 +153,7 @@ static int handler2_multiline_comment(const char* buf, int o, size_t nchars_rema
 	return i + 2;
 }
 
-static int handler2_comment(const char* buf, int o, size_t nchars_remain) {
+static int handler2_comment(const char* buf, struct TokenList* o, size_t nchars_remain) {
 
 	int i = 0;
 	while (buf[i + 2] != '\n' && (i + 2) < nchars_remain) {
@@ -131,16 +162,13 @@ static int handler2_comment(const char* buf, int o, size_t nchars_remain) {
 	return i + 2;
 }
 
-static int handler2_newline(const char* buf, int o, size_t nchars_remain) {
+static int handler2_newline(const char* buf, struct TokenList* o, size_t nchars_remain) {
 
 	line_no++;
-	char linebuf[20];
-	sprintf(linebuf, "%d", line_no);
-	out(o, LINE_NO, linebuf);
 	return 1;
 }
 
-static int handler2_include_decl(const char* buf, int o, size_t nchars_remain) {
+static int handler2_include_decl(const char* buf, struct TokenList* o, size_t nchars_remain) {
 
 	int i = 10;
 	while (buf[i] != '>' && i < nchars_remain) {
@@ -150,7 +178,7 @@ static int handler2_include_decl(const char* buf, int o, size_t nchars_remain) {
 	return i + 1;
 }
 
-static int handler2(const char* buf, int o, size_t nchars_remain) {
+static int handler2(const char* buf, struct TokenList* o, size_t nchars_remain) {
 
 	int n;
 
@@ -312,7 +340,7 @@ static int handler2(const char* buf, int o, size_t nchars_remain) {
 	return -1;
 }
 
-int lexer_impl(FILE* infile, int outFd) {
+struct TokenList* lexer_impl(FILE* infile, int outFd) {
 
 	struct stat sb;
 	const int fd = fileno(infile);
@@ -321,7 +349,7 @@ int lexer_impl(FILE* infile, int outFd) {
 
 	if (fstat(fd, &sb) < 0) {
 		fprintf(stderr, "[Lexer] could not fstat input file\n");
-		return -1;
+		return NULL;
 	}
 
 	const size_t length = sb.st_size;
@@ -335,10 +363,18 @@ int lexer_impl(FILE* infile, int outFd) {
 		fprintf(stderr, "[Lexer] mmapped input file at %p, length %ld bytes\n", addr, length);
 	}
 
+	struct TokenList* list = makeTokenList();
+
+	if (!list) {
+		return NULL;
+	}
+
+	line_no = 1;
+
 	char c;
 	for (size_t i = 0; i < length;) {
 		size_t nchars_remain = length - i;
-		int ntokens = handler2(addr + i, outFd, nchars_remain);
+		int ntokens = handler2(addr + i, list, nchars_remain);
 		if (ntokens <= 0) {
 			fprintf(stderr, "[Lexer] could not scan token at index %ld\n", i);
 			fprintf(stderr, "%c\n", addr[i]);
@@ -350,5 +386,5 @@ int lexer_impl(FILE* infile, int outFd) {
 
 	munmap((void*)addr, length);
 
-	return status;
+	return list;
 }

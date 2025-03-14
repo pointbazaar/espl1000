@@ -2,7 +2,7 @@
 
 struct LexerFlags;
 
-// @returns < 0 on error
-// @returns file descriptor on success.
-//           Needs to be closed by the caller.
-int lexer_main(struct LexerFlags* flags);
+#include "token/list/TokenList.h"
+
+// @returns NULL on error
+struct TokenList* lexer_main(struct LexerFlags* flags);

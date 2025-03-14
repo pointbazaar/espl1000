@@ -3,6 +3,7 @@
 #include <stdbool.h>
 #include <inttypes.h>
 #include <unistd.h>
+#include <assert.h>
 
 #include "lexer_test_utils.h"
 
@@ -37,18 +38,10 @@ struct Token** lex(char* source, size_t* out_count) {
 	flags.filename = fname_src;
 	flags.write_token_file = false;
 
-	int fd = lexer_main(&flags);
-
-	if (fd < 0) {
-		fprintf(stderr, "error lexing %s\n", fname_src);
-		return NULL;
-	}
-
-	struct TokenList* list = read_tokens_from_tokens_file(fd, fname_src);
+	struct TokenList* list = lexer_main(&flags);
 
 	if (list == NULL) {
-		fprintf(stderr, "Lexer: could not read from fd %d\n", fd);
-		close(fd);
+		fprintf(stderr, "Lexer: could process %s\n", fname_src);
 		return NULL;
 	}
 
@@ -70,4 +63,12 @@ void free_tokens(struct Token** tokens, unsigned int count) {
 		freeToken(tokens[i]);
 	}
 	free(tokens);
+}
+
+void assert_eq(char* actual, char* expected) {
+	if (strcmp(actual, expected) != 0) {
+		fprintf(stderr, "actual:   '%s'\n", actual);
+		fprintf(stderr, "expected: '%s'\n", expected);
+	}
+	assert(strcmp(actual, expected) == 0);
 }

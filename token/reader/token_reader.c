@@ -11,7 +11,7 @@
 #include "../token/token.h"
 
 // @returns NULL on error
-static struct Token* recognizeTokenInner(int tkn_id, char* tkn, char* part2);
+static struct Token* recognizeTokenInner(int tkn_id, char* tkn, char* part2, uint32_t* line_num);
 
 static struct Token* recognizeToken(char* tkn, bool* isLineNo, uint32_t* line_num);
 
@@ -72,7 +72,7 @@ struct TokenList* read_tokens_from_tokens_file(int fd, char* tokensFile) {
 	return tks;
 }
 
-static struct Token* recognizeTokenInnerNoStr(int tkn_id) {
+static struct Token* recognizeTokenInnerNoStr(int tkn_id, uint32_t* line_num) {
 
 	struct Token* r = NULL;
 
@@ -159,7 +159,7 @@ static struct Token* recognizeTokenInnerNoStr(int tkn_id) {
 		case WAVE:
 		case ARROW_NO_SIDE_EFFECT:
 		case ARROW_SIDE_EFFECT:
-			r = makeToken(tkn_id);
+			r = makeTokenLineNo(tkn_id, *line_num);
 			break;
 		default:
 			fprintf(stderr, "unrecognized token id : %d\n", tkn_id);
@@ -178,7 +178,7 @@ static struct Token* recognizeToken(char* tkn, bool* isLineNo, uint32_t* line_nu
 
 	if (space_ptr == NULL) {
 		const int tkn_id = atoi(tkn);
-		struct Token* r = recognizeTokenInnerNoStr(tkn_id);
+		struct Token* r = recognizeTokenInnerNoStr(tkn_id, line_num);
 
 		if (r != NULL) {
 			r->line_num = *line_num;
@@ -203,7 +203,7 @@ static struct Token* recognizeToken(char* tkn, bool* isLineNo, uint32_t* line_nu
 		return NULL;
 	}
 
-	struct Token* r = recognizeTokenInner(tkn_id, tkn, part2);
+	struct Token* r = recognizeTokenInner(tkn_id, tkn, part2, line_num);
 
 	if (r != NULL) {
 		r->line_num = *line_num;
@@ -212,7 +212,7 @@ static struct Token* recognizeToken(char* tkn, bool* isLineNo, uint32_t* line_nu
 	return r;
 }
 
-static struct Token* recognizeTokenInner(int tkn_id, char* tkn, char* part2) {
+static struct Token* recognizeTokenInner(int tkn_id, char* tkn, char* part2, uint32_t* line_num) {
 
 	struct Token* r = NULL;
 
@@ -222,9 +222,10 @@ static struct Token* recognizeTokenInner(int tkn_id, char* tkn, char* part2) {
 			break;
 		case CCONST:
 			if (strcmp(tkn + 3, "'\\n'") == 0) {
-				r = makeToken2(CCONST, "'\n'");
+				r = makeToken2LineNo(CCONST, "'\n'", *line_num);
 			} else {
-				r = makeToken2(CCONST, tkn + 3);
+				r = makeToken2LineNo(CCONST, tkn + 3, *line_num);
+				;
 			}
 			break;
 		case ANYTYPE:
@@ -240,7 +241,7 @@ static struct Token* recognizeTokenInner(int tkn_id, char* tkn, char* part2) {
 		case TPARAM:
 
 		case INCLUDE_DECL:
-			r = makeToken2(tkn_id, part2);
+			r = makeToken2LineNo(tkn_id, part2, *line_num);
 			break;
 		default:
 			fprintf(stderr, "unreconized token id : %d\n", tkn_id);

@@ -9,7 +9,15 @@ struct Token* makeToken(int kind) {
 	return makeToken2(kind, NULL);
 }
 
+struct Token* makeTokenLineNo(int kind, uint32_t line_num) {
+	return makeToken2LineNo(kind, NULL, line_num);
+}
+
 struct Token* makeToken2(int kind, char* value) {
+	return makeToken2LineNo(kind, value, 0);
+}
+
+struct Token* makeToken2LineNo(int kind, char* value, uint32_t line_num) {
 
 	struct Token* res = malloc(sizeof(struct Token));
 
@@ -17,7 +25,7 @@ struct Token* makeToken2(int kind, char* value) {
 		return NULL;
 	}
 
-	res->line_num = 1;
+	res->line_num = line_num;
 	res->kind = kind;
 	res->value_ptr = NULL;
 
@@ -31,8 +39,6 @@ struct Token* makeToken2(int kind, char* value) {
 
 		strcpy(res->value_ptr, value);
 	}
-
-	res->line_num--;
 
 	return res;
 }
@@ -92,7 +98,9 @@ bool token_equals(struct Token* a, struct Token* b) {
 
 void freeToken(struct Token* token) {
 
-	free(token->value_ptr);
+	if (token->value_ptr) {
+		free(token->value_ptr);
+	}
 	free(token);
 }
 

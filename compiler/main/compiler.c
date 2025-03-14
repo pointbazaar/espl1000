@@ -53,17 +53,17 @@ bool compile(struct Flags* flags) {
 		return false;
 	}
 
-	int* tokensFds = calloc(count_filenames, sizeof(int));
+	struct TokenList** tokenLists = calloc(count_filenames, sizeof(struct TokenList*));
 
-	assert(tokensFds);
+	assert(tokenLists);
 
 	for (int i = 0; i < count_filenames; i++) {
 
 		char* filename = flags_filenames(flags, i);
 
-		int tokensFd = invoke_lexer(filename, flags_dump_tokens(flags));
+		struct TokenList* list = invoke_lexer(filename, flags_dump_tokens(flags));
 
-		if (tokensFd < 0) {
+		if (!list) {
 			fprintf(stderr, "[Error] lexer exited with nonzero exit code\n");
 			free(ast->namespaces);
 			free(ast);
@@ -71,7 +71,7 @@ bool compile(struct Flags* flags) {
 			return false;
 		}
 
-		tokensFds[i] = tokensFd;
+		tokenLists[i] = list;
 	}
 
 	if (flags_lexer(flags)) {
@@ -85,7 +85,7 @@ bool compile(struct Flags* flags) {
 
 		char* filename = flags_filenames(flags, i);
 
-		struct Namespace* ns = invoke_parser(tokensFds[i], filename);
+		struct Namespace* ns = invoke_parser(tokenLists[i], filename);
 
 		if (ns == NULL) {
 			fprintf(stderr, "[Error] parser exited with nonzero exit code\n");
@@ -139,9 +139,9 @@ bool compile(struct Flags* flags) {
 	}
 
 	for (int i = 0; i < count_filenames; i++) {
-		close(tokensFds[i]);
+		freeTokenList(tokenLists[i]);
 	}
-	free(tokensFds);
+	free(tokenLists);
 
 	int status = 0;
 
