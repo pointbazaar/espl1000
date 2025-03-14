@@ -6,11 +6,23 @@
 #include "../TokenKeys.h"
 
 struct Token* makeToken(int kind) {
-	return makeToken2(kind, NULL);
+	return makeTokenLineNo(kind, 0);
 }
 
 struct Token* makeTokenLineNo(int kind, uint32_t line_num) {
-	return makeToken2LineNo(kind, NULL, line_num);
+
+	struct Token* res = malloc(sizeof(struct Token));
+
+	if (!res) {
+		return NULL;
+	}
+
+	res->line_num = line_num;
+	res->kind = kind;
+
+	res->value_ptr = NULL;
+
+	return res;
 }
 
 struct Token* makeToken2(int kind, char* value) {
@@ -27,18 +39,15 @@ struct Token* makeToken2LineNo(int kind, char* value, uint32_t line_num) {
 
 	res->line_num = line_num;
 	res->kind = kind;
-	res->value_ptr = NULL;
 
-	if (value) {
-		res->value_ptr = malloc(sizeof(char) * (strlen(value) + 1));
+	res->value_ptr = malloc(sizeof(char) * (strlen(value) + 1));
 
-		if (!res->value_ptr) {
-			free(res);
-			return NULL;
-		}
-
-		strcpy(res->value_ptr, value);
+	if (!res->value_ptr) {
+		free(res);
+		return NULL;
 	}
+
+	strcpy(res->value_ptr, value);
 
 	return res;
 }
