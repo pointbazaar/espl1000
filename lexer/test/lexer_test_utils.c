@@ -36,6 +36,7 @@ struct Token** lex(char* source, size_t* out_count) {
 	struct LexerFlags flags;
 	flags.filename = fname_src;
 	flags.write_token_file = false;
+	flags.debug = false;
 
 	struct TokenList* list = lexer_main(&flags);
 
