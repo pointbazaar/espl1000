@@ -14,9 +14,9 @@ bool tc_type_contains(struct Type* expect, struct Type* actual) {
 		return tc_pointer_type_contains(expect->pointer_type, actual);
 	}
 
-	if (expect->basic_type != NULL && actual->basic_type != NULL) {
+	if (expect->basic_type != NULL) {
 
-		return tc_basictype_contains(expect->basic_type, actual->basic_type);
+		return tc_basictype_contains(expect->basic_type, actual);
 	}
 
 	if (expect->array_type != NULL) {

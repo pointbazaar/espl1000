@@ -5,7 +5,7 @@
 
 #include "tc_type_contains.h"
 
-bool tc_primitivetype_contains(struct PrimitiveType* expect, struct SimpleType* actual) {
+static bool tc_primitivetype_contains_simpletype(struct PrimitiveType* expect, struct SimpleType* actual) {
 
 	if (actual->primitive_type == NULL) {
 		return false;
@@ -36,5 +36,28 @@ bool tc_primitivetype_contains(struct PrimitiveType* expect, struct SimpleType* 
 			default: break;
 		}
 	}
+	return false;
+}
+
+static bool tc_primitivetype_contains_pointertype(struct PrimitiveType* expect, struct Type* actual) {
+	struct PointerType* pt = actual->pointer_type;
+
+	return expect->is_int_type && expect->int_type == UINT64;
+}
+
+bool tc_primitivetype_contains(struct PrimitiveType* expect, struct Type* actual) {
+
+	if (actual->basic_type) {
+		if (actual->basic_type->simple_type) {
+			return tc_primitivetype_contains_simpletype(expect, actual->basic_type->simple_type);
+		}
+
+		return false;
+	}
+
+	if (actual->pointer_type) {
+		return tc_primitivetype_contains_pointertype(expect, actual);
+	}
+
 	return false;
 }
