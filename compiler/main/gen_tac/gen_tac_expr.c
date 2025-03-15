@@ -64,6 +64,7 @@ static enum TAC_OP op_to_tac_op(enum OP o, bool* reverse_operands) {
 		case OP_PLUS: op = TAC_OP_ADD; break;
 		case OP_MINUS: op = TAC_OP_SUB; break;
 		case OP_MULTIPLY: op = TAC_OP_MUL; break;
+		case OP_DIV: op = TAC_OP_DIV; break;
 
 		case OP_AND: op = TAC_OP_AND; break;
 		case OP_OR: op = TAC_OP_OR; break;
