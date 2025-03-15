@@ -116,8 +116,18 @@ add_library("sd-base"
 	typechecker/util/tc_utils.c
 	typechecker/tc_range.c
 	typechecker/tc_method.c
+
+	# typechecker: type contains
 	typechecker/type_contains/tc_type_contains.c
+	typechecker/type_contains/tc_simpletype_contains.c
+	typechecker/type_contains/tc_subrtype_contains.c
+	typechecker/type_contains/tc_structtype_contains.c
+	typechecker/type_contains/tc_primitivetype_contains.c
+	typechecker/type_contains/tc_pointertype_contains.c
+	typechecker/type_contains/tc_basictype_contains.c
+	typechecker/type_contains/tc_arraytype_contains.c
 	typechecker/type_contains/tc_type_contains.h
+
 	typechecker/tc_retstmt.c
 	typechecker/tc_ifstmt.c
 	typechecker/tc_whilestmt.c
