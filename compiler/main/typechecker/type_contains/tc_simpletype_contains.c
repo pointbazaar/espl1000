@@ -5,13 +5,17 @@
 
 #include "tc_type_contains.h"
 
-bool tc_simpletype_contains(struct SimpleType* expect, struct BasicType* actual) {
+static bool tc_simpletype_contains_simpletype(struct SimpleType* expect, struct Type* actual) {
 
-	if (actual->simple_type == NULL) {
+	if (actual->basic_type == NULL) {
 		return false;
 	}
 
-	struct SimpleType* actual_st = actual->simple_type;
+	if (actual->basic_type->simple_type == NULL) {
+		return false;
+	}
+
+	struct SimpleType* actual_st = actual->basic_type->simple_type;
 
 	if (expect->struct_type != NULL) {
 
@@ -27,10 +31,34 @@ bool tc_simpletype_contains(struct SimpleType* expect, struct BasicType* actual)
 	}
 
 	if (expect->primitive_type != NULL) {
-		if (actual_st->primitive_type != NULL) {
-			return tc_primitivetype_contains(expect->primitive_type, actual_st);
-		}
+		return tc_primitivetype_contains(expect->primitive_type, actual);
+	}
+	return false;
+}
+
+static bool tc_simpletype_contains_basictype(struct SimpleType* expect, struct Type* actual) {
+
+	if (actual->basic_type == NULL) {
 		return false;
 	}
+
+	if (actual->basic_type->simple_type) {
+
+		return tc_simpletype_contains_simpletype(expect, actual);
+	}
+
+	return false;
+}
+
+bool tc_simpletype_contains(struct SimpleType* expect, struct Type* actual) {
+
+	if (actual->basic_type) {
+		return tc_simpletype_contains_basictype(expect, actual);
+	}
+
+	if (expect->primitive_type) {
+		return tc_primitivetype_contains(expect->primitive_type, actual);
+	}
+
 	return false;
 }
