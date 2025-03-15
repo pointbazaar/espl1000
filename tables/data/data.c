@@ -41,9 +41,11 @@ void data_dtor(struct DataTable* data) {
 
 static void data_resize(struct DataTable* data) {
 
+	assert(data);
+
 	if ((data->count_entries + 1) >= data->capacity) {
 		data->capacity *= 2;
-		data->entries = realloc(data->entries, data->capacity);
+		data->entries = realloc(data->entries, data->capacity * sizeof(struct DataEntry*));
 
 		assert(data->entries);
 	}
@@ -127,16 +129,35 @@ void data_write_data_segment(struct DataTable* data, FILE* fout) {
 	}
 }
 
-void data_insert(struct DataTable* data, char* str) {
+bool data_insert(struct DataTable* data, char* str) {
+
+	if (!str) {
+		return false;
+	}
 
 	data_resize(data);
 
 	struct DataEntry* entry = malloc(sizeof(struct DataEntry));
 
+	if (entry == NULL) {
+		return false;
+	}
+
 	entry->value = strdup(str);
+
+	if (entry->value == NULL) {
+		return false;
+	}
+
 	entry->symbol = data_make_symbol(str);
 
+	if (entry->symbol == NULL) {
+		return false;
+	}
+
 	data->entries[data->count_entries++] = entry;
+
+	return true;
 }
 
 char* data_symbol(struct DataTable* data, uint32_t offset) {
@@ -152,6 +173,10 @@ char* data_symbol(struct DataTable* data, uint32_t offset) {
 }
 
 int32_t data_string_offset(struct DataTable* data, char* str) {
+
+	if (!str) {
+		return -1;
+	}
 
 	for (size_t i = 0; i < data->count_entries; i++) {
 		struct DataEntry* e = data->entries[i];

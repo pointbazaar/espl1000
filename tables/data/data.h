@@ -2,6 +2,7 @@
 
 #include <stdio.h>
 #include <stdint.h>
+#include <stdbool.h>
 
 struct DataTable;
 
@@ -23,7 +24,7 @@ void data_write_data_segment(struct DataTable* data, FILE* fout);
 
 // @brief inserts a new entry into data table
 // @param str   the string to enter
-void data_insert(struct DataTable* data, char* str);
+bool data_insert(struct DataTable* data, char* str);
 
 // @brief may return e.g. "str_hello"
 // for string "hello" stored in table
