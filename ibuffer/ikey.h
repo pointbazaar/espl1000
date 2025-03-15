@@ -166,33 +166,34 @@ enum IKEY {
 
 	//MCU Control Instructions
 	BREAK = 400,
-	NOP,
-	SLEEP,
-	WDR,
+	NOP = 401,
+	SLEEP = 402,
+	WDR = 403,
 
 	// START --- X86 Instructions --
-	X86_MOV_CONST, // mov rdest, value_const
-	X86_MOV_REGS, // mov rdest, rsrc
-	X86_MOV_LOAD, // mov rdest, [rsrc]
-	X86_MOV_STORE, // mov [rdest], rsrc
-	X86_MOV_LOAD_WIDTH, // e.g. mov dword rdest, [rsrc]
-	X86_MOV_STORE_WIDTH, // e.g. mov qword [rdest], rsrc
-	X86_MOV_CONST_SYMBOL, // e.g. mov rax, my_function
-	X86_CMOVE,
-	X86_XCHG,
+	X86_MOV_CONST = 404, // mov rdest, value_const
+	X86_MOV_REGS = 405, // mov rdest, rsrc
+	X86_MOV_LOAD = 406, // mov rdest, [rsrc]
+	X86_MOV_STORE = 407, // mov [rdest], rsrc
+	X86_MOV_LOAD_WIDTH = 408, // e.g. mov dword rdest, [rsrc]
+	X86_MOV_STORE_WIDTH = 409, // e.g. mov qword [rdest], rsrc
+	X86_MOV_CONST_SYMBOL = 410, // e.g. mov rax, my_function
+	X86_CMOVE = 411,
+	X86_XCHG = 412,
 
-	X86_PUSH,
-	X86_POP,
-	X86_PUSHA,
-	X86_POPA,
+	X86_PUSH = 420,
+	X86_POP = 421,
+	X86_PUSHA = 422,
+	X86_POPA = 423,
 
-	X86_ADD,
-	X86_ADC, // with carry
-	X86_SUB,
-	X86_SBB, // with borrow
+	X86_ADD = 424,
+	X86_ADC = 425, // with carry
+	X86_SUB = 426,
+	X86_SBB = 427, // with borrow
 
-	X86_IMUL, // signed
-	X86_MUL, // unsigned
+	X86_IMUL = 428, // signed
+	X86_MUL = 429, // unsigned
+	X86_DIV = 430,
 
 	X86_INC, // ++
 	X86_DEC, // --

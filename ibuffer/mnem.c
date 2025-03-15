@@ -168,6 +168,7 @@ char* MNEM[] = {
     [X86_SUB] = "sub",
     [X86_IMUL] = "imul",
     [X86_MUL] = "mul",
+    [X86_DIV] = "div",
     [X86_INC] = "inc",
     [X86_DEC] = "dec",
     [X86_NEG] = "neg",

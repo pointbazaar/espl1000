@@ -1,0 +1,10 @@
+// test that the integer division semantic applies correctly
+
+fn main () -> int {
+
+	local uint32 x;
+
+	x = 100 / 3;
+
+	return x;
+}

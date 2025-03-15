@@ -197,6 +197,7 @@ static bool write_middle(enum IKEY key, int64_t x1, int64_t x2, char* str, char*
 		case X86_DEC:
 		case X86_NEG:
 		case X86_NOT:
+		case X86_DIV:
 			sprintf(s, "%s", rat_regname_x86(x1));
 			break;
 		case X86_MOV_CONST:
@@ -209,6 +210,8 @@ static bool write_middle(enum IKEY key, int64_t x1, int64_t x2, char* str, char*
 			sprintf(s, "%s, %ld", rat_regname_x86(x1), x2);
 			break;
 		case X86_ADD:
+		case X86_MUL:
+		case X86_IMUL:
 		case X86_SUB:
 		case X86_CMP:
 		case X86_TEST:

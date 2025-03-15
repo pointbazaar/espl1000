@@ -51,6 +51,9 @@ void ibu_push4(struct IBuffer* ibu, enum IKEY key, int64_t x1, int64_t x2, int64
 #define add(dest, src, c) ibu2(X86_ADD, dest, src, c)
 #define sub(dest, src, c) ibu2(X86_SUB, dest, src, c)
 #define mul(dest, src, c) ibu2(X86_IMUL, dest, src, c)
+// 'dest' is the divisor.
+// The dividend is in rdx:rax
+#define div(dest, c) ibu1(X86_DIV, dest, c)
 
 #define inc(dest, c) ibu1(X86_INC, dest, c)
 #define dec(dest, c) ibu1(X86_DEC, dest, c)

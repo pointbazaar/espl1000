@@ -1,0 +1,9 @@
+
+fn main () -> int {
+
+	local uint32 x;
+
+	x = 33 / 3;
+
+	return x;
+}
