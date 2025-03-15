@@ -339,6 +339,9 @@ char* flags_output_filename(struct Flags* flags) {
 bool flags_dump_tokens(struct Flags* flags) {
 	return flags_set(flags, "dump-tokens");
 }
+bool flags_dump_data(struct Flags* flags) {
+	return flags_set(flags, "dump-data");
+}
 
 char* flags_asm_filename(struct Flags* flags) {
 	return flags->asm_filename;

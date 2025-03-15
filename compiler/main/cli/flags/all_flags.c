@@ -96,6 +96,13 @@ struct Flag all_flags[] = {
 	.arg_default_value = NULL,
 	.is_set = false,
     },
+    {
+	.name = "dump-data",
+	.description = "dump table for .data section",
+	.has_arg = false,
+	.arg_default_value = NULL,
+	.is_set = false,
+    },
 };
 
 size_t all_flags_count() {

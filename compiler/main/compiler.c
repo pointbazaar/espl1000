@@ -134,6 +134,12 @@ bool compile(struct Flags* flags) {
 	analyze_annotations(ctx_tables(ctx), ast);
 	analyze_data(ctx_tables(ctx), ast);
 
+	if (flags_dump_data(flags)) {
+		printf("\ndumping .data table:\n");
+		data_write_data_segment(ctx_tables(ctx)->data, stdout);
+		printf("\n");
+	}
+
 	bool success;
 	if (flags_x86(flags)) {
 		success = compile_and_write_x86(ast, ctx);
