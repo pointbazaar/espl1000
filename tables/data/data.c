@@ -135,6 +135,11 @@ bool data_insert(struct DataTable* data, char* str) {
 		return false;
 	}
 
+	if (data_string_offset(data, str) >= 0) {
+		// already have that string
+		return true;
+	}
+
 	data_resize(data);
 
 	struct DataEntry* entry = malloc(sizeof(struct DataEntry));
