@@ -7,10 +7,18 @@
 
 bool tc_basictype_contains(struct BasicType* expect, struct Type* actual) {
 
-	struct BasicType* actual_bt = actual->basic_type;
+	if (expect == NULL || actual == NULL) {
+		return NULL;
+	}
 
 	if (expect->simple_type != NULL) {
 		return tc_simpletype_contains(expect->simple_type, actual);
+	}
+
+	struct BasicType* actual_bt = actual->basic_type;
+
+	if (actual_bt == NULL) {
+		return false;
 	}
 
 	if (expect->subr_type != NULL && actual_bt->subr_type != NULL) {
