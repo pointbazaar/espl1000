@@ -159,6 +159,7 @@ struct TAC* makeTACBinOp(uint32_t dest, enum TAC_OP op, uint32_t src) {
 		case TAC_OP_SUB:
 		case TAC_OP_MUL:
 		case TAC_OP_DIV:
+		case TAC_OP_MOD:
 		case TAC_OP_XOR:
 		case TAC_OP_AND:
 		case TAC_OP_OR:

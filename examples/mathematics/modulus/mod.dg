@@ -1,0 +1,9 @@
+
+fn main () -> int {
+
+	local uint32 x;
+
+	x = 100 % 40;
+
+	return x; // should be 20
+}
