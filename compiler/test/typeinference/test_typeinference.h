@@ -20,3 +20,5 @@ void test_infer_type_var_with_member_access();
 
 //type parameters
 void test_infer_type_type_param();
+
+void test_infer_type_ptr_arithmetic();

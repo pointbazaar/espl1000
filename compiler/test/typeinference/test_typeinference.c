@@ -224,3 +224,28 @@ void test_infer_type_type_param() {
 
 	free_type(t);
 }
+
+void test_infer_type_ptr_arithmetic() {
+
+	status_test_typeinference("infer_type_type_ptr_arithmetic");
+
+	struct Type* t = typeinfer_in_file("compiler/test/typeinference/test-src/infer_type_ptr_arithmetic.dg");
+
+	assert(t != NULL);
+
+	assert(t->basic_type == NULL);
+	assert(t->array_type == NULL);
+	assert(t->pointer_type != NULL);
+
+	struct Type* et = t->pointer_type->element_type;
+
+	assert(et);
+
+	assert(et->basic_type);
+	assert(et->basic_type->simple_type);
+	assert(et->basic_type->simple_type->primitive_type);
+	assert(et->basic_type->simple_type->primitive_type->is_int_type);
+	assert(et->basic_type->simple_type->primitive_type->int_type == UINT64);
+
+	free_type(t);
+}

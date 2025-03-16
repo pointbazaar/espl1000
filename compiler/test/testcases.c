@@ -268,6 +268,7 @@ void (*tests_typeinference[])() = {
     test_infer_type_simplevar_with_indices,
     test_infer_type_var_with_member_access,
     test_infer_type_type_param,
+    test_infer_type_ptr_arithmetic,
     NULL,
 };
 

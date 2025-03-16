@@ -21,6 +21,8 @@ static struct Type* infer_type_expr_primitive(struct ST* st, struct Expr2Types* 
 
 static struct Type* infer_type_expr_both_tparam(struct ST* st, struct TypeParam* tp1, enum OP op, struct TypeParam* tp2);
 
+static struct Type* infer_type_expr_ptr_arithmetic(struct ST* st, struct Type* t1, struct Type* t2);
+
 static void typeinfer_err_fatal(char* opt_str) {
 	fprintf(stderr, "%s\n", opt_str);
 	fprintf(stderr, "[Typeinference][Error] Fatal. (in typeinfer_expr.c).\n");
@@ -39,6 +41,13 @@ struct Type* infer_type_expr(struct ST* st, struct Expr* expr) {
 
 	if (type1->type_param != NULL && type2->type_param != NULL) {
 		return infer_type_expr_both_tparam(st, type1->type_param, expr->op, type2->type_param);
+	}
+
+	if (type1->pointer_type) {
+		return infer_type_expr_ptr_arithmetic(st, type1, type2);
+	}
+	if (type2->pointer_type) {
+		return infer_type_expr_ptr_arithmetic(st, type2, type1);
 	}
 
 	struct BasicType* btw1 = type1->basic_type;
@@ -71,6 +80,28 @@ struct Type* infer_type_expr(struct ST* st, struct Expr* expr) {
 	    .op = op};
 
 	return infer_type_expr_primitive(st, &e2t);
+}
+
+static struct Type* infer_type_expr_ptr_arithmetic(struct ST* st, struct Type* t1, struct Type* t2) {
+
+	struct PointerType* pt = t1->pointer_type;
+
+	if (!pt) {
+		typeinfer_err_fatal("pointer arithmetic: not a pointer");
+		return NULL;
+	}
+
+	if (t2->basic_type && t2->basic_type->simple_type) {
+		struct SimpleType* st = t2->basic_type->simple_type;
+
+		if (st->primitive_type && st->primitive_type->is_int_type) {
+			return t1;
+		}
+	}
+
+	typeinfer_err_fatal("pointer arithmetic: not an integer type");
+
+	return NULL;
 }
 
 static struct Type* infer_type_expr_both_tparam(struct ST* st, struct TypeParam* tp1, enum OP op, struct TypeParam* tp2) {
