@@ -34,7 +34,7 @@ void test_liveness_def_map_tac_param() {
 	struct TACBuffer* buf = tacbuffer_ctor();
 
 	tacbuffer_append(buf, makeTACConst(1, 33));
-	tacbuffer_append(buf, makeTACParam(1, true, 0));
+	tacbuffer_append(buf, makeTACParam(1, true, 0, false));
 
 	struct Liveness* live = liveness_calc_tacbuffer(buf);
 

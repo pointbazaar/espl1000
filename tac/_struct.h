@@ -48,4 +48,7 @@ struct TAC {
 	// e.g. load_store_width = 8 for TAC_LOAD
 	// means that we load 8 bytes from memory
 	uint8_t load_store_width;
+
+	// only for TAC_PARAM
+	bool param_is_syscall;
 };

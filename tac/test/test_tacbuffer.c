@@ -36,7 +36,7 @@ void test_tacbuffer_indexof() {
 
 	struct TAC* t1 = makeTACNop();
 	struct TAC* t2 = makeTACReturn(1);
-	struct TAC* t3 = makeTACParam(2, true, 4);
+	struct TAC* t3 = makeTACParam(2, true, 4, false);
 
 	tacbuffer_append(buf, t1);
 	tacbuffer_append(buf, t2);
@@ -78,7 +78,7 @@ void test_tacbuffer_get() {
 
 	struct TAC* t1 = makeTACNop();
 	struct TAC* t2 = makeTACReturn(1);
-	struct TAC* t3 = makeTACParam(2, true, 3);
+	struct TAC* t3 = makeTACParam(2, true, 3, false);
 
 	tacbuffer_append(buf, t1);
 	tacbuffer_append(buf, t2);
