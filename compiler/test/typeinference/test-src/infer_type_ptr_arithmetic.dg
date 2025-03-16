@@ -1,0 +1,6 @@
+fn sub() -> *uint64 {
+
+	local *uint64 ptr;
+	ptr = 0;
+	return ptr + 2;
+}
