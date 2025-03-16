@@ -16,17 +16,21 @@
 static bool tac_call_case_sst(struct TACBuffer* buffer, struct Call* call, struct Ctx* ctx);
 static void tac_call_case_lvst(struct TACBuffer* buffer, struct Call* call, struct Ctx* ctx);
 
-static void tac_call_prep_param(struct TACBuffer* buffer, struct Call* call, struct Ctx* ctx, int i, const bool push16) {
+static void tac_call_prep_param(struct TACBuffer* buffer, struct Call* call, struct Ctx* ctx, int i, const bool push16, bool is_syscall) {
 	struct Expr* expr = call->args[i];
 
 	tac_expr(buffer, expr, ctx);
 
-	struct TAC* t = makeTACParam(tacbuffer_last_dest(buffer), push16, i);
+	struct TAC* t = makeTACParam(tacbuffer_last_dest(buffer), push16, i, is_syscall);
 
 	tacbuffer_append(buffer, t);
 }
 
 static void tac_call_prep_params_case_sst(struct TACBuffer* buffer, struct Call* call, struct Ctx* ctx, struct MethodDecl* decl) {
+
+	struct SST* sst = ctx_tables(ctx)->sst;
+	char* fname = call->callable->simple_var->name;
+	struct SSTLine* line = sst_get(sst, fname);
 
 	const bool x86 = flags_x86(ctx_flags(ctx));
 	for (size_t i = 0; i < call->count_args; i++) {
@@ -34,19 +38,25 @@ static void tac_call_prep_params_case_sst(struct TACBuffer* buffer, struct Call*
 		assert(param_width <= 8);
 		const bool push16 = param_width == 2;
 
-		tac_call_prep_param(buffer, call, ctx, i, push16);
+		tac_call_prep_param(buffer, call, ctx, i, push16, line->is_syscall);
 	}
 }
 
 static void tac_call_prep_params_case_lvst(struct TACBuffer* buffer, struct Call* call, struct Ctx* ctx, struct LVSTLine* line) {
+
 	const bool x86 = flags_x86(ctx_flags(ctx));
+
+	struct SubrType* subr_type = line->type->basic_type->subr_type;
+
 	for (size_t i = 0; i < call->count_args; i++) {
-		struct Type* arg_type = line->type->basic_type->subr_type->arg_types[i];
+		struct Type* arg_type = subr_type->arg_types[i];
 		const uint32_t param_width = lvst_sizeof_type(arg_type, x86);
 		assert(param_width <= 8);
 		const bool push16 = param_width == 2;
 
-		tac_call_prep_param(buffer, call, ctx, i, push16);
+		// TODO: currently the information of syscall / no syscall
+		// is lost when passing it as function pointer.
+		tac_call_prep_param(buffer, call, ctx, i, push16, false);
 	}
 }
 
@@ -90,7 +100,7 @@ static void tac_call_case_lvst(struct TACBuffer* buffer, struct Call* call, stru
 
 static bool tac_call_case_sst(struct TACBuffer* buffer, struct Call* call, struct Ctx* ctx) {
 
-	const char* fname = call->callable->simple_var->name;
+	char* fname = call->callable->simple_var->name;
 
 	struct SST* sst = ctx_tables(ctx)->sst;
 	struct SSTLine* line = sst_get(sst, fname);

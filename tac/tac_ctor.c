@@ -198,13 +198,15 @@ struct TAC* makeTACUnaryOp(uint32_t dest, uint32_t src, enum TAC_OP op) {
 	return t;
 }
 
-struct TAC* makeTACParam(uint32_t dest, bool push16, uint32_t param_index) {
+struct TAC* makeTACParam(uint32_t dest, bool push16, uint32_t param_index, bool is_syscall) {
 
 	struct TAC* t = makeTAC();
 	t->kind = TAC_PARAM;
 	t->dest = dest;
 
 	t->param_index = param_index;
+
+	t->param_is_syscall = is_syscall;
 
 	if (push16)
 		t->const_value = 16;

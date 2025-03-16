@@ -129,6 +129,15 @@ enum TAC_KIND tac_kind(struct TAC* tac) {
 	return tac->kind;
 }
 
+bool tac_param_is_syscall(struct TAC* tac) {
+	if (tac_kind(tac) != TAC_PARAM) {
+		fprintf(stderr, "%s:%s: corruption\n", __FILE__, __func__);
+		return false;
+	}
+
+	return tac->param_is_syscall;
+}
+
 uint8_t tac_load_store_width(struct TAC* tac) {
 
 	if (

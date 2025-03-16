@@ -40,7 +40,8 @@ struct TAC* makeTACConstData(uint32_t tmp, uint32_t value_offset_data_table);
 struct TAC* makeTACBinOp(uint32_t dest, enum TAC_OP op, uint32_t src);
 struct TAC* makeTACUnaryOp(uint32_t dest, uint32_t src, enum TAC_OP op);
 
-struct TAC* makeTACParam(uint32_t dest, bool push16, uint32_t param_index);
+// @param is_syscall   is the parameter for a syscall?
+struct TAC* makeTACParam(uint32_t dest, bool push16, uint32_t param_index, bool is_syscall);
 struct TAC* makeTACCall(uint32_t tmp, uint32_t function_index);
 
 // @param tmp_call   the temporary holding which function to call

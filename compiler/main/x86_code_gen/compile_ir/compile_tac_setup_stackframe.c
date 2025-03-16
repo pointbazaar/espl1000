@@ -39,7 +39,7 @@ static void save_function_args_into_stack_frame(struct RAT* rat, struct IBuffer*
 
 		sprintf(c, "TAC_SETUP_STACKFRAME (store arg %ld)", i);
 
-		enum SD_REGISTER reg = rat_param_reg_x86(i);
+		enum SD_REGISTER reg = rat_param_reg_x86(i, false);
 
 		char* arg_name = lvst_arg_at(lvst, i)->name;
 

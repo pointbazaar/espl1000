@@ -34,12 +34,27 @@ static enum SD_REGISTER param_regs[] = {
     SD_REG_R9,
 };
 
-enum SD_REGISTER rat_param_reg_x86(uint32_t index) {
+// https://www.chromium.org/chromium-os/developer-library/reference/linux-constants/syscalls/
+// https://chromium.googlesource.com/chromiumos/docs/+/master/constants/syscalls.md#x86_64-64_bit
+static enum SD_REGISTER param_regs_syscall[] = {
+    SD_REG_RDI,
+    SD_REG_RSI,
+    SD_REG_RDX,
+    SD_REG_R10,
+    SD_REG_R8,
+    SD_REG_R9,
+};
+
+enum SD_REGISTER rat_param_reg_x86(uint32_t index, bool is_syscall) {
 
 	if (index >= 6) {
 		fprintf(stderr, "%s: param count limited to 6\n", __func__);
 	}
 	assert(index < 6);
+
+	if (is_syscall) {
+		return param_regs_syscall[index];
+	}
 
 	return param_regs[index];
 }
@@ -64,8 +79,10 @@ void rat_init_x86(struct RAT* rat) {
 	rat_reserve_reg(rat, SD_REG_RSI, "reserved (arg1)");
 	rat_reserve_reg(rat, SD_REG_RDX, "reserved (arg2)");
 	rat_reserve_reg(rat, SD_REG_RCX, "reserved (arg3)");
-	rat_reserve_reg(rat, SD_REG_R8, "reserved (arg4)");
-	rat_reserve_reg(rat, SD_REG_R9, "reserved (arg5)");
+
+	rat_reserve_reg(rat, SD_REG_R10, "reserved (arg4, syscall)");
+	rat_reserve_reg(rat, SD_REG_R8, "reserved (arg4), (arg5, syscall)");
+	rat_reserve_reg(rat, SD_REG_R9, "reserved (arg5), (arg6, syscall)");
 }
 
 const char* regnames_x86[] = {
