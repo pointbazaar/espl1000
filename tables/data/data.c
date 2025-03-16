@@ -146,12 +146,15 @@ bool data_insert(struct DataTable* data, char* str) {
 	entry->value = strdup(str);
 
 	if (entry->value == NULL) {
+		free(entry);
 		return false;
 	}
 
 	entry->symbol = data_make_symbol(str);
 
 	if (entry->symbol == NULL) {
+		free(entry->value);
+		free(entry);
 		return false;
 	}
 
