@@ -29,6 +29,7 @@ bool compile_tac_binary_op_x86(struct RAT* rat, struct TAC* tac, struct IBuffer*
 		case TAC_OP_SUB:
 		case TAC_OP_MUL:
 		case TAC_OP_DIV:
+		case TAC_OP_MOD:
 		case TAC_OP_AND:
 		case TAC_OP_OR:
 		case TAC_OP_XOR:
@@ -151,6 +152,21 @@ static void case_arithmetic(int RAT_SCRATCH_REG, struct RAT* rat, struct TAC* ta
 			mov_regs(rdest, SD_REG_RAX, c);
 
 			mov_regs(SD_REG_RDX, RAT_SCRATCH_REG, "div: preserve rdx");
+		} break;
+
+		case TAC_OP_MOD: {
+			char* c = "mod";
+			// rax is already reserved, we will not corrupt it
+			// rdx needs to be preserved
+			// rdest = rdest % rsrc
+			mov_regs(RAT_SCRATCH_REG, SD_REG_RDX, "mod: preserve rdx");
+
+			mov_regs(SD_REG_RAX, rdest, c);
+			mov_const(SD_REG_RDX, 0, c);
+			div(rsrc, c);
+			mov_regs(rdest, SD_REG_RDX, c);
+
+			mov_regs(SD_REG_RDX, RAT_SCRATCH_REG, "mod: preserve rdx");
 		} break;
 
 		case TAC_OP_AND:

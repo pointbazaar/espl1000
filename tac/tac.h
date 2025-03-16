@@ -21,6 +21,7 @@ enum TAC_OP {
 	TAC_OP_SUB,
 	TAC_OP_MUL,
 	TAC_OP_DIV,
+	TAC_OP_MOD,
 
 	TAC_OP_XOR,
 

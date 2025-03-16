@@ -234,6 +234,7 @@ static int handler2(const char* buf, struct TokenList* o, size_t nchars_remain) 
 	H2OUT_CHAR(buf, '-', OPKEY_ARITHMETIC_MINUS, o);
 	H2OUT_CHAR(buf, '*', OPKEY_ARITHMETIC_MUL, o);
 	H2OUT_CHAR(buf, '/', OPKEY_ARITHMETIC_DIV, o);
+	H2OUT_CHAR(buf, '%', OPKEY_ARITHMETIC_MOD, o);
 
 	H2OUT_NOSTR(buf, "!=", OPKEY_RELATIONAL_NEQ, o);
 	H2OUT_NOSTR(buf, "==", OPKEY_RELATIONAL_EQ, o);

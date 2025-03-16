@@ -9,6 +9,7 @@ enum OP {
 	OP_MINUS,
 	OP_MULTIPLY,
 	OP_DIV,
+	OP_MOD, // %
 
 	OP_SHIFT_LEFT,
 	OP_SHIFT_RIGHT,

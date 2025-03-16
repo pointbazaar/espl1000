@@ -103,55 +103,56 @@
 #define OPKEY_ARITHMETIC_MINUS 72
 #define OPKEY_ARITHMETIC_MUL 73
 #define OPKEY_ARITHMETIC_DIV 74
+#define OPKEY_ARITHMETIC_MOD 75
 
 // ==
-#define OPKEY_RELATIONAL_EQ 75
+#define OPKEY_RELATIONAL_EQ 80
 // !=
-#define OPKEY_RELATIONAL_NEQ 76
+#define OPKEY_RELATIONAL_NEQ 81
 // <
-#define OPKEY_RELATIONAL_LT 77
+#define OPKEY_RELATIONAL_LT 82
 // >
-#define OPKEY_RELATIONAL_GT 78
+#define OPKEY_RELATIONAL_GT 83
 // <=
-#define OPKEY_RELATIONAL_LE 79
+#define OPKEY_RELATIONAL_LE 84
 // >=
-#define OPKEY_RELATIONAL_GE 80
+#define OPKEY_RELATIONAL_GE 85
 
 // &&
-#define OPKEY_LOGICAL_AND 81
+#define OPKEY_LOGICAL_AND 86
 // ||
-#define OPKEY_LOGICAL_OR 82
+#define OPKEY_LOGICAL_OR 87
 // !
-#define OPKEY_LOGICAL_NOT 83
+#define OPKEY_LOGICAL_NOT 88
 
 // |
-#define OPKEY_BITWISE_OR 84
+#define OPKEY_BITWISE_OR 90
 // &
-#define OPKEY_BITWISE_AND 85
+#define OPKEY_BITWISE_AND 91
 // ^
-#define OPKEY_BITWISE_XOR 86
+#define OPKEY_BITWISE_XOR 92
 // ~
-#define OPKEY_BITWISE_NOT 87
+#define OPKEY_BITWISE_NOT 93
 // <<
-#define OPKEY_BITWISE_SHIFT_LEFT 88
+#define OPKEY_BITWISE_SHIFT_LEFT 94
 // >>
-#define OPKEY_BITWISE_SHIFT_RIGHT 89
+#define OPKEY_BITWISE_SHIFT_RIGHT 95
 
 //annotations
-#define _ANNOT_START_ 90
-#define ANNOT_HALTS 91
-#define ANNOT_PRIVATE 92
-#define ANNOT_PUBLIC 93
-#define ANNOT_DEPRECATED 94
+#define _ANNOT_START_ 100
+#define ANNOT_HALTS 101
+#define ANNOT_PRIVATE 102
+#define ANNOT_PUBLIC 103
+#define ANNOT_DEPRECATED 104
 
 // This annotation is for functions.
 // The function is assumed to be defined outside of espl code.
 // Do not error if the function is not defined.
 // This annotation can be used to link against e.g. C code.
-#define ANNOT_EXTERN 95
+#define ANNOT_EXTERN 105
 
 // This annotation is for syscalls. They are implicitely extern.
 // The calling convention is slightly different for syscalls
-#define ANNOT_SYSCALL 96
+#define ANNOT_SYSCALL 106
 
-#define _ANNOT_END_ 97
+#define _ANNOT_END_ 107

@@ -53,6 +53,9 @@ enum OP makeOp(struct TokenList* tokens) {
 		case OPKEY_ARITHMETIC_DIV:
 			res = OP_DIV;
 			break;
+		case OPKEY_ARITHMETIC_MOD:
+			res = OP_MOD;
+			break;
 		case OPKEY_RELATIONAL_EQ:
 			res = OP_EQ;
 			break;
