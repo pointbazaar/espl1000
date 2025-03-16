@@ -11,3 +11,8 @@ fn read(int fd, *char buf, uint64 count) -> int64 {}
 
 @syscall
 fn exit(int code) -> int {}
+
+// https://www.man7.org/linux/man-pages/man2/mmap.2.html
+// addr == NULL : kernel chooses address
+@syscall
+fn mmap(uint64 addr, uint64 length, int prot, int flags, int fd, int64 offset) -> *uint8 {}

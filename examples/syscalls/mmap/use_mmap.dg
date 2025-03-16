@@ -1,0 +1,31 @@
+fn main () -> int {
+
+	// PROT_READ = 0x1
+	// PROT_WRITE = 0x2
+
+	// MAP_SHARED = 0x1
+	// MAP_ANONYMOUS = 0x20
+
+	local *uint8 ptr;
+	ptr = mmap(0, 4096, 0x3, 0x21, -1, 0);
+
+	// MAP_FAILED = 0xffff ffff ffff ffff
+	uint64 map_failed = 0xffffffffffffffff;
+
+	uint64 value = ptr;
+
+	local *char msg;
+	if value == map_failed {
+		msg = "map failed\n";
+		write(1, msg, 11);
+	} else {
+		msg = "map success\n";
+		write(1, msg, 12);
+	}
+
+	ptr += 4;
+
+	*ptr = 89;
+
+	return *ptr;
+}
