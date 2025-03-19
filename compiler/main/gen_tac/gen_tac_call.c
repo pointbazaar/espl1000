@@ -29,7 +29,7 @@ static void tac_call_prep_param(struct TACBuffer* buffer, struct Call* call, str
 static void tac_call_prep_params_case_sst(struct TACBuffer* buffer, struct Call* call, struct Ctx* ctx, struct MethodDecl* decl) {
 
 	struct SST* sst = ctx_tables(ctx)->sst;
-	char* fname = call->callable->simple_var->name;
+	const char* fname = call->callable->simple_var->name;
 	struct SSTLine* line = sst_get(sst, fname);
 
 	const bool x86 = flags_x86(ctx_flags(ctx));
@@ -62,7 +62,7 @@ static void tac_call_prep_params_case_lvst(struct TACBuffer* buffer, struct Call
 
 bool tac_call(struct TACBuffer* buffer, struct Call* call, struct Ctx* ctx) {
 
-	char* fname = call->callable->simple_var->name;
+	const char* fname = call->callable->simple_var->name;
 	struct SST* sst = ctx_tables(ctx)->sst;
 	struct LVST* lvst = ctx_tables(ctx)->lvst;
 
@@ -82,7 +82,7 @@ bool tac_call(struct TACBuffer* buffer, struct Call* call, struct Ctx* ctx) {
 static void tac_call_case_lvst(struct TACBuffer* buffer, struct Call* call, struct Ctx* ctx) {
 
 	struct LVST* lvst = ctx_tables(ctx)->lvst;
-	char* fname = call->callable->simple_var->name;
+	const char* fname = call->callable->simple_var->name;
 
 	struct LVSTLine* line = lvst_get(lvst, fname);
 	tac_call_prep_params_case_lvst(buffer, call, ctx, line);
@@ -100,7 +100,7 @@ static void tac_call_case_lvst(struct TACBuffer* buffer, struct Call* call, stru
 
 static bool tac_call_case_sst(struct TACBuffer* buffer, struct Call* call, struct Ctx* ctx) {
 
-	char* fname = call->callable->simple_var->name;
+	const char* fname = call->callable->simple_var->name;
 
 	struct SST* sst = ctx_tables(ctx)->sst;
 	struct SSTLine* line = sst_get(sst, fname);
