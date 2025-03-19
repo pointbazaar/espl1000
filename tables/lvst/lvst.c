@@ -124,7 +124,7 @@ struct LVSTLine* lvst_line_ctor(char* name, struct Type* type, bool is_arg) {
 	return line;
 }
 
-struct LVSTLine* lvst_get(struct LVST* lvst, char* name) {
+struct LVSTLine* lvst_get(struct LVST* lvst, const char* name) {
 
 	for (int i = 0; i < lvst->count; i++) {
 
@@ -171,7 +171,7 @@ struct LVSTLine* lvst_arg_at(struct LVST* lvst, uint32_t index) {
 	return NULL;
 }
 
-int32_t lvst_index_of(struct LVST* lvst, char* name) {
+int32_t lvst_index_of(struct LVST* lvst, const char* name) {
 
 	for (int i = 0; i < lvst->count; i++) {
 
@@ -184,7 +184,7 @@ int32_t lvst_index_of(struct LVST* lvst, char* name) {
 	return -1;
 }
 
-bool lvst_contains(struct LVST* lvst, char* name) {
+bool lvst_contains(struct LVST* lvst, const char* name) {
 
 	for (int i = 0; i < lvst->count; i++) {
 
@@ -447,7 +447,7 @@ ssize_t lvst_stack_frame_offset_avr(struct LVST* lvst, char* local_var_name) {
 	return -1;
 }
 
-uint32_t lvst_sizeof_var(struct LVST* lvst, char* name, bool x86) {
+uint32_t lvst_sizeof_var(struct LVST* lvst, const char* name, bool x86) {
 
 	struct LVSTLine* line = lvst_get(lvst, name);
 	assert(line->type);

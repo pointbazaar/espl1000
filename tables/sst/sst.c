@@ -160,7 +160,7 @@ bool sst_add(struct SST* sst, struct SSTLine* line) {
 	return true;
 }
 
-struct SSTLine* sst_get(struct SST* sst, char* name) {
+struct SSTLine* sst_get(struct SST* sst, const char* name) {
 
 	for (int i = 0; i < sst->count; i++) {
 
@@ -186,7 +186,7 @@ struct SSTLine* sst_at(struct SST* sst, uint32_t index) {
 	return sst->lines[index];
 }
 
-int32_t sst_index_of(struct SST* sst, char* name) {
+int32_t sst_index_of(struct SST* sst, const char* name) {
 
 	for (int i = 0; i < sst->count; i++) {
 		if (strcmp(sst->lines[i]->name, name) == 0) { return i; }
@@ -217,7 +217,7 @@ uint32_t sst_args_count(struct SST* sst, char* name) {
 	return decl->count_args;
 }
 
-bool sst_contains(struct SST* sst, char* name) {
+bool sst_contains(struct SST* sst, const char* name) {
 
 	for (int i = 0; i < sst->count; i++) {
 		if (strcmp(sst->lines[i]->name, name) == 0) { return true; }

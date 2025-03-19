@@ -36,7 +36,7 @@ void lvst_add(struct LVST* lvst, struct LVSTLine* line);
 struct LVSTLine* lvst_line_ctor(char* name, struct Type* type, bool is_arg);
 
 // @returns NULL on error
-struct LVSTLine* lvst_get(struct LVST* lvst, char* name);
+struct LVSTLine* lvst_get(struct LVST* lvst, const char* name);
 
 // @returns NULL on error
 struct LVSTLine* lvst_at(struct LVST* lvst, uint32_t index);
@@ -47,9 +47,9 @@ struct LVSTLine* lvst_at(struct LVST* lvst, uint32_t index);
 struct LVSTLine* lvst_arg_at(struct LVST* lvst, uint32_t index);
 
 // @returns < 0 on error
-int32_t lvst_index_of(struct LVST* lvst, char* name);
+int32_t lvst_index_of(struct LVST* lvst, const char* name);
 
-bool lvst_contains(struct LVST* lvst, char* name);
+bool lvst_contains(struct LVST* lvst, const char* name);
 
 void lvst_print(struct LVST* lvst);
 
@@ -81,7 +81,7 @@ int32_t lvst_arg_index(struct LVST* lvst, char* name);
 // @returns 0 on failure
 // @param x86   is the target x86?
 //              The size of 'int' is arch-dependent.
-uint32_t lvst_sizeof_var(struct LVST* lvst, char* name, bool x86);
+uint32_t lvst_sizeof_var(struct LVST* lvst, const char* name, bool x86);
 
 // @returns    number of local variables
 size_t lvst_nvars(struct LVST* lvst);

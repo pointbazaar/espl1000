@@ -34,6 +34,10 @@ struct Syscall syscalls[] = {
 	.number = 9,
     },
     {
+	.name = "munmap",
+	.number = 11,
+    },
+    {
 	.name = "exit",
 	.number = 60,
     },

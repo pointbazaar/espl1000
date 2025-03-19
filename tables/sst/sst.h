@@ -60,9 +60,9 @@ void sst_clear(struct SST* sst);
 bool sst_add(struct SST* sst, struct SSTLine* line);
 
 // @returns NULL on error
-struct SSTLine* sst_get(struct SST* sst, char* name);
+struct SSTLine* sst_get(struct SST* sst, const char* name);
 
-bool sst_contains(struct SST* sst, char* name);
+bool sst_contains(struct SST* sst, const char* name);
 
 uint32_t sst_size(struct SST* sst);
 
@@ -70,7 +70,7 @@ uint32_t sst_size(struct SST* sst);
 struct SSTLine* sst_at(struct SST* sst, uint32_t index);
 
 // @returns < 0 on error
-int32_t sst_index_of(struct SST* sst, char* name);
+int32_t sst_index_of(struct SST* sst, const char* name);
 
 // @returns size of arguments in bytes
 uint32_t sst_args_size_avr(struct SST* sst, char* name);

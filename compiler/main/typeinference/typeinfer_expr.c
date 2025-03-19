@@ -99,7 +99,23 @@ static struct Type* infer_type_expr_ptr_arithmetic(struct ST* st, struct Type* t
 		}
 	}
 
-	typeinfer_err_fatal("pointer arithmetic: not an integer type");
+	char* str = str_type(t2);
+	char* msg = NULL;
+
+	if (!str) {
+		return NULL;
+	}
+
+	if (asprintf(&msg, "pointer arithmetic: not an integer type: %s", str) == -1) {
+		free(str);
+		return NULL;
+	}
+
+	free(str);
+
+	typeinfer_err_fatal(msg);
+
+	free(msg);
 
 	return NULL;
 }

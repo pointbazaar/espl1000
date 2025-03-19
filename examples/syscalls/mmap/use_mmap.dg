@@ -27,5 +27,10 @@ fn main () -> int {
 
 	*ptr = 89;
 
-	return *ptr;
+	local uint8 x;
+	x = *ptr;
+
+	munmap(ptr - 4, 4096);
+
+	return x ;
 }
