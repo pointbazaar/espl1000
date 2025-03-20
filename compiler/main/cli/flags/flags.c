@@ -306,7 +306,7 @@ static bool flags_add_stdlib(struct Flags* flags) {
 	return flags_add_stdlib_recursive(flags, base_path);
 }
 
-struct Flags* makeFlags(int argc, char** argv, bool add_stdlib) {
+struct Flags* makeFlags(int argc, char** argv) {
 
 	struct Flags* flags = malloc(sizeof(struct Flags));
 
@@ -337,7 +337,7 @@ struct Flags* makeFlags(int argc, char** argv, bool add_stdlib) {
 		i += consumed;
 	}
 
-	if (add_stdlib) {
+	if (flags_stdlib(flags)) {
 		if (!flags_add_stdlib(flags)) {
 			return NULL;
 		}
@@ -362,7 +362,7 @@ struct Flags* makeFlags(int argc, char** argv, bool add_stdlib) {
 struct Flags* makeFlagsSingleFile(char* filename) {
 
 	char* argv[] = {"program", filename};
-	return makeFlags(2, argv, false);
+	return makeFlags(2, argv);
 }
 
 void freeFlags(struct Flags* flags) {
@@ -429,6 +429,9 @@ bool flags_dump_tokens(struct Flags* flags) {
 }
 bool flags_dump_data(struct Flags* flags) {
 	return flags_set(flags, "dump-data");
+}
+bool flags_stdlib(struct Flags* flags) {
+	return flags_set(flags, "stdlib");
 }
 
 char* flags_asm_filename(struct Flags* flags) {

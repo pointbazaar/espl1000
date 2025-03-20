@@ -30,7 +30,7 @@ int main(int argc, char* argv[]) {
 
 	mallopt(M_CHECK_ACTION, 3);
 
-	struct Flags* flags = makeFlags(argc, argv, true);
+	struct Flags* flags = makeFlags(argc, argv);
 
 	if (!flags) {
 		return EXIT_FAILURE;
