@@ -1,0 +1,7 @@
+
+fn main () ~> int {
+
+	println_uint64(8329);
+
+	return 0;
+}
