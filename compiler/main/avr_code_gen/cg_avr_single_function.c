@@ -47,6 +47,10 @@ bool compile_and_write_avr_single_function(struct Method* m, struct Ctx* ctx, st
 
 	status = emit_asm_avr_basic_block(root, ctx, ibu);
 
+	if (!status) {
+		fprintf(stderr, "Error allocating registers for function: %s\n", m->decl->name);
+	}
+
 	//delete the basic block graph
 	for (int i = 0; i < nblocks; i++) {
 		basicblock_dtor(graph[i]);

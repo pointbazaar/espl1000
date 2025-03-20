@@ -227,7 +227,7 @@ int32_t rat_find_reg_no_overlap(struct RAT* rat, bool* temps_conflict, size_t nt
 	return -1;
 }
 
-uint32_t rat_ensure_register(struct RAT* rat, uint32_t tmp_index, bool high_regs_only, bool wide) {
+int32_t rat_ensure_register(struct RAT* rat, uint32_t tmp_index, bool high_regs_only, bool wide) {
 	if (rat->arch == RAT_ARCH_X86) {
 		wide = false;
 	}
@@ -238,7 +238,11 @@ uint32_t rat_ensure_register(struct RAT* rat, uint32_t tmp_index, bool high_regs
 
 	if (!rat_has_register(rat, tmp_index)) {
 
-		uint32_t reg = rat_get_free_register(rat, high_regs_only, wide);
+		int reg = rat_get_free_register(rat, high_regs_only, wide);
+
+		if (reg < 0) {
+			return -1;
+		}
 
 		rat_occupy(rat, reg, tmp_index, wide);
 	}

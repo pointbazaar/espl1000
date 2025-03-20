@@ -15,8 +15,11 @@
 #include "cg_avr_single_tac.h"
 #include "cg_avr_basic_block.h"
 
-static void allocate_registers(struct TACBuffer* b, struct RAT* rat, struct ST* st);
-static void allocate_registers_single_tac(struct TAC* t, struct RAT* rat, struct ST* st);
+// @return false on error
+static bool allocate_registers(struct TACBuffer* b, struct RAT* rat, struct ST* st);
+
+// @returns false on error
+static bool allocate_registers_single_tac(struct TAC* t, struct RAT* rat, struct ST* st);
 
 bool emit_asm_avr_basic_block(struct BasicBlock* block, struct Ctx* ctx, struct IBuffer* ibu) {
 
@@ -40,10 +43,15 @@ bool emit_asm_avr_basic_block(struct BasicBlock* block, struct Ctx* ctx, struct 
 	//simply get a new register for each temporary
 	//the mapping tx -> ry can be saved in an array
 	//TODO: use better approach
-	allocate_registers(block->buffer, rat, ctx_tables(ctx));
+	status = allocate_registers(block->buffer, rat, ctx_tables(ctx));
 
 	if (flags_debug(ctx_flags(ctx))) {
 		rat_print(rat);
+	}
+
+	if (!status) {
+		fprintf(stderr, "Error allocating registers\n");
+		goto exit;
 	}
 
 	for (size_t i = 0; i < tacbuffer_count(block->buffer); i++) {
@@ -77,15 +85,20 @@ exit:
 	return status;
 }
 
-static void allocate_registers(struct TACBuffer* b, struct RAT* rat, struct ST* st) {
+static bool allocate_registers(struct TACBuffer* b, struct RAT* rat, struct ST* st) {
 
 	for (size_t i = 0; i < tacbuffer_count(b); i++) {
 		struct TAC* t = tacbuffer_get(b, i);
-		allocate_registers_single_tac(t, rat, st);
+		const bool success = allocate_registers_single_tac(t, rat, st);
+
+		if (!success) {
+			return false;
+		}
 	}
+	return true;
 }
 
-static void allocate_registers_single_tac(struct TAC* t, struct RAT* rat, struct ST* st) {
+static bool allocate_registers_single_tac(struct TAC* t, struct RAT* rat, struct ST* st) {
 
 	struct LVST* lvst = st->lvst;
 	struct SST* sst = st->sst;
@@ -100,14 +113,12 @@ static void allocate_registers_single_tac(struct TAC* t, struct RAT* rat, struct
 		case TAC_CONST_VALUE:
 			dest = tac_dest(t);
 			iswide = tac_const_value(t) > 255 || tac_const_value(t) < -128;
-			rat_ensure_register(rat, dest, true, iswide);
-			break;
+			return rat_ensure_register(rat, dest, true, iswide) > 0;
 
 		case TAC_LOAD_LOCAL_ADDR:
 			dest = tac_dest(t);
 			//address always needs 2 registers
-			rat_ensure_register(rat, dest, true, true);
-			break;
+			return rat_ensure_register(rat, dest, true, true) > 0;
 
 		case TAC_CALL: {
 			iswide = false;
@@ -120,29 +131,26 @@ static void allocate_registers_single_tac(struct TAC* t, struct RAT* rat, struct
 			}
 
 			dest = tac_dest(t);
-			rat_ensure_register(rat, dest, false, iswide);
-		} break;
+			return rat_ensure_register(rat, dest, false, iswide) > 0;
+		}
 
 		case TAC_COPY:
 			dest = tac_dest(t);
 			arg1 = tac_arg1(t);
 			iswide = rat_is_wide(rat, arg1);
-			rat_ensure_register(rat, dest, false, iswide);
-			break;
+			return rat_ensure_register(rat, dest, false, iswide) > 0;
 
 		case TAC_BINARY_OP:
 			dest = tac_dest(t);
 			arg1 = tac_arg1(t);
 			iswide = rat_is_wide(rat, arg1);
-			rat_ensure_register(rat, dest, false, iswide);
-			break;
+			return rat_ensure_register(rat, dest, false, iswide) > 0;
 
 		case TAC_UNARY_OP:
 			dest = tac_dest(t);
 			arg1 = tac_arg1(t);
 			iswide = rat_is_wide(rat, arg1);
-			rat_ensure_register(rat, dest, false, iswide);
-			break;
+			return rat_ensure_register(rat, dest, false, iswide) > 0;
 
 		case TAC_LOAD:
 			//sadly we do not know what is all going to be added/subtracted
@@ -150,10 +158,12 @@ static void allocate_registers_single_tac(struct TAC* t, struct RAT* rat, struct
 			{
 				const bool iswide = tac_const_value(t) >= 2;
 				dest = tac_dest(t);
-				rat_ensure_register(rat, dest, false, iswide);
+				return rat_ensure_register(rat, dest, false, iswide) > 0;
 			}
-			break;
 
-		default: break;
+		default:
+			return true;
 	}
+
+	return false;
 }
