@@ -212,12 +212,15 @@ static void make_associated_filenames(struct Flags* flags) {
 
 static bool flags_add_filename(struct Flags* flags, const char* path) {
 
-	flags->capacity_filenames += 1;
-	flags->filenames = realloc(flags->filenames, flags->capacity_filenames * sizeof(char*));
+	flags->capacity_filenames = flags->count_filenames + 1;
 
-	if (!flags->filenames) {
+	char** new_filenames = realloc(flags->filenames, flags->capacity_filenames * sizeof(char*));
+
+	if (!new_filenames) {
 		return false;
 	}
+
+	flags->filenames = new_filenames;
 
 	char* dup = strdup(path);
 
