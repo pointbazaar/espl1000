@@ -55,7 +55,8 @@ void rat_occupy(struct RAT* rat, uint8_t reg, uint32_t tmp_index, bool wide);
 // @returns        -1 if such a register could not be found
 int32_t rat_find_reg_no_overlap(struct RAT* rat, bool* temps_conflict, size_t ntemps);
 
-uint32_t rat_ensure_register(struct RAT* rat, uint32_t tmp_index, bool high_regs_only, bool wide);
+// @returns < 0 if no register was found
+int32_t rat_ensure_register(struct RAT* rat, uint32_t tmp_index, bool high_regs_only, bool wide);
 
 bool rat_is_wide(struct RAT* rat, uint32_t tmp_index);
 

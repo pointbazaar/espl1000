@@ -6,6 +6,9 @@
 #include <libgen.h>
 #include <malloc.h>
 #include <regex.h>
+#include <dirent.h>
+#include <sys/types.h>
+#include <sys/stat.h>
 
 #include "flags.h"
 #include "all_flags.h"
@@ -207,24 +210,100 @@ static void make_associated_filenames(struct Flags* flags) {
 	flags->obj_filename = make_obj_filename(flags_filenames(flags, 0));
 }
 
-static void flags_add_filename(struct Flags* flags, const char* path) {
+static bool flags_add_filename(struct Flags* flags, const char* path) {
 
 	flags->capacity_filenames += 1;
 	flags->filenames = realloc(flags->filenames, flags->capacity_filenames * sizeof(char*));
 
-	flags->filenames[flags->count_filenames++] = (char*)path;
-}
+	if (!flags->filenames) {
+		return false;
+	}
 
-static void flags_add_stdlib(struct Flags* flags) {
+	char* dup = strdup(path);
+
+	if (!dup) {
+		return false;
+	}
+
+	flags->filenames[flags->count_filenames++] = dup;
+
+	return true;
+}
 
 #define STRINGIFY(x) #x
 #define TOSTRING(x) STRINGIFY(x)
+
+static bool flags_add_stdlib_recursive(struct Flags* flags, const char* base_path) {
+
+	DIR* dir = opendir(base_path);
+	if (!dir) {
+		perror("Failed to open stdlib directory");
+		return false;
+	}
+
+	struct dirent* entry;
+	while ((entry = readdir(dir)) != NULL) {
+
+		if (strcmp(entry->d_name, ".") == 0 || strcmp(entry->d_name, "..") == 0) {
+			continue;
+		}
+
+		char* path = NULL;
+		asprintf(&path, "%s/%s", base_path, entry->d_name);
+
+		struct stat path_stat;
+		if (stat(path, &path_stat) == 0) {
+
+			char* name = entry->d_name;
+
+			if (S_ISREG(path_stat.st_mode)) {
+
+				char* ext = strrchr(name, '.');
+				if (ext && strcmp(ext, ".dg") == 0) {
+					if (flags_debug(flags)) {
+						printf("Adding stdlib file: %s\n", path);
+					}
+					if (!flags_add_filename(flags, path)) {
+						free(path);
+						closedir(dir);
+						return false;
+					}
+				}
+			} else if (S_ISDIR(path_stat.st_mode)) {
+
+				if (flags_debug(flags)) {
+					printf("d_name: '%s'\n", name);
+				}
+
+				if ((strcmp(name, "avr") == 0) && flags_x86(flags)) {
+					// do not include 'avr/' if we are compiling for x86
+					continue;
+				}
+
+				if ((strcmp(name, "avr") != 0) && !flags_x86(flags)) {
+					// only include 'avr/' if we are compiling for avr
+					continue;
+				}
+
+				if (!flags_add_stdlib_recursive(flags, path)) {
+					free(path);
+					closedir(dir);
+					return false;
+				}
+			}
+		}
+
+		free(path);
+	}
+
+	closedir(dir);
+	return true;
+}
+
+// Public function
+static bool flags_add_stdlib(struct Flags* flags) {
 	char* base_path = (ESPL_STDLIB_PATH);
-
-	char* path;
-	asprintf(&path, "%s/syscalls.dg", base_path);
-
-	flags_add_filename(flags, path);
+	return flags_add_stdlib_recursive(flags, base_path);
 }
 
 struct Flags* makeFlags(int argc, char** argv, bool add_stdlib) {
@@ -240,7 +319,7 @@ struct Flags* makeFlags(int argc, char** argv, bool add_stdlib) {
 
 	flags->count_filenames = 0;
 
-	flags->capacity_filenames = argc;
+	flags->capacity_filenames = argc + 1;
 	flags->filenames = malloc(sizeof(char*) * argc);
 
 	if (!flags->filenames) {
@@ -258,7 +337,11 @@ struct Flags* makeFlags(int argc, char** argv, bool add_stdlib) {
 		i += consumed;
 	}
 
-	flags_add_stdlib(flags);
+	if (add_stdlib) {
+		if (!flags_add_stdlib(flags)) {
+			return NULL;
+		}
+	}
 
 	if (flags_set(flags, "help") || flags_set(flags, "version") || flags_set(flags, "rat")) {
 		return flags;
@@ -268,7 +351,7 @@ struct Flags* makeFlags(int argc, char** argv, bool add_stdlib) {
 
 	if (!success) {
 		freeFlags(flags);
-		return false;
+		return NULL;
 	}
 
 	make_associated_filenames(flags);
