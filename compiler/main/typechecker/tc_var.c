@@ -52,7 +52,7 @@ bool tc_simplevar(struct SimpleVar* sv, struct TCCtx* tcctx) {
 	}
 
 	if (!in_lvst && sv->count_indices > 0) {
-		error(tcctx, "cannot use indices for something thats not a local var/arg", TC_ERR_OTHER);
+		error(tcctx, "cannot use indices for something thats not a local var/arg", TC_ERR_CANNOT_INDEX_INTO);
 		return false;
 	}
 
