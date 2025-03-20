@@ -12,13 +12,13 @@ fi
 
 dirty=$(git ls-files --modified)
 
-if [[ $dirty ]]; then
+if [ "$dirty" ]; then
 	echo "check-format has failed"
-	echo $dirty
+	echo "$dirty"
 
 	echo "diff:"
 	diff=$(git diff)
-	echo $diff
+	echo "$diff"
 
 	exit 1
 fi
