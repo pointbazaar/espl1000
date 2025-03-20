@@ -131,12 +131,26 @@ jobs:
             echo "PATH is: $PATH"
             make check-format
 
+  check-shell-scripts:
+    docker:
+      - image: library/archlinux:latest
+    steps:
+      - checkout
+      - run: pacman -Sy
+      - run: pacman -S --noconfirm shellcheck
+      - run:
+          name: "shellcheck"
+          command: |
+            find . -type d \( -name 'build' -o -name 'dependencies' \) -prune -o -type f -name '*.sh' -exec shellcheck --shell=sh {} +
+
+
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
 workflows:
   build-workflow:
     jobs:
       - check-format
+      - check-shell-scripts
       - build-job-ubuntu-2004
       - build-job-ubuntu-2204
       - build-job-archlinux
