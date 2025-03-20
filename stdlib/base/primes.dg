@@ -1,5 +1,5 @@
 //this file provides subroutines for dealing with
-//prime numbers. 
+//prime numbers.
 
 @halts
 fn isprime(uint n) -> bool {
@@ -8,7 +8,7 @@ fn isprime(uint n) -> bool {
 
 	for k in 1 .. n {
 
-		if mod(n, k) == 0
+		if n % k == 0
 		{ count++; }
 	}
 	return count == 2;

@@ -12,9 +12,9 @@ fn arraylist_size(ArrayList list) -> uint	 {
 }
 
 
-fn arraylist_at(ArrayList list, uint index) -> int {
+fn arraylist_at(ArrayList list, uint i) -> int {
 
-	return list.arr[index];
+	return list.arr[i];
 }
 
 fn arraylist_contains(ArrayList list, int elem) -> bool {

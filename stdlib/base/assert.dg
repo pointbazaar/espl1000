@@ -1,0 +1,10 @@
+
+fn assert(bool x) -> int {
+
+	//TODO: print error message
+	if (!x){
+		exit(1);
+	}
+
+	return 0;
+}
