@@ -4,8 +4,8 @@
 
 fn portb_ddrd(uint8 value) -> int {
 
-	*uint8 portb_ddrd = 0x24;
-	*portb_ddrd = value;
+	*uint8 ptr = 0x24;
+	*ptr = value;
 	return 0;
 }
 
@@ -18,6 +18,6 @@ fn portb_write(uint8 value) -> int {
 
 fn portb_read() -> uint8 {
 
-	*uint8 portb_data = 0x25;
-	return *portb_data;
+	*uint8 ptr = 0x25;
+	return *ptr;
 }

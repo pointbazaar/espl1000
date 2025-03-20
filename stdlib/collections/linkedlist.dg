@@ -35,20 +35,20 @@ fn linkedlist_contains(LinkedList l, int value) -> bool {
 fn linkedlist_index_of(LinkedList l, int value) -> int {
 
 	LLNode current = l.head;
-	int index = 0;
+	int i = 0;
 
 	while current.has_next {
 
 		if current.value == value {
-			return index;
+			return i;
 		}
 
 		current = current.next;
-		index++;
+		i++;
 	}
 
 	if current.value == value {
-		return index;
+		return i;
 	}
 
 	return -1;

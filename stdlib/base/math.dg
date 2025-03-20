@@ -27,7 +27,7 @@ fn faculty (uint n) -> uint {
 	if n <= 1 { return 1; }
 	
 	uint res = 1;
-	for k in 1 .. n { res *= k; }
+	for k in 1 .. n { res = res * k; }
 	return res;
 }
 
