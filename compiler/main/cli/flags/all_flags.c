@@ -103,6 +103,13 @@ struct Flag all_flags[] = {
 	.arg_default_value = NULL,
 	.is_set = false,
     },
+    {
+	.name = "stdlib",
+	.description = "compile stdlib/ aswell",
+	.has_arg = false,
+	.arg_default_value = NULL,
+	.is_set = false,
+    },
 };
 
 size_t all_flags_count() {

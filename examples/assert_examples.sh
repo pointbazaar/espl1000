@@ -17,9 +17,15 @@ for test_file in $(find . -name '*.dg'); do
 		continue
 	fi
 
+	STDLIB=""
+	use_stdlib_file="${test_file%.*}.stdlib"
+	if [[ -f "$use_stdlib_file" ]]; then
+		STDLIB="-stdlib"
+	fi
+
 	expected_exit=$(cat "$expected_exit_file")
 
-	sd -x86 -o /tmp/program "$test_file"
+	sd -x86 ${STDLIB} -o /tmp/program "$test_file"
 	if [[ $? -ne 0 ]]; then
 		echo "Compile failed for $test_file"
 		FAIL=$((FAIL + 1))
@@ -47,7 +53,13 @@ for test_file in $(find . -name '*.dg'); do
 		continue
 	fi
 
-	sd -x86 -o /tmp/program "$test_file"
+	STDLIB=""
+	use_stdlib_file="${test_file%.*}.stdlib"
+	if [[ -f "$use_stdlib_file" ]]; then
+		STDLIB="-stdlib"
+	fi
+
+	sd -x86 ${STDLIB} -o /tmp/program "$test_file"
 	if [[ $? -ne 0 ]]; then
 		echo "Compile failed for $test_file"
 		FAIL=$((FAIL + 1))
