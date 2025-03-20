@@ -27,7 +27,7 @@ bool tc_address_of(struct AddressOf* ao, struct TCCtx* tcctx) {
 		char* msg;
 		asprintf(&msg, "\tcannot deref subroutine type:%s", str_t1);
 
-		error_snippet_and_msg(tcctx, snippet, msg, TC_ERR_OTHER);
+		error_snippet_and_msg(tcctx, snippet, msg, TC_ERR_CANNOT_DEREF_THIS);
 
 		free(snippet);
 		free(msg);
@@ -57,7 +57,7 @@ bool tc_address_of(struct AddressOf* ao, struct TCCtx* tcctx) {
 
 	asprintf(&msg, "\tcannot deref type:%s", str_t1);
 
-	error_snippet_and_msg(tcctx, snippet, msg, TC_ERR_OTHER);
+	error_snippet_and_msg(tcctx, snippet, msg, TC_ERR_CANNOT_DEREF_THIS);
 
 	free(snippet);
 	free(msg);

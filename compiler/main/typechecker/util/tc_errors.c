@@ -30,12 +30,13 @@ const char* tc_err_messages[TC_ERR_END] = {
 
     [TC_ERR_INDEX_NOT_INTEGER_TYPE] = "index is not of an integer type",
     [TC_ERR_TOO_MANY_INDICES] = "too many indices",
+    [TC_ERR_CANNOT_INDEX_INTO] = "cannot index into that",
 
     [TC_ERR_LOCAL_VAR_NOT_A_SUBROUTINE] = "variable is not of a function type",
 
     [TC_ERR_SIDE_EFFECT_IN_PURE_CONTEXT] = "side effect in a pure context",
 
-    [TC_ERR_OTHER] = "other type error (unspecified)",
+    [TC_ERR_CANNOT_DEREF_THIS] = "tried to deref something that cannot",
 };
 
 void print_tc_error(struct TCError* tc_err);
@@ -48,7 +49,7 @@ static void resetcolor() {
 	printf("\033[39m");
 }
 
-static struct TCError* tc_error_ctor() {
+static struct TCError* tc_error_ctor(enum TC_ERR_KIND kind) {
 
 	struct TCError* res = malloc(sizeof(struct TCError));
 
@@ -59,28 +60,24 @@ static struct TCError* tc_error_ctor() {
 	res->next = NULL;
 	res->opt_msg = NULL;
 	res->filename = NULL;
-	res->err_kind = TC_ERR_OTHER;
+	res->err_kind = kind;
 	res->opt_snippet = NULL;
 	return res;
 }
 
-static struct TCError* obtain_next_error(struct TCCtx* tcctx) {
+static void tc_insert_error(struct TCCtx* tcctx, struct TCError* next) {
 
-	struct TCError* next;
+	struct TCError* last = tcctx->tc_last_err;
 
-	if (tcctx->tc_first_err == NULL) {
-		tcctx->tc_first_err = tc_error_ctor();
-		tcctx->tc_last_err = tcctx->tc_first_err;
-
-		next = tcctx->tc_last_err;
+	if (last == NULL) {
+		tcctx->tc_first_err = next;
+		tcctx->tc_last_err = next;
 	} else {
-		next = tc_error_ctor();
 		tcctx->tc_last_err->next = next;
 		tcctx->tc_last_err = next;
 	}
 
 	tcctx->tc_err_count += 1;
-	return next;
 }
 
 void error(struct TCCtx* tcctx, char* msg, enum TC_ERR_KIND err_kind) {
@@ -95,7 +92,11 @@ void error_snippet(struct TCCtx* tcctx, char* snippet, enum TC_ERR_KIND err_kind
 
 void error_snippet_and_msg(struct TCCtx* tcctx, char* snippet, char* msg, enum TC_ERR_KIND err_kind) {
 
-	struct TCError* next = obtain_next_error(tcctx);
+	struct TCError* next = tc_error_ctor(err_kind);
+
+	if (!next) {
+		return;
+	}
 
 	next->filename = tcctx->current_filename;
 	next->opt_msg = msg;
@@ -103,6 +104,8 @@ void error_snippet_and_msg(struct TCCtx* tcctx, char* snippet, char* msg, enum T
 	next->err_kind = err_kind;
 
 	next->opt_snippet = snippet;
+
+	tc_insert_error(tcctx, next);
 
 	if (tcctx->print_errors) {
 		print_tc_error(next);
