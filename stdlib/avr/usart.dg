@@ -6,6 +6,8 @@ fn usart_tx_char (char c) ~> uint8 {
 
 	*char ptr = 0xc6;
 	*ptr = c;
+
+	return 0;
 }
 
 fn usart_tx (uint8 c) ~> uint8 {
@@ -60,6 +62,8 @@ fn usart_init_baudrate_ubbr0h(uint16 value) ~> uint8 {
 
 	*uint8 ptr = 0xc5;
 	*ptr = (value >> 8) & 0xff;
+
+	return 0;
 }
 
 fn usart_init_baudrate(uint16 baudrate) ~> uint8 {
