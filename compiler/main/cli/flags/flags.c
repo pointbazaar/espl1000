@@ -254,6 +254,11 @@ static bool flags_add_stdlib_recursive(struct Flags* flags, const char* base_pat
 		char* path = NULL;
 		asprintf(&path, "%s/%s", base_path, entry->d_name);
 
+		if (!path) {
+			closedir(dir);
+			return false;
+		}
+
 		struct stat path_stat;
 		if (stat(path, &path_stat) == 0) {
 
