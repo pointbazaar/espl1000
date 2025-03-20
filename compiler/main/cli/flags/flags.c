@@ -207,6 +207,14 @@ static void make_associated_filenames(struct Flags* flags) {
 	flags->obj_filename = make_obj_filename(flags_filenames(flags, 0));
 }
 
+static void flags_add_filename(struct Flags* flags, const char* path) {
+
+	flags->capacity_filenames += 1;
+	flags->filenames = realloc(flags->filenames, flags->capacity_filenames * sizeof(char*));
+
+	flags->filenames[flags->count_filenames++] = (char*)path;
+}
+
 static void flags_add_stdlib(struct Flags* flags) {
 
 #define STRINGIFY(x) #x
@@ -216,7 +224,7 @@ static void flags_add_stdlib(struct Flags* flags) {
 	char* path;
 	asprintf(&path, "%s/syscalls.dg", base_path);
 
-	flags->filenames[flags->count_filenames++] = path;
+	flags_add_filename(flags, path);
 }
 
 struct Flags* makeFlags(int argc, char** argv, bool add_stdlib) {
@@ -232,10 +240,7 @@ struct Flags* makeFlags(int argc, char** argv, bool add_stdlib) {
 
 	flags->count_filenames = 0;
 
-	//a capacity of argc guarantees that all
-	//filenames will fit, but also:
-	// - stdlib/syscalls.dg
-	flags->capacity_filenames = argc + 1;
+	flags->capacity_filenames = argc;
 	flags->filenames = malloc(sizeof(char*) * argc);
 
 	if (!flags->filenames) {
