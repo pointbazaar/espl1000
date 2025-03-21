@@ -17,5 +17,12 @@ void compile_tac_load_x86(struct RAT* rat, struct TAC* tac, struct IBuffer* ibu)
 
 	const uint8_t width = tac_load_store_width(tac);
 
-	mov_load_width(reg_dest, reg_src, width, c);
+	if (width < 4) {
+		// movzx: zero-extend the upper bytes of dest register
+		movzx_load_width(reg_dest, reg_src, width, c);
+	} else {
+		// in case of 32-bit source,
+		// a mov should automatically zero out the upper bytes of dest register
+		mov_load_width(reg_dest, reg_src, width, c);
+	}
 }

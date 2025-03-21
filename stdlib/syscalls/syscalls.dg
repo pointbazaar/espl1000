@@ -3,8 +3,20 @@
 @syscall
 fn write(uint fd, *char buf, uint64 count) -> int64 {}
 
+// https://man7.org/linux/man-pages/man2/open.2.html
+// flags:
+// - O_RDONLY 0
+// - O_WRONLY 1
+// - O_RDWR 2
+// mode:
+// - O_CREAT 0x40
+// - O_EXCL 0x80
+// - ...
 @syscall
 fn open(*char filename, int flags, int mode) -> int {}
+
+@syscall
+fn close(int fd) -> int {}
 
 @syscall
 fn read(int fd, *char buf, uint64 count) -> int64 {}

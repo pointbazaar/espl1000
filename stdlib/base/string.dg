@@ -3,9 +3,13 @@
 fn strlen(*char str) -> uint64 {
 
 	uint64 l = 0;
-	while *str != '\0' {
+	*char p = str;
+	char c = *p;
+
+	while c != 0 {
 		l++;
-		str += 1;
+		p += 1;
+		c = *p;
 	}
 	return l;
 }
