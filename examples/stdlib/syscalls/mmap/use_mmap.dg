@@ -10,12 +10,11 @@ fn main () -> int {
 	ptr = mmap(0, 4096, 0x3, 0x21, -1, 0);
 
 	// MAP_FAILED = 0xffff ffff ffff ffff
-	uint64 map_failed = 0xffffffffffffffff;
 
 	uint64 value = ptr;
 
 	local *char msg;
-	if value == map_failed {
+	if value == 0xffffffffffffffff {
 		msg = "map failed\n";
 		write(1, msg, 11);
 	} else {

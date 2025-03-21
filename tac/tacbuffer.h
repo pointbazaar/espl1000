@@ -34,3 +34,12 @@ size_t tacbuffer_count(struct TACBuffer* buffer);
 // @returns -1 if 'tac' could not be found in 'buffer'
 // @returns index otherwise
 ssize_t tacbuffer_indexof(struct TACBuffer* buffer, struct TAC* tac);
+
+// @param i1 index 1
+// @param i2 index 2
+// @returns false on error
+bool tacbuffer_swap(struct TACBuffer* buffer, uint32_t i1, uint32_t i2);
+
+// @brief applies some simple optimizations to the buffer
+// @returns false on error
+bool tacbuffer_optimize_reorder(struct TACBuffer* buffer, bool debug);

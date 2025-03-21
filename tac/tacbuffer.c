@@ -126,3 +126,24 @@ ssize_t tacbuffer_indexof(struct TACBuffer* buffer, struct TAC* tac) {
 	//FATAL ERROR
 	return -1;
 }
+
+bool tacbuffer_swap(struct TACBuffer* buf, uint32_t i1, uint32_t i2) {
+
+	if (!buf) {
+		return false;
+	}
+
+	if (i1 == i2) {
+		return false;
+	}
+
+	if (i1 >= tacbuffer_count(buf) || i2 >= tacbuffer_count(buf)) {
+		return false;
+	}
+
+	struct TAC* tmp = buf->buffer[i1];
+	buf->buffer[i1] = buf->buffer[i2];
+	buf->buffer[i2] = tmp;
+
+	return true;
+}

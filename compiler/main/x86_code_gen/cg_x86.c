@@ -64,6 +64,8 @@ bool compile_and_write_x86(struct AST* ast, struct Ctx* ctx) {
 	nop(c);
 	nop(c);
 
+	bool success = true;
+
 	//convert AST into 3 address code with temporaries, use recursive descent to make TAC
 	for (size_t i = 0; i < ast->count_namespaces; i++) {
 		struct Namespace* ns = ast->namespaces[i];
@@ -71,7 +73,11 @@ bool compile_and_write_x86(struct AST* ast, struct Ctx* ctx) {
 		for (size_t j = 0; j < ns->count_methods; j++) {
 			struct Method* m = ns->methods[j];
 
-			compile_and_write_x86_single_function(m, ctx, ibu);
+			success = compile_and_write_x86_single_function(m, ctx, ibu);
+
+			if (!success) {
+				goto exit;
+			}
 		}
 	}
 
@@ -91,9 +97,10 @@ bool compile_and_write_x86(struct AST* ast, struct Ctx* ctx) {
 
 	ibu_write(ibu, fout);
 
+exit:
 	fclose(fout);
 
 	ibu_dtor(ibu);
 
-	return true;
+	return success;
 }

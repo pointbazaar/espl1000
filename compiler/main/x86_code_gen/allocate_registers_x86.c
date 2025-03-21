@@ -13,26 +13,36 @@
 
 #include "allocate_registers_x86.h"
 
-static void allocate_registers_single_tac(struct TAC* t, struct RAT* rat, struct ST* st, struct Liveness* live);
+static bool allocate_registers_single_tac(struct TAC* t, struct RAT* rat, struct ST* st, struct Liveness* live);
 
-void allocate_registers_basicblocks(struct BasicBlock** graph, size_t nblocks, struct RAT* rat, struct ST* st, struct Liveness* live) {
+bool allocate_registers_basicblocks(struct BasicBlock** graph, size_t nblocks, struct RAT* rat, struct ST* st, struct Liveness* live) {
 
 	for (size_t i = 0; i < nblocks; i++) {
-		allocate_registers(graph[i]->buffer, rat, st, live);
+		if (!allocate_registers(graph[i]->buffer, rat, st, live)) {
+			return false;
+		}
 	}
+
+	return true;
 }
 
-void allocate_registers(struct TACBuffer* b, struct RAT* rat, struct ST* st, struct Liveness* live) {
+// @returns false on error
+bool allocate_registers(struct TACBuffer* b, struct RAT* rat, struct ST* st, struct Liveness* live) {
 
 	assert(live != NULL);
 
 	for (size_t i = 0; i < tacbuffer_count(b); i++) {
 		struct TAC* t = tacbuffer_get(b, i);
-		allocate_registers_single_tac(t, rat, st, live);
+
+		if (!allocate_registers_single_tac(t, rat, st, live)) {
+			return false;
+		}
 	}
+
+	return true;
 }
 
-static uint32_t rat_ensure_register_x86(struct RAT* rat, uint32_t tmp, struct Liveness* live) {
+static int32_t rat_ensure_register_x86(struct RAT* rat, uint32_t tmp, struct Liveness* live) {
 	// on x86 we do not have to use register pairs.
 	// shoo shoo, the register will be large enough :)
 
@@ -59,21 +69,28 @@ static uint32_t rat_ensure_register_x86(struct RAT* rat, uint32_t tmp, struct Li
 
 	const int32_t reg = rat_find_reg_no_overlap(rat, live_overlap, ntemps);
 
-	assert(reg >= 0);
+	if (reg < 0) {
+		fprintf(stderr, "%s:%s: could not find register for t%d\n", __FILE__, __func__, tmp);
+		rat_print(rat);
+	}
 
 	free(live_overlap);
 
-	rat_occupy(rat, reg, tmp, false);
+	if (reg >= 0) {
+		rat_occupy(rat, reg, tmp, false);
+	}
 
 	return reg;
 }
 
-static void allocate_registers_single_tac(struct TAC* t, struct RAT* rat, struct ST* st, struct Liveness* live) {
+static bool allocate_registers_single_tac(struct TAC* t, struct RAT* rat, struct ST* st, struct Liveness* live) {
 
 	struct LVST* lvst = st->lvst;
 	struct SST* sst = st->sst;
 
 	if (tac_needs_register(t)) {
-		rat_ensure_register_x86(rat, tac_dest(t), live);
+		return rat_ensure_register_x86(rat, tac_dest(t), live) >= 0;
 	}
+
+	return true;
 }
