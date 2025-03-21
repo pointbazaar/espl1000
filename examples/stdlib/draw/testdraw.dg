@@ -1,0 +1,28 @@
+
+// Example program for drawing an image in PPM format
+// To convert it to png, imagemagick can be used
+// ./a.out > /tmp/test.ppm
+// magick /tmp/test.ppm /tmp/test.png
+
+fn main () -> int {
+
+	uint64 n = 10;
+
+	int fd = 1;
+
+	ppm_create(fd, n, n, 15);
+
+	uint8 red = 0;
+	uint8 green = 0;
+
+	for r in 0 .. n-1 {
+		red = r % 15;
+		for c in 0 .. n-1 {
+			green = c % 15;
+			ppm_pixel(fd, red, green, 2);
+		}
+		ppm_newline(fd);
+	}
+
+	return 0;
+}

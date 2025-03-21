@@ -10,6 +10,7 @@ fn write(uint fd, *char buf, uint64 count) -> int64 {}
 // - O_RDWR 2
 // - O_CREAT 0x40
 // - O_EXCL 0x80
+// - O_TRUNC 0x200
 // - ...
 // mode:
 // - 0666 -> 0x1b6 // good choice?
