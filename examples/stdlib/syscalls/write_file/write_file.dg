@@ -1,0 +1,21 @@
+fn main () ~> int {
+
+	[char] filename = "/tmp/write_file.txt";
+	*char path = filename;
+	int fd = open(path, 2 | 0x40, 0x1b6);
+
+	if fd < 0 {
+		return 1;
+	}
+
+	[char] buf = "hello,file\n";
+	*char ptr = buf;
+
+	int written = write(fd, ptr, strlen(ptr));
+
+	if (written < 11){
+		return written;
+	}
+
+	return 0;
+}
