@@ -113,12 +113,12 @@ static bool allocate_registers_single_tac(struct TAC* t, struct RAT* rat, struct
 		case TAC_CONST_VALUE:
 			dest = tac_dest(t);
 			iswide = tac_const_value(t) > 255 || tac_const_value(t) < -128;
-			return rat_ensure_register(rat, dest, true, iswide) > 0;
+			return rat_ensure_register(rat, dest, true, iswide) >= 0;
 
 		case TAC_LOAD_LOCAL_ADDR:
 			dest = tac_dest(t);
 			//address always needs 2 registers
-			return rat_ensure_register(rat, dest, true, true) > 0;
+			return rat_ensure_register(rat, dest, true, true) >= 0;
 
 		case TAC_CALL: {
 			iswide = false;
@@ -131,26 +131,26 @@ static bool allocate_registers_single_tac(struct TAC* t, struct RAT* rat, struct
 			}
 
 			dest = tac_dest(t);
-			return rat_ensure_register(rat, dest, false, iswide) > 0;
+			return rat_ensure_register(rat, dest, false, iswide) >= 0;
 		}
 
 		case TAC_COPY:
 			dest = tac_dest(t);
 			arg1 = tac_arg1(t);
 			iswide = rat_is_wide(rat, arg1);
-			return rat_ensure_register(rat, dest, false, iswide) > 0;
+			return rat_ensure_register(rat, dest, false, iswide) >= 0;
 
 		case TAC_BINARY_OP:
 			dest = tac_dest(t);
 			arg1 = tac_arg1(t);
 			iswide = rat_is_wide(rat, arg1);
-			return rat_ensure_register(rat, dest, false, iswide) > 0;
+			return rat_ensure_register(rat, dest, false, iswide) >= 0;
 
 		case TAC_UNARY_OP:
 			dest = tac_dest(t);
 			arg1 = tac_arg1(t);
 			iswide = rat_is_wide(rat, arg1);
-			return rat_ensure_register(rat, dest, false, iswide) > 0;
+			return rat_ensure_register(rat, dest, false, iswide) >= 0;
 
 		case TAC_LOAD:
 			//sadly we do not know what is all going to be added/subtracted
@@ -158,7 +158,7 @@ static bool allocate_registers_single_tac(struct TAC* t, struct RAT* rat, struct
 			{
 				const bool iswide = tac_const_value(t) >= 2;
 				dest = tac_dest(t);
-				return rat_ensure_register(rat, dest, false, iswide) > 0;
+				return rat_ensure_register(rat, dest, false, iswide) >= 0;
 			}
 
 		case TAC_SETUP_STACKFRAME:
