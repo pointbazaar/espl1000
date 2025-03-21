@@ -2,7 +2,7 @@ fn main () ~> int {
 
 	// since this is run as part of tests,
 	// the path needs to be relative from examples/
-	[char] filename = "syscalls/read_file/read_file.dg";
+	[char] filename = "stdlib/syscalls/read_file/read_file.dg";
 	*char path = filename;
 	int fd = open(path, 0, 1);
 
