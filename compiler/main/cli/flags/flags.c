@@ -236,6 +236,67 @@ static bool flags_add_filename(struct Flags* flags, const char* path) {
 #define STRINGIFY(x) #x
 #define TOSTRING(x) STRINGIFY(x)
 
+static bool flags_add_stdlib_recursive(struct Flags* flags, const char* base_path);
+
+static bool flags_add_stdlib_entry(struct Flags* flags, const char* base_path, struct dirent* entry) {
+
+	if (strcmp(entry->d_name, ".") == 0 || strcmp(entry->d_name, "..") == 0) {
+		return true;
+	}
+
+	char* path = NULL;
+	asprintf(&path, "%s/%s", base_path, entry->d_name);
+
+	if (!path) {
+		return false;
+	}
+
+	struct stat path_stat;
+	if (stat(path, &path_stat) != 0) {
+		return false;
+	}
+
+	char* name = entry->d_name;
+
+	if (S_ISREG(path_stat.st_mode)) {
+
+		char* ext = strrchr(name, '.');
+		if (ext && strcmp(ext, ".dg") == 0) {
+			if (flags_debug(flags)) {
+				printf("Adding stdlib file: %s\n", path);
+			}
+			if (!flags_add_filename(flags, path)) {
+				free(path);
+				return false;
+			}
+		}
+	} else if (S_ISDIR(path_stat.st_mode)) {
+
+		if (flags_debug(flags)) {
+			printf("d_name: '%s'\n", name);
+		}
+
+		if ((strcmp(name, "avr") == 0) && flags_x86(flags)) {
+			// do not include 'avr/' if we are compiling for x86
+			return true;
+		}
+
+		if ((strcmp(name, "avr") != 0) && !flags_x86(flags)) {
+			// only include 'avr/' if we are compiling for avr
+			return true;
+		}
+
+		if (!flags_add_stdlib_recursive(flags, path)) {
+			free(path);
+			return false;
+		}
+	}
+
+	free(path);
+
+	return true;
+}
+
 static bool flags_add_stdlib_recursive(struct Flags* flags, const char* base_path) {
 
 	DIR* dir = opendir(base_path);
@@ -245,67 +306,18 @@ static bool flags_add_stdlib_recursive(struct Flags* flags, const char* base_pat
 	}
 
 	struct dirent* entry;
+	bool success = true;
 	while ((entry = readdir(dir)) != NULL) {
 
-		if (strcmp(entry->d_name, ".") == 0 || strcmp(entry->d_name, "..") == 0) {
-			continue;
+		success = flags_add_stdlib_entry(flags, base_path, entry);
+		if (!success) {
+			break;
 		}
-
-		char* path = NULL;
-		asprintf(&path, "%s/%s", base_path, entry->d_name);
-
-		if (!path) {
-			closedir(dir);
-			return false;
-		}
-
-		struct stat path_stat;
-		if (stat(path, &path_stat) == 0) {
-
-			char* name = entry->d_name;
-
-			if (S_ISREG(path_stat.st_mode)) {
-
-				char* ext = strrchr(name, '.');
-				if (ext && strcmp(ext, ".dg") == 0) {
-					if (flags_debug(flags)) {
-						printf("Adding stdlib file: %s\n", path);
-					}
-					if (!flags_add_filename(flags, path)) {
-						free(path);
-						closedir(dir);
-						return false;
-					}
-				}
-			} else if (S_ISDIR(path_stat.st_mode)) {
-
-				if (flags_debug(flags)) {
-					printf("d_name: '%s'\n", name);
-				}
-
-				if ((strcmp(name, "avr") == 0) && flags_x86(flags)) {
-					// do not include 'avr/' if we are compiling for x86
-					continue;
-				}
-
-				if ((strcmp(name, "avr") != 0) && !flags_x86(flags)) {
-					// only include 'avr/' if we are compiling for avr
-					continue;
-				}
-
-				if (!flags_add_stdlib_recursive(flags, path)) {
-					free(path);
-					closedir(dir);
-					return false;
-				}
-			}
-		}
-
-		free(path);
 	}
 
 	closedir(dir);
-	return true;
+
+	return success;
 }
 
 // Public function
