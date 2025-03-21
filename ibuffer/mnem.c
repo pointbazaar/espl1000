@@ -158,6 +158,7 @@ char* MNEM[] = {
     [X86_MOV_LOAD] = "mov",
     [X86_MOV_STORE] = "mov",
     [X86_MOV_LOAD_WIDTH] = "mov",
+    [X86_MOVZX_LOAD_WIDTH] = "movzx",
     [X86_MOV_STORE_WIDTH] = "mov",
     [X86_MOV_CONST_SYMBOL] = "mov",
     [X86_CMOVE] = "cmove",
