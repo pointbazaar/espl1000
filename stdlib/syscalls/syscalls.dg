@@ -8,10 +8,13 @@ fn write(uint fd, *char buf, uint64 count) -> int64 {}
 // - O_RDONLY 0
 // - O_WRONLY 1
 // - O_RDWR 2
-// mode:
 // - O_CREAT 0x40
 // - O_EXCL 0x80
 // - ...
+// mode:
+// - 0666 -> 0x1b6 // good choice?
+// - 0444 -> 0x124
+// - 0777 -> 0x1FF
 @syscall
 fn open(*char filename, int flags, int mode) -> int {}
 
