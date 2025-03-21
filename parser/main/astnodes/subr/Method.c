@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
 
@@ -21,11 +22,15 @@ struct Method* makeMethod(struct TokenList* tokens) {
 
 	res->decl = makeMethodDecl(copy);
 	if (!res->decl) {
+		printf("parsing error, expected a method declaration, but got:\n");
+		list_print(copy);
 		goto err_decl;
 	}
 
 	res->block = makeStmtBlock(copy);
 	if (res->block == NULL) {
+		printf("parsing error, expected a statement block, but got:\n");
+		list_print(copy);
 		goto err_block;
 	}
 
