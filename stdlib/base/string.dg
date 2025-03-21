@@ -15,6 +15,10 @@ fn strlen(*char str) -> uint64 {
 }
 
 fn print_digit(uint64 d) -> int {
+	return fprint_digit(1, d);
+}
+
+fn fprint_digit(int fd, uint64 d) -> int {
 
 	if d > 9 {
 		return -1; // Error: not a single digit
@@ -23,30 +27,38 @@ fn print_digit(uint64 d) -> int {
 	[char] digits = "0123456789";
 	*char ptr = digits;
 	ptr += d;
-	write(1, ptr, 1);
+	write(fd, ptr, 1);
 	return 0;
 }
 
 fn print_uint64(uint64 x) -> int {
+	return fprint_uint64(1, x);
+}
+
+fn fprint_uint64(int fd, uint64 x) -> int {
 
 	uint64 d = x % 10;
 
 	uint64 rest = x / 10;
 
 	if rest != 0{
-		print_uint64(rest);
+		fprint_uint64(fd, rest);
 	}
 
-	print_digit(d);
+	fprint_digit(fd, d);
 
 	return 0;
 }
 
 fn println() -> int {
+	return fprintln(1);
+}
+
+fn fprintln(int fd) -> int {
 
 	[char] str1 = "\n";
 	*char ptr = str1;
-	write(1, ptr, 1);
+	write(fd, ptr, 1);
 
 	return 0;
 }

@@ -1,0 +1,44 @@
+// PPM is a very simple image format
+
+// https://de.wikipedia.org/wiki/Portable_Anymap
+// https://netpbm.sourceforge.net/doc/ppm.html
+
+fn ppm_create(int fd, uint64 w, uint64 h, uint64 maxvalue) -> int {
+
+	[char] buf = "P3\n";
+	*char ptr = buf;
+
+	write(fd, ptr, strlen(ptr));
+
+	fprint_uint64(fd, w);
+	fprintln(fd);
+	fprint_uint64(fd, h);
+	fprintln(fd);
+	fprint_uint64(fd, maxvalue);
+	fprintln(fd);
+
+	return 0;
+}
+
+fn ppm_pixel (int fd, uint8 red, uint8 green, uint8 blue) -> int {
+
+	[char] space = " ";
+	*char ptr = space;
+
+	fprint_uint64(fd, red);
+	write(fd, ptr, 1);
+	fprint_uint64(fd, green);
+	write(fd, ptr, 1);
+	fprint_uint64(fd, blue);
+	write(fd, ptr, 1);
+
+	write(fd, ptr, 1);
+
+	return 0;
+}
+
+fn ppm_newline(int fd) -> int {
+
+	fprintln(fd);
+	return 0;
+}
