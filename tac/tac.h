@@ -48,40 +48,40 @@ enum TAC_OP {
 enum TAC_KIND {
 
 	TAC_BINARY_OP = 0, //e.g. t1 += t2
-	TAC_UNARY_OP, //e.g. t1 = -t2;
+	TAC_UNARY_OP = 1, //e.g. t1 = -t2;
 
-	TAC_GOTO, //unconditional jump
-	TAC_IF_GOTO, //conditional jump depending on a single temporary
-	TAC_IF_CMP_GOTO,
+	TAC_GOTO = 2, //unconditional jump
+	TAC_IF_GOTO = 3, //conditional jump depending on a single temporary
+	TAC_IF_CMP_GOTO = 4,
 
-	TAC_COPY, //copy one temp into another
-	TAC_STORE_LOCAL, //store local var into stackframe
-	TAC_LOAD_LOCAL_ADDR, //load the addr of a local variable
-	TAC_LOAD_FUNCTION_PTR, //load the addr of a function
+	TAC_COPY = 5, //copy one temp into another
+	TAC_STORE_LOCAL = 6, //store local var into stackframe
+	TAC_LOAD_LOCAL_ADDR = 7, //load the addr of a local variable
+	TAC_LOAD_FUNCTION_PTR = 8, //load the addr of a function
 
-	TAC_CONST_VALUE,
+	TAC_CONST_VALUE = 9,
 
 	// Load a symbol from .data segment into register.
 	// The assembler will figure out the rest here.
-	TAC_CONST_DATA,
+	TAC_CONST_DATA = 10,
 
-	TAC_CALL, //call to a label (string) without anything else
-	TAC_ICALL, // call to a temporary 't1 = call t2'.
-	           // So we can comput arbitrary address to call.
-	           // Good for calling function pointers
-	TAC_PARAM,
-	TAC_RETURN, //return, without arguments
+	TAC_CALL = 11, //call to a label (string) without anything else
+	TAC_ICALL = 12, // call to a temporary 't1 = call t2'.
+	                // So we can comput arbitrary address to call.
+	                // Good for calling function pointers
+	TAC_PARAM = 13,
+	TAC_RETURN = 14, //return, without arguments
 
-	TAC_SETUP_STACKFRAME, //create space on stack for locals, load SP
-	TAC_SETUP_SP, //setup the stack pointer. used at the start of programs
+	TAC_SETUP_STACKFRAME = 15, //create space on stack for locals, load SP
+	TAC_SETUP_SP = 16, //setup the stack pointer. used at the start of programs
 
-	TAC_NOP,
+	TAC_NOP = 17,
 
-	TAC_LABEL_INDEXED,
-	TAC_LABEL_FUNCTION,
+	TAC_LABEL_INDEXED = 18,
+	TAC_LABEL_FUNCTION = 19,
 
-	TAC_LOAD, //t1 = [t2]
-	TAC_STORE, //[t1] = t2
+	TAC_LOAD = 20, //t1 = [t2]
+	TAC_STORE = 21, //[t1] = t2
 };
 
 #define TAC_NO_LABEL 0

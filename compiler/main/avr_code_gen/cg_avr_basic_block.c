@@ -161,8 +161,23 @@ static bool allocate_registers_single_tac(struct TAC* t, struct RAT* rat, struct
 				return rat_ensure_register(rat, dest, false, iswide) > 0;
 			}
 
-		default:
+		case TAC_SETUP_STACKFRAME:
+		case TAC_SETUP_SP:
+		case TAC_NOP:
+		case TAC_LABEL_INDEXED:
+		case TAC_LABEL_FUNCTION:
+		case TAC_RETURN:
+		case TAC_IF_GOTO:
+		case TAC_IF_CMP_GOTO:
+		case TAC_GOTO:
+		case TAC_STORE:
+		case TAC_STORE_LOCAL:
+		case TAC_PARAM:
 			return true;
+
+		default:
+			fprintf(stderr, "%s:%s: unhandled case %d\n", __FILE__, __func__, tac_kind(t));
+			return false;
 	}
 
 	return false;
