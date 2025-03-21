@@ -23,10 +23,12 @@
 #include "cli/flags/flags.h"
 #include "liveness/liveness.h"
 
-void compile_and_write_x86_single_function(struct Method* m, struct Ctx* ctx, struct IBuffer* ibu) {
+bool compile_and_write_x86_single_function(struct Method* m, struct Ctx* ctx, struct IBuffer* ibu) {
+
+	bool success = true;
 
 	if (has_annotation(m->super.annotations, ANNOT_EXTERN) || has_annotation(m->super.annotations, ANNOT_SYSCALL)) {
-		return;
+		return true;
 	}
 
 	struct TACBuffer* buffer = tacbuffer_ctor();
@@ -42,9 +44,23 @@ void compile_and_write_x86_single_function(struct Method* m, struct Ctx* ctx, st
 
 	tac_method(buffer, m, ctx);
 
-	//print the TAC for debug
-	if (flags_debug(ctx_flags(ctx)))
+	if (flags_debug(ctx_flags(ctx))) {
+
+		printf("\nTACBuffer before optimization:\n");
 		tacbuffer_print(buffer, st->sst, st->lvst);
+	}
+
+	success = tacbuffer_optimize_reorder(buffer, flags_debug(ctx_flags(ctx)));
+
+	if (!success) {
+		goto exit_tacbuffer;
+	}
+
+	if (flags_debug(ctx_flags(ctx))) {
+
+		printf("\nTACBuffer after optimization:\n");
+		tacbuffer_print(buffer, st->sst, st->lvst);
+	}
 
 	//create basic blocks from this TAC
 	//basic blocks from the three address code
@@ -58,7 +74,11 @@ void compile_and_write_x86_single_function(struct Method* m, struct Ctx* ctx, st
 
 	struct RAT* rat = rat_ctor(RAT_ARCH_X86, liveness_ntemps(live));
 
-	allocate_registers_basicblocks(graph, nblocks, rat, st, live);
+	success = allocate_registers_basicblocks(graph, nblocks, rat, st, live);
+
+	if (!success) {
+		goto exit;
+	}
 
 	char* current_function_name = m->decl->name;
 	assert(current_function_name != NULL);
@@ -69,16 +89,19 @@ void compile_and_write_x86_single_function(struct Method* m, struct Ctx* ctx, st
 		rat_print(rat);
 	}
 
-	bool success = emit_asm_x86_basic_block(root, ctx, ibu, rat, current_function_name);
+	success = emit_asm_x86_basic_block(root, ctx, ibu, rat, current_function_name);
 
 	// TODO: propagate this error
 	assert(success);
-
+exit:
 	//delete the basic block graph
 	for (int i = 0; i < nblocks; i++) {
 		basicblock_dtor(graph[i]);
 	}
 	free(graph);
+exit_tacbuffer:
 
 	tacbuffer_dtor(buffer);
+
+	return success;
 }

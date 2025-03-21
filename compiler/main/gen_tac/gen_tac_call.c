@@ -7,57 +7,130 @@
 #include "tac/tacbuffer.h"
 
 #include "tables/sst/sst.h"
-#include "tables/stst/stst.h"
 #include "tables/lvst/lvst.h"
 #include "tables/symtable/symtable.h"
 
 #include "gen_tac.h"
 
 static bool tac_call_case_sst(struct TACBuffer* buffer, struct Call* call, struct Ctx* ctx);
-static void tac_call_case_lvst(struct TACBuffer* buffer, struct Call* call, struct Ctx* ctx);
+static bool tac_call_case_lvst(struct TACBuffer* buffer, struct Call* call, struct Ctx* ctx);
 
-static void tac_call_prep_param(struct TACBuffer* buffer, struct Call* call, struct Ctx* ctx, int i, const bool push16, bool is_syscall) {
-	struct Expr* expr = call->args[i];
+// @returns temporary index where the param is stored
+// @returns < 0 on error
+static int32_t tac_call_prep_param(struct TACBuffer* buffer, struct Call* call, struct Ctx* ctx, int i) {
+	if (!tac_expr(buffer, call->args[i], ctx)) {
+		return -1;
+	}
 
-	tac_expr(buffer, expr, ctx);
-
-	struct TAC* t = makeTACParam(tacbuffer_last_dest(buffer), push16, i, is_syscall);
-
-	tacbuffer_append(buffer, t);
+	return tacbuffer_last_dest(buffer);
 }
 
-static void tac_call_prep_params_case_sst(struct TACBuffer* buffer, struct Call* call, struct Ctx* ctx, struct MethodDecl* decl) {
+static bool emit_param_transfer(struct TACBuffer* buffer, uint32_t* param_temps, uint8_t* param_widths, bool is_syscall, size_t count) {
 
+	for (int i = 0; i < count; i++) {
+		const bool push16 = param_widths[i] == 2;
+		struct TAC* t = makeTACParam(param_temps[i], push16, i, is_syscall);
+
+		if (!t) {
+			return false;
+		}
+
+		tacbuffer_append(buffer, t);
+	}
+
+	return true;
+}
+
+// @returns false on error
+static bool tac_call_prep_params_case_sst(struct TACBuffer* buffer, struct Call* call, struct Ctx* ctx, struct MethodDecl* decl) {
+
+	bool status = true;
 	struct SST* sst = ctx_tables(ctx)->sst;
 	const char* fname = call->callable->simple_var->name;
 	struct SSTLine* line = sst_get(sst, fname);
 
 	const bool x86 = flags_x86(ctx_flags(ctx));
+
+	uint32_t* param_temps = calloc(call->count_args, sizeof(uint32_t));
+
+	if (!param_temps) {
+		return false;
+	}
+
+	uint8_t* param_widths = calloc(call->count_args, sizeof(uint8_t));
+
+	if (!param_widths) {
+		free(param_temps);
+		return false;
+	}
+
 	for (size_t i = 0; i < call->count_args; i++) {
 		const uint32_t param_width = lvst_sizeof_type(decl->args[i]->type, x86);
 		assert(param_width <= 8);
 		const bool push16 = param_width == 2;
 
-		tac_call_prep_param(buffer, call, ctx, i, push16, line->is_syscall);
+		const int32_t tmp_param = tac_call_prep_param(buffer, call, ctx, i);
+		if (tmp_param < 0) {
+			status = false;
+			goto exit;
+		}
+
+		param_temps[i] = tmp_param;
+		param_widths[i] = param_width;
 	}
+
+	status = emit_param_transfer(buffer, param_temps, param_widths, line->is_syscall, call->count_args);
+
+exit:
+	free(param_temps);
+	free(param_widths);
+	return status;
 }
 
-static void tac_call_prep_params_case_lvst(struct TACBuffer* buffer, struct Call* call, struct Ctx* ctx, struct LVSTLine* line) {
+// @returns false on error
+static bool tac_call_prep_params_case_lvst(struct TACBuffer* buffer, struct Call* call, struct Ctx* ctx, struct LVSTLine* line) {
 
+	bool status = true;
 	const bool x86 = flags_x86(ctx_flags(ctx));
 
 	struct SubrType* subr_type = line->type->basic_type->subr_type;
+
+	uint32_t* param_temps = calloc(call->count_args, sizeof(uint32_t));
+
+	if (!param_temps) {
+		return false;
+	}
+
+	uint8_t* param_widths = calloc(call->count_args, sizeof(uint8_t));
+
+	if (!param_widths) {
+		free(param_temps);
+		return false;
+	}
 
 	for (size_t i = 0; i < call->count_args; i++) {
 		struct Type* arg_type = subr_type->arg_types[i];
 		const uint32_t param_width = lvst_sizeof_type(arg_type, x86);
 		assert(param_width <= 8);
-		const bool push16 = param_width == 2;
 
-		// TODO: currently the information of syscall / no syscall
-		// is lost when passing it as function pointer.
-		tac_call_prep_param(buffer, call, ctx, i, push16, false);
+		const int32_t tmp_param = tac_call_prep_param(buffer, call, ctx, i);
+		if (tmp_param < 0) {
+			status = false;
+			goto exit;
+		}
+
+		param_temps[i] = tmp_param;
+		param_widths[i] = param_width;
 	}
+
+	// TODO: currently the information of syscall / no syscall
+	// is lost when passing it as function pointer.
+	status = emit_param_transfer(buffer, param_temps, param_widths, false, call->count_args);
+
+exit:
+	free(param_temps);
+	free(param_widths);
+	return status;
 }
 
 bool tac_call(struct TACBuffer* buffer, struct Call* call, struct Ctx* ctx) {
@@ -67,25 +140,26 @@ bool tac_call(struct TACBuffer* buffer, struct Call* call, struct Ctx* ctx) {
 	struct LVST* lvst = ctx_tables(ctx)->lvst;
 
 	if (sst_contains(sst, fname)) {
-		tac_call_case_sst(buffer, call, ctx);
-		return true;
+		return tac_call_case_sst(buffer, call, ctx);
 	}
 	if (lvst_contains(lvst, fname)) {
-		tac_call_case_lvst(buffer, call, ctx);
-		return true;
+		return tac_call_case_lvst(buffer, call, ctx);
 	}
 
 	fprintf(stderr, "did not find symbol '%s' in LVST or SST, cannot call.\n", fname);
 	return false;
 }
 
-static void tac_call_case_lvst(struct TACBuffer* buffer, struct Call* call, struct Ctx* ctx) {
+static bool tac_call_case_lvst(struct TACBuffer* buffer, struct Call* call, struct Ctx* ctx) {
 
 	struct LVST* lvst = ctx_tables(ctx)->lvst;
 	const char* fname = call->callable->simple_var->name;
 
 	struct LVSTLine* line = lvst_get(lvst, fname);
-	tac_call_prep_params_case_lvst(buffer, call, ctx, line);
+
+	if (!tac_call_prep_params_case_lvst(buffer, call, ctx, line)) {
+		return false;
+	}
 
 	const bool x86 = flags_x86(ctx_flags(ctx));
 	const uint8_t addr_width = (x86) ? 8 : 2;
@@ -96,6 +170,8 @@ static void tac_call_case_lvst(struct TACBuffer* buffer, struct Call* call, stru
 	tacbuffer_append(buffer, makeTACLoad(make_temp(), tacbuffer_last_dest(buffer), local_width));
 
 	tacbuffer_append(buffer, makeTACICall(make_temp(), tacbuffer_last_dest(buffer)));
+
+	return true;
 }
 
 static bool tac_call_case_sst(struct TACBuffer* buffer, struct Call* call, struct Ctx* ctx) {
@@ -107,7 +183,9 @@ static bool tac_call_case_sst(struct TACBuffer* buffer, struct Call* call, struc
 
 	struct MethodDecl* decl = line->method->decl;
 
-	tac_call_prep_params_case_sst(buffer, call, ctx, decl);
+	if (!tac_call_prep_params_case_sst(buffer, call, ctx, decl)) {
+		return false;
+	}
 
 	if (call->callable->member_access != NULL) {
 		printf("member access calls currently unsupported on avr_code_gen\n");

@@ -1,0 +1,23 @@
+// A function call as argument to another function call
+// This stresses the compilers ability to calculate the liveness correctly
+
+fn f(uint8 x, uint8 y) -> uint8 {
+	return x+y;
+}
+
+fn main () -> int {
+	// 9
+	return f(
+		f(
+			f(0, 1),
+			2
+		),
+		f(
+			0,
+			f(
+				1,
+				f(2, 3)
+			)
+		)
+	);
+}
