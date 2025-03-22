@@ -17,5 +17,9 @@ fn main () ~> int {
 		return written;
 	}
 
+	if (close(fd) < 0){
+		return 2;
+	}
+
 	return 0;
 }
