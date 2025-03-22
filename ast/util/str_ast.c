@@ -293,6 +293,10 @@ char* str_type(struct Type* t) {
 
 	if (t->pointer_type != NULL) { return str_pointer_type(t->pointer_type); }
 
+	if (t->is_anytype) {
+		return strdup("#");
+	}
+
 	error("str_type");
 	return NULL;
 }
@@ -494,7 +498,7 @@ char* str_expr(struct Expr* e) {
 		return NULL;
 	}
 
-	uint16_t l = strlen(strTerm1) + strlen(strO) + strlen(strTerm2) + 1;
+	uint16_t l = strlen(strTerm1) + strlen(strO) + strlen(strTerm2) + 3;
 
 	char* res = malloc(sizeof(char) * l);
 
@@ -502,7 +506,7 @@ char* str_expr(struct Expr* e) {
 		return NULL;
 	}
 
-	sprintf(res, "%s%s%s", strTerm1, strO, strTerm2);
+	sprintf(res, "%s %s %s", strTerm1, strO, strTerm2);
 
 	free(strTerm1);
 
@@ -512,6 +516,7 @@ char* str_expr(struct Expr* e) {
 	return res;
 }
 
+// @returns NULL on error
 char* str_op(enum OP o) {
 
 	char* res = malloc(sizeof(char) * 16);
@@ -533,8 +538,18 @@ char* str_op(enum OP o) {
 		case OP_OR: str = "|"; break;
 		case OP_XOR: str = "^"; break;
 
+		// relational
+		case OP_EQ: str = "=="; break;
+		case OP_NEQ: str = "!="; break;
+		case OP_GE: str = ">="; break;
+		case OP_GT: str = ">"; break;
+		case OP_LE: str = "<="; break;
+		case OP_LT: str = "<"; break;
+
 		//should not happen
-		default: str = "fix str_op"; break;
+		default:
+			free(res);
+			return NULL;
 	}
 
 	sprintf(res, "%s", str);

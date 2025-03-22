@@ -11,6 +11,7 @@
 
 //Typechecker Includes
 #include "_tc.h"
+#include "typechecker/type_contains/tc_type_contains.h"
 #include "typechecker/util/tc_errors.h"
 #include "typechecker/util/tc_utils.h"
 #include "tcctx.h"
@@ -31,7 +32,7 @@ bool tc_retstmt(struct RetStmt* r, struct TCCtx* tcctx) {
 
 	if (is_integer_type(returnType) && is_integer_type(returnedType)) { return true; }
 
-	if (!eq_type(returnType, returnedType)) {
+	if (!tc_type_contains(returnType, returnedType)) {
 
 		char* s1 = str_type(returnType);
 		char* s2 = str_type(returnedType);

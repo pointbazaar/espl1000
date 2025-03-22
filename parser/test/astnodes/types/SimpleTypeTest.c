@@ -8,6 +8,7 @@
 
 #include "types/SimpleType.h"
 #include "types/BasicType.h"
+#include "types/Type.h"
 
 #include "token/list/TokenList.h"
 #include "token/TokenKeys.h"
@@ -56,13 +57,14 @@ int simpletype_test_typenode_parsing_anytype() {
 	struct TokenList* list = makeTokenList();
 	list_add(list, makeToken2(ANYTYPE, "#"));
 
-	struct SimpleType* node = makeSimpleType(list);
+	struct Type* node = makeType2(list);
 
 	assert(0 == list_size(list));
 	assert(node != NULL);
+	assert(node->is_anytype);
 
 	freeTokenList(list);
-	free_simple_type(node);
+	free_type(node);
 
 	return 1;
 }

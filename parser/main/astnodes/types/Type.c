@@ -73,6 +73,7 @@ struct Type* makeType2(struct TokenList* tokens) {
 	res->type_param = NULL;
 	res->array_type = NULL;
 	res->pointer_type = NULL;
+	res->is_anytype = false;
 
 	struct Token* head = list_head(copy);
 
@@ -89,6 +90,10 @@ struct Type* makeType2(struct TokenList* tokens) {
 			res->type_param = makeTypeParam(copy);
 			if (res->type_param != NULL) { goto end; }
 			break;
+		case ANYTYPE:
+			list_consume(copy, 1);
+			res->is_anytype = true;
+			goto end;
 		default:
 			res->basic_type = makeBasicType2(copy);
 			if (res->basic_type != NULL) { goto end; }

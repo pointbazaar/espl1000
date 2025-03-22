@@ -179,6 +179,7 @@ struct Type* copy_type(struct Type* t) {
 	res->type_param = NULL;
 	res->array_type = NULL;
 	res->pointer_type = NULL;
+	res->is_anytype = t->is_anytype;
 
 	if (t->basic_type != NULL) { res->basic_type = copy_basic_type(t->basic_type); }
 	if (t->type_param != NULL) { res->type_param = copy_type_param(t->type_param); }
