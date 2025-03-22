@@ -1,0 +1,13 @@
+
+fn main () -> int {
+
+	local *uint8 ptr;
+
+	ptr  = malloc(0);
+
+	if ptr != 0 {
+		return 1;
+	}
+
+	return 0;
+}

@@ -1,0 +1,34 @@
+
+fn main () -> int {
+
+	local *uint8 ptr;
+
+	ptr = malloc(329);
+
+	if ptr == 0 {
+		return 2;
+	}
+
+	free(ptr);
+
+	ptr = malloc(8349);
+
+	if ptr == 0 {
+		return 3;
+	}
+
+	local *uint8 p;
+	p = ptr;
+
+	p += 100;
+	*p = 84;
+	p += 10;
+	*p = 92;
+	p -= 10;
+
+	uint8 res = *p;
+
+	free(ptr);
+
+	return res;
+}

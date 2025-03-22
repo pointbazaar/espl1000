@@ -91,6 +91,12 @@ static struct Type* infer_type_expr_ptr_arithmetic(struct ST* st, struct Type* t
 		return NULL;
 	}
 
+	if (t2->pointer_type) {
+		if (op == OP_EQ || op == OP_NEQ || op == OP_GE || op == OP_GT || op == OP_LE || op == OP_LT) {
+			return typeFromStrPrimitive(st, "bool");
+		}
+	}
+
 	if (t2->basic_type && t2->basic_type->simple_type) {
 		struct SimpleType* stype = t2->basic_type->simple_type;
 

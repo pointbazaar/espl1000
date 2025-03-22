@@ -1,0 +1,19 @@
+
+fn main () -> int {
+
+	*uint64 ptr1 = malloc(30);
+	*uint64 ptr2 = malloc(30);
+
+	if ((ptr1 + 30) > ptr2 && (ptr1 <= ptr2)){
+		return 1;
+	}
+
+	if ((ptr2 + 30) > ptr1 && (ptr2 <= ptr1)){
+		return 1;
+	}
+
+	free(ptr1);
+	free(ptr2);
+
+	return 0;
+}

@@ -1,0 +1,20 @@
+
+fn main () -> int {
+
+	// test that the allocations do not exhaus memory
+
+	for i in 0 .. 10000 {
+
+		*uint64 p = malloc(3000);
+
+		if p == 0 {
+			return 1;
+		}
+
+		if free(p) != 0 {
+			return 1;
+		}
+	}
+
+	return 0;
+}
