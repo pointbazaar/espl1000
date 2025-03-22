@@ -9,6 +9,10 @@
 
 bool tc_type_contains(struct Type* expect, struct Type* actual) {
 
+	if (expect->is_anytype || actual->is_anytype) {
+		return true;
+	}
+
 	if (expect->pointer_type != NULL) {
 
 		return tc_pointer_type_contains(expect->pointer_type, actual);

@@ -104,7 +104,7 @@ void test_ast_str_expr() {
 
 	char* s = str_expr(&e);
 
-	assert(strcmp(s, "-45*-45") == 0);
+	assert(strcmp(s, "-45 * -45") == 0);
 
 	free_un_op_term(u2);
 	free(s);

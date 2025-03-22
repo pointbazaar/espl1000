@@ -22,5 +22,5 @@ bool tc_pointer_type_contains(struct PointerType* expect, struct Type* actual) {
 	struct PointerType* apt = actual->pointer_type;
 
 	// pointers of same underlying type can be assigned to each other
-	return eq_type(expect->element_type, apt->element_type);
+	return tc_type_contains(expect->element_type, apt->element_type);
 }

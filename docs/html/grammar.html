@@ -60,7 +60,7 @@
 
 	<h2>Types</h2>
 
-	<a id="type">Type</a> ::= <a href="#basictype">BasicType</a> | <a href="#typeparam">TypeParam</a> | <a href="#arraytype">ArrayType</a> | <a href="#pointertype">PointerType</a>
+	<a id="type">Type</a> ::= <a href="#basictype">BasicType</a> | <a href="#typeparam">TypeParam</a> | <a href="#arraytype">ArrayType</a> | <a href="#pointertype">PointerType</a> | #
 	<br><br>
 
 	<a id="basictype">BasicType</a> ::= <a href="#simpletype">SimpleType</a> | '(' <a href="#subrtype">SubrType</a> ')'
@@ -78,7 +78,7 @@
 	<a id="subrtype">SubrType</a> ::= '(' <a href="#type">Type</a>* ')' arrow <a href="#type">Type</a>
 	<br><br>
 
-	<a id="structtype">StructType</a> ::= uppercase alphanumeric* | "#"
+	<a id="structtype">StructType</a> ::= uppercase alphanumeric*
 	<br><br>
 
 	<a id="typeparam">TypeParam</a> ::= "?T" digit

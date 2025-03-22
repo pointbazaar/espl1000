@@ -69,6 +69,11 @@ struct Type {
 	struct TypeParam* type_param;
 	struct ArrayType* array_type;
 	struct PointerType* pointer_type;
+
+	// '#', stands for anything,
+	// always has highest native width of the architecture,
+	// e.g. x86: 8 bytes, avr: 2 bytes
+	bool is_anytype;
 };
 
 struct TypeParam {

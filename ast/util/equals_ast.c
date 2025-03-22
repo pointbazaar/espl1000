@@ -17,6 +17,10 @@ bool eq_type(struct Type* a, struct Type* b) {
 
 	if (a->pointer_type != NULL) { return eq_pointertype(a->pointer_type, b->pointer_type); }
 
+	if (a->is_anytype && b->is_anytype) {
+		return true;
+	}
+
 	return false;
 }
 

@@ -35,6 +35,12 @@ bool tc_ifstmt(struct IfStmt* i, struct TCCtx* tcctx) {
 
 		error_snippet(tcctx, msg, TC_ERR_CONDITION_REQUIRES_BOOL);
 
+		char* s2 = str_type(type);
+
+		fprintf(stderr, "actual type: %s\n\n", s2);
+
+		free(s2);
+
 		free(msg);
 
 		return false;

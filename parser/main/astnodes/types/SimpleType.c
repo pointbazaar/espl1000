@@ -48,8 +48,6 @@ struct SimpleType* makeSimpleType(struct TokenList* tokens) {
 			break;
 
 		case TYPEID:
-		case ANYTYPE:
-
 			res->struct_type = makeStructType(copy);
 			break;
 
