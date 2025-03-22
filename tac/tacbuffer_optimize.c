@@ -52,6 +52,7 @@ static bool tacbuffer_optimize_swap_criterion(size_t i, struct TAC* t1, struct T
 static int32_t tacbuffer_optimize_iteration(struct TACBuffer* buffer, bool debug) {
 
 	const size_t count = tacbuffer_count(buffer);
+	int status = 0;
 
 	for (size_t i = 0; i < count - 1; i++) {
 
@@ -72,10 +73,10 @@ static int32_t tacbuffer_optimize_iteration(struct TACBuffer* buffer, bool debug
 				return -1;
 			}
 
-			return 1;
+			status = 1;
 		}
 	}
-	return 0;
+	return status;
 }
 
 bool tacbuffer_optimize_reorder(struct TACBuffer* buffer, bool debug) {
