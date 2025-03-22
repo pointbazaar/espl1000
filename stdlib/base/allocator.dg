@@ -1,0 +1,108 @@
+
+// This is a really bad allocator.
+// It allocates in multiples of page size.
+
+fn malloc(uint64 nbytes) -> *# {
+
+	// PROT_READ = 0x1
+	// PROT_WRITE = 0x2
+
+	// MAP_SHARED = 0x1
+	// MAP_ANONYMOUS = 0x20
+
+	if nbytes == 0 {
+		return 0;
+	}
+
+	uint64 n = 4096;
+	uint64 npages = 1;
+
+	while n < nbytes {
+		n += 4096;
+		npages++;
+	}
+
+	local *uint64 ptr;
+	ptr = mmap(0, n, 0x3, 0x21, -1, 0);
+
+	// preserve number of bytes for calling munmap later
+	*ptr = n;
+
+	return ptr + 16;
+}
+
+// @returns 0 on success
+fn free(*# ptr) -> int {
+
+	*uint64 p = ptr;
+
+	if p == 0 {
+		return -1;
+	}
+
+	// obtain the real address
+	p -= 16;
+
+	uint64 nbytes = *p;
+
+	return munmap(p, nbytes);
+}
+
+fn realloc(*# ptr, uint64 nbytes) -> *# {
+
+	if ptr == 0 {
+		return malloc(nbytes);
+	}
+
+	if nbytes == 0 {
+		free(ptr);
+		return 0;
+	}
+
+	*uint64 p = ptr;
+	p -= 16;
+	uint64 old_size = *p;
+
+	uint64 n = 4096;
+	uint64 npages = 1;
+	while n < nbytes {
+		n += 4096;
+		npages++;
+	}
+
+	if (n <= old_size) {
+		return ptr;
+	}
+
+	local *uint64 new_ptr;
+	new_ptr = malloc(nbytes);
+
+	if new_ptr == 0 {
+		return 0;
+	}
+
+	uint64 copy_size = old_size - 16;
+	if (copy_size > nbytes) {
+		copy_size = nbytes;
+	}
+
+	local *# dst;
+	dst = new_ptr;
+	local *uint8 src;
+	src = ptr;
+
+	*uint8 d = dst;
+
+	uint64 i = 0;
+	while i < copy_size {
+		*d = *src;
+		d++;
+		src++;
+		i++;
+	}
+
+	free(ptr);
+
+	return dst;
+}
+
