@@ -4,6 +4,7 @@
 #include "ast/ast.h"
 #include "ast/visitor/visitor.h"
 
+#include "cli/flags/flags.h"
 #include "tables/cc/cc.h"
 #include "tables/sst/sst.h"
 #include "tables/stst/stst.h"
@@ -13,7 +14,7 @@
 #include "dead.h"
 #include "dead_analyzer.h"
 
-static void mark_live(struct SST* sst, char* name);
+static void mark_live(struct Ctx* ctx, char* name);
 
 static void set_all(struct SST* sst, enum DEAD dead);
 
@@ -30,27 +31,70 @@ static void set_all(struct SST* sst, enum DEAD dead);
 
 static void myvisitor_dead(void* node, enum NODE_TYPE type, void* arg);
 
-void analyze_dead_code(struct ST* st, struct AST* ast) {
+bool analyze_dead_code(struct Ctx* ctx, struct AST* ast) {
 
+	struct Flags* flags = ctx_flags(ctx);
+
+	if (flags_debug_dead(flags)) {
+		printf("[debug][dead-code] start analysis...\n");
+	}
+
+	struct ST* st = ctx_tables(ctx);
 	struct SST* sst = st->sst;
 
 	//set all functions to live
 	set_all(sst, DEAD_ISLIVE);
 
-	if (!sst_contains(sst, "main")) { return; }
+	if (!sst_contains(sst, "main")) { return true; }
 
 	set_all(sst, DEAD_UNKNOWN);
 
-	visit_ast(ast, myvisitor_dead, sst);
+	mark_live(ctx, "main");
 
-	mark_live(sst, "main");
+	if (flags_debug_dead(flags)) {
+		printf("[debug][dead-code] visiting live functions\n");
+	}
+
+	for (int i = 0; i < ast->count_namespaces; i++) {
+		struct Namespace* ns = ast->namespaces[i];
+		for (int j = 0; j < ns->count_methods; j++) {
+			struct Method* m = ns->methods[j];
+
+			if (!m || !m->decl || !m->decl->name) {
+				return false;
+			}
+
+			const char* name = m->decl->name;
+
+			struct SSTLine* line = sst_get(sst, name);
+
+			if (line->dead != DEAD_ISLIVE) {
+				continue;
+			}
+
+			if (!visit_method(m, myvisitor_dead, ctx)) {
+				return false;
+			}
+		}
+	}
+
+	if (flags_debug_dead(flags)) {
+		printf("[debug][dead-code] end analysis...\n");
+	}
+
+	return true;
 }
 
-static void mark_live(struct SST* sst, char* name) {
+static void mark_live(struct Ctx* ctx, char* name) {
 
+	struct SST* sst = ctx_tables(ctx)->sst;
 	struct SSTLine* line = sst_get(sst, name);
 
 	if (line->dead != DEAD_UNKNOWN) { return; }
+
+	if (flags_debug_dead(ctx_flags(ctx))) {
+		printf("[debug][dead-code]: LIVE FUNCTION: %s\n", line->name);
+	}
 
 	line->dead = DEAD_ISLIVE;
 
@@ -58,7 +102,7 @@ static void mark_live(struct SST* sst, char* name) {
 
 	while (callee != NULL) {
 
-		mark_live(sst, cc_name(callee));
+		mark_live(ctx, cc_name(callee));
 
 		callee = cc_next(callee);
 	}
@@ -81,7 +125,8 @@ static void myvisitor_dead(void* node, enum NODE_TYPE type, void* arg) {
 	 * pointed to is assumed to be live.
 	 */
 
-	struct SST* mysst = (struct SST*)arg;
+	struct Ctx* ctx = (struct Ctx*)arg;
+	struct SST* mysst = ctx_tables(ctx)->sst;
 
 	if (type == NODE_SIMPLEVAR) {
 
@@ -89,7 +134,7 @@ static void myvisitor_dead(void* node, enum NODE_TYPE type, void* arg) {
 
 		if (sst_contains(mysst, v->name)) {
 
-			mark_live(mysst, v->name);
+			mark_live(ctx, v->name);
 		}
 	}
 }
