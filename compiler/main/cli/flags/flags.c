@@ -416,6 +416,9 @@ char* flags_filenames(struct Flags* flags, int index) {
 bool flags_debug(struct Flags* flags) {
 	return flags_set(flags, "debug");
 }
+bool flags_debug_dead(struct Flags* flags) {
+	return flags_set(flags, "debug-dead");
+}
 bool flags_version(struct Flags* flags) {
 	return flags_set(flags, "version");
 }

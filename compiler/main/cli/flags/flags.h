@@ -21,6 +21,7 @@ int flags_count_filenames(struct Flags* flags);
 char* flags_filenames(struct Flags* flags, int index);
 
 bool flags_debug(struct Flags* flags);
+bool flags_debug_dead(struct Flags* flags);
 bool flags_version(struct Flags* flags);
 bool flags_help(struct Flags* flags);
 bool flags_x86(struct Flags* flags);

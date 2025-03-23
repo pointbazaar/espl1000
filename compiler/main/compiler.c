@@ -128,8 +128,15 @@ bool compile(struct Flags* flags) {
 		printf("[debug] running analyzers...\n");
 	}
 
+	bool success;
+
 	analyze_functions(ctx_tables(ctx), ast);
-	analyze_dead_code(ctx_tables(ctx), ast);
+	success = analyze_dead_code(ctx, ast);
+
+	if (!success) {
+		return false;
+	}
+
 	analyze_termination(ctx_tables(ctx));
 	analyze_annotations(ctx_tables(ctx), ast);
 	analyze_data(ctx_tables(ctx), ast);
@@ -140,7 +147,6 @@ bool compile(struct Flags* flags) {
 		printf("\n");
 	}
 
-	bool success;
 	if (flags_x86(flags)) {
 		success = compile_and_write_x86(ast, ctx);
 	} else {

@@ -6,7 +6,9 @@
  * are assumed to be live.
  */
 
-struct ST;
+#include "compiler/main/util/ctx.h"
+
 struct AST;
 
-void analyze_dead_code(struct ST* st, struct AST* ast);
+// @returns false on error
+bool analyze_dead_code(struct Ctx* ctx, struct AST* ast);

@@ -33,6 +33,24 @@ bool compile_and_write_x86_single_function(struct Method* m, struct Ctx* ctx, st
 	struct TACBuffer* buffer = tacbuffer_ctor();
 	struct ST* st = ctx_tables(ctx);
 
+	char* current_function_name = m->decl->name;
+
+	if (current_function_name == NULL) {
+		success = false;
+		goto exit_name;
+	}
+
+	struct SSTLine* line = sst_get(st->sst, current_function_name);
+
+	if (line->dead != DEAD_ISLIVE) {
+
+		if (flags_debug_dead(ctx_flags(ctx))) {
+			printf("[debug][dead-code]: skip %s\n", current_function_name);
+		}
+
+		return true;
+	}
+
 	//populate ctx->st->lvst
 	lvst_clear(st->lvst);
 	lvst_fill(m, st);
@@ -79,13 +97,6 @@ bool compile_and_write_x86_single_function(struct Method* m, struct Ctx* ctx, st
 		goto exit;
 	}
 
-	char* current_function_name = m->decl->name;
-
-	if (current_function_name == NULL) {
-		success = false;
-		goto exit;
-	}
-
 	if (flags_debug(ctx_flags(ctx))) {
 
 		printf("RAT for function '%s'\n", m->decl->name);
@@ -103,6 +114,6 @@ exit:
 exit_tacbuffer:
 
 	tacbuffer_dtor(buffer);
-
+exit_name:
 	return success;
 }
