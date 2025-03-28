@@ -22,6 +22,19 @@
 #include "cli/flags/flags.h"
 #include "liveness/liveness.h"
 
+/**
+ * @brief Compiles a function into x86 assembly and writes it to an output buffer.
+ *
+ * This function processes a method by generating three-address code (TAC), optimizing it, and then
+ * converting it into basic blocks with associated liveness and register allocation analyses. It skips
+ * compilation for methods marked as external, syscall, or dead code. A missing function name results
+ * in a compilation failure.
+ *
+ * @param m The method to compile, including its declaration and annotations.
+ * @param ctx The compilation context containing symbol tables, flags, and liveness state.
+ * @param ibu The buffer to which the generated x86 assembly is written.
+ * @return true if the function compiles successfully or is skipped; false if an error occurs.
+ */
 bool compile_and_write_x86_single_function(struct Method* m, struct Ctx* ctx, struct IBuffer* ibu) {
 
 	bool success = true;

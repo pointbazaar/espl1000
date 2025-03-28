@@ -413,12 +413,38 @@ char* flags_filenames(struct Flags* flags, int index) {
 	return flags->filenames[index];
 }
 
+/**
+ * @brief Checks whether the "debug" flag is enabled.
+ *
+ * This function verifies if the "debug" flag is active within the provided Flags structure,
+ * allowing the application to toggle debug-specific behavior.
+ *
+ * @param flags Pointer to the Flags structure.
+ * @return true if the "debug" flag is set, false otherwise.
+ */
 bool flags_debug(struct Flags* flags) {
 	return flags_set(flags, "debug");
 }
+/**
+ * @brief Checks whether the "debug-dead" flag is set.
+ *
+ * This function inspects the provided Flags structure to determine if the "debug-dead" flag
+ * is enabled. It returns true if the flag is set, and false otherwise.
+ *
+ * @param flags Pointer to the Flags structure containing current flag settings.
+ * @return bool True if the "debug-dead" flag is set; false otherwise.
+ */
 bool flags_debug_dead(struct Flags* flags) {
 	return flags_set(flags, "debug-dead");
 }
+/**
+ * @brief Checks if the "version" flag is enabled.
+ *
+ * This function returns whether the "version" flag has been set in the provided Flags structure.
+ *
+ * @param flags Pointer to the Flags structure.
+ * @return true if the "version" flag is set; false otherwise.
+ */
 bool flags_version(struct Flags* flags) {
 	return flags_set(flags, "version");
 }

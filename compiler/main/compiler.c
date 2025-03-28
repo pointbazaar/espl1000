@@ -32,6 +32,21 @@
 #include "lexer/src/lexer_main.h"
 #include "parser/main/util/parser.h"
 
+/**
+ * @brief Orchestrates the compilation process based on the provided flags.
+ *
+ * This function compiles source files as specified in the Flags structure. It validates input,
+ * constructs an Abstract Syntax Tree (AST) from tokenized source files, and performs parsing,
+ * type checking, and several analyses (including function, dead code, termination, annotation,
+ * and data analyses). Depending on the flags, it may exit early after lexing or parsing.
+ *
+ * For code generation, it produces either x86 or AVR output and then calls an external assembler.
+ * When targeting x86 and linking is enabled, it also invokes a linker. At any failure point, the function
+ * cleans up allocated resources and returns false.
+ *
+ * @param flags Pointer to a structure containing compilation options and source file information.
+ * @return true if the entire compilation process completes successfully (including assembly and linking, if applicable), otherwise false.
+ */
 bool compile(struct Flags* flags) {
 
 	const size_t count_filenames = flags_count_filenames(flags);

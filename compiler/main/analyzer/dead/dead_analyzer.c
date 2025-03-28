@@ -31,6 +31,19 @@ static void set_all(struct SST* sst, enum DEAD dead);
 
 static void myvisitor_dead(void* node, enum NODE_TYPE type, void* arg);
 
+/**
+ * @brief Analyzes an AST to mark reachable functions as live.
+ *
+ * This function performs dead code analysis by initializing all function states,
+ * checking for a "main" function, and recursively marking all reachable functions as live.
+ * It traverses each namespace and its methods in the AST, using a visitor to mark functions
+ * referenced within method bodies as live. The analysis aborts and returns false if any method
+ * is found with an incomplete declaration.
+ *
+ * @param ctx Context that provides access to symbol tables and debugging configuration.
+ * @param ast The abstract syntax tree representing the program.
+ * @return true if the analysis completes successfully; false if an error is encountered.
+ */
 bool analyze_dead_code(struct Ctx* ctx, struct AST* ast) {
 
 	struct Flags* flags = ctx_flags(ctx);
@@ -85,6 +98,15 @@ bool analyze_dead_code(struct Ctx* ctx, struct AST* ast) {
 	return true;
 }
 
+/**
+ * @brief Marks the specified function as live, including all functions it calls.
+ *
+ * This function retrieves the symbol table entry associated with the given function name. If the function's dead status is still
+ * unknown, it marks the function as live and, if debugging is enabled, prints a debug message indicating the function is now live.
+ * It then recursively processes all callee nodes, marking each as live.
+ *
+ * @param name The name of the function to mark as live.
+ */
 static void mark_live(struct Ctx* ctx, char* name) {
 
 	struct SST* sst = ctx_tables(ctx)->sst;
@@ -118,6 +140,18 @@ static void set_all(struct SST* sst, enum DEAD dead) {
 	}
 }
 
+/**
+ * @brief Visitor function that marks functions as live based on simple variable nodes.
+ *
+ * During dead code analysis, this function examines an AST node to determine if it represents a simple
+ * variable. If the variable's name exists in the symbol state table, the corresponding function is marked
+ * as live by calling mark_live(). This is typically used to ensure that function pointers (or variables
+ * referring to functions) are considered reachable.
+ *
+ * @param node Pointer to the AST node being visited.
+ * @param type The type of the AST node; processing is performed only for nodes of type NODE_SIMPLEVAR.
+ * @param arg Visitor context, expected to be a pointer to a valid struct Ctx.
+ */
 static void myvisitor_dead(void* node, enum NODE_TYPE type, void* arg) {
 
 	/* if we are dealing with a variable that
