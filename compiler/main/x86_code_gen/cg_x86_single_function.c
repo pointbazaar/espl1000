@@ -42,6 +42,11 @@ bool compile_and_write_x86_single_function(struct Method* m, struct Ctx* ctx, st
 
 	struct SSTLine* line = sst_get(st->sst, current_function_name);
 
+	if (!line) {
+		success = false;
+		goto exit_name;
+	}
+
 	if (line->dead != DEAD_ISLIVE) {
 
 		if (flags_debug_dead(ctx_flags(ctx))) {
