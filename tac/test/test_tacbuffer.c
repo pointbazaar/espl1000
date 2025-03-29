@@ -20,7 +20,7 @@ void test_tacbuffer_tostring() {
 
 	char* s = tacbuffer_tostring(buf, false, NULL, NULL);
 
-	char* expect = "nop\nreturn t1\n";
+	char* expect = "000:   nop\n001:   return t1\n";
 
 	assert(strcmp(s, expect) == 0);
 

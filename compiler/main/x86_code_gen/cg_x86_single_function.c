@@ -72,7 +72,7 @@ bool compile_and_write_x86_single_function(struct Method* m, struct Ctx* ctx, st
 		tacbuffer_print(buffer, st->sst, st->lvst);
 	}
 
-	success = tacbuffer_optimize_reorder(buffer, flags_debug(ctx_flags(ctx)));
+	success = tacbuffer_optimize_reorder(buffer, ctx_flags(ctx));
 
 	if (!success) {
 		goto exit_tacbuffer;
