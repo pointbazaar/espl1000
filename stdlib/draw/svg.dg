@@ -2,18 +2,15 @@
 
 fn svg_start(int fd, uint64 w, uint64 h) -> int {
 
-	[char] buf = "<svg version=\"1.1\" baseProfile=\"full\" width=\"";
-	fprint(fd, buf);
+	fprint(fd, "<svg version=\"1.1\" baseProfile=\"full\" width=\"");
 
 	fprint_uint64(fd, w);
 
-	[char] buf2 = "\" height=\"";
-	fprint(fd, buf2);
+	fprint(fd, "\" height=\"");
 
 	fprint_uint64(fd, h);
 
-	[char] buf3 = "\" xmlns=\"http://www.w3.org/2000/svg\">";
-	fprint(fd, buf3);
+	fprint(fd, "\" xmlns=\"http://www.w3.org/2000/svg\">");
 
 	fprintln(fd);
 
@@ -22,29 +19,23 @@ fn svg_start(int fd, uint64 w, uint64 h) -> int {
 
 fn svg_rect (int fd, uint64 x, uint64 y, uint64 width, uint64 height) -> int {
 
-	[char] buf0 = "<rect";
-	fprint(fd, buf0);
+	fprint(fd, "<rect");
 
-	[char] buf1 = " x=";
-	fprint(fd, buf1);
+	fprint(fd, " x=");
 	fprint_uint64_quoted(fd, x);
 
-	[char] buf2 = " y=";
-	fprint(fd, buf2);
+	fprint(fd, " y=");
 	fprint_uint64_quoted(fd, y);
 
-	[char] buf3 = " width=\"";
-	fprint(fd, buf3);
+	fprint(fd, " width=\"");
 
 	fprint_uint64(fd, width);
 
-	[char] buf4 = "\" height=\"";
-	fprint(fd, buf4);
+	fprint(fd, "\" height=\"");
 
 	fprint_uint64(fd, height);
 
-	[char] buf5 = "\" fill=\"black\"/>";
-	fprint(fd, buf5);
+	fprint(fd, "\" fill=\"black\"/>");
 
 	fprintln(fd);
 
@@ -53,32 +44,25 @@ fn svg_rect (int fd, uint64 x, uint64 y, uint64 width, uint64 height) -> int {
 
 fn svg_line (int fd, uint64 x1, uint64 y1, uint64 x2, uint64 y2) -> int {
 
-	[char] buf0 = "<line";
-	fprint(fd, buf0);
+	fprint(fd, "<line");
 
-	[char] buf1 = " x1=";
-	fprint(fd, buf1);
+	fprint(fd, " x1=");
 	fprint_uint64_quoted(fd, x1);
 
-	[char] buf2 = " y1=";
-	fprint(fd, buf2);
+	fprint(fd, " y1=");
 	fprint_uint64_quoted(fd, y1);
 
-	[char] buf3 = " x2=";
-	fprint(fd, buf3);
+	fprint(fd, " x2=");
 
 	fprint_uint64_quoted(fd, x2);
 
-	[char] buf4 = " y2=";
-	fprint(fd, buf4);
+	fprint(fd, " y2=");
 
 	fprint_uint64_quoted(fd, y2);
 
-	[char] buf5 = " stroke=\"black\"";
-	fprint(fd, buf5);
+	fprint(fd, " stroke=\"black\"");
 
-	[char] buf6 = "/>";
-	fprint(fd, buf6);
+	fprint(fd, "/>");
 
 	fprintln(fd);
 
@@ -87,24 +71,19 @@ fn svg_line (int fd, uint64 x1, uint64 y1, uint64 x2, uint64 y2) -> int {
 
 fn svg_text (int fd, uint64 x, uint64 y, *char text) -> int {
 
-	[char] buf0 = "<text";
-	fprint(fd, buf0);
+	fprint(fd, "<text");
 
-	[char] buf1 = " x=";
-	fprint(fd, buf1);
+	fprint(fd, " x=");
 	fprint_uint64_quoted(fd, x);
 
-	[char] buf2 = " y=";
-	fprint(fd, buf2);
+	fprint(fd, " y=");
 	fprint_uint64_quoted(fd, y);
 
-	[char] buf4 = ">";
-	fprint(fd, buf4);
+	fprint(fd, ">");
 
 	fprint(fd, text);
 
-	[char] buf5 = "</text>";
-	fprint(fd, buf5);
+	fprint(fd, "</text>");
 
 	fprintln(fd);
 
@@ -113,9 +92,7 @@ fn svg_text (int fd, uint64 x, uint64 y, *char text) -> int {
 
 fn svg_end(int fd) -> int {
 
-	[char] buf = "</svg>";
-	fprint(fd, buf);
-
+	fprint(fd, "</svg>");
 	fprintln(fd);
 
 	return 0;
