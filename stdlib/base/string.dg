@@ -50,6 +50,24 @@ fn fprint_uint64(int fd, uint64 x) -> int {
 	return 0;
 }
 
+fn fprint_uint64_quoted(int fd, uint64 x) -> int {
+
+	[char] buf = "\"";
+	*char ptr = buf;
+
+	fprint(fd, ptr);
+	fprint_uint64(fd, x);
+	fprint(fd, ptr);
+
+	return 0;
+}
+
+fn fprint(int fd, *char ptr) -> int {
+
+	write(fd, ptr, strlen(ptr));
+	return 0;
+}
+
 fn println() -> int {
 	return fprintln(1);
 }
