@@ -5,10 +5,7 @@
 
 fn ppm_create(int fd, uint64 w, uint64 h, uint64 maxvalue) -> int {
 
-	[char] buf = "P3\n";
-	*char ptr = buf;
-
-	write(fd, ptr, strlen(ptr));
+	fprint(fd, "P3\n");
 
 	fprint_uint64(fd, w);
 	fprintln(fd);
@@ -22,17 +19,12 @@ fn ppm_create(int fd, uint64 w, uint64 h, uint64 maxvalue) -> int {
 
 fn ppm_pixel (int fd, uint8 red, uint8 green, uint8 blue) -> int {
 
-	[char] space = " ";
-	*char ptr = space;
-
 	fprint_uint64(fd, red);
-	write(fd, ptr, 1);
+	fprint(fd, " ");
 	fprint_uint64(fd, green);
-	write(fd, ptr, 1);
+	fprint(fd, " ");
 	fprint_uint64(fd, blue);
-	write(fd, ptr, 1);
-
-	write(fd, ptr, 1);
+	fprint(fd, "  ");
 
 	return 0;
 }

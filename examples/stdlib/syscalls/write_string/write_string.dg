@@ -1,14 +1,8 @@
 fn main () ~> int {
 
-	[char] str1 = "Hello, ";
-	*char ptr = str1;
+	write(1, "Hello, ", 7);
 
-	write(1, ptr, 7);
-
-	[char] str2 = "World!\n";
-	ptr = str2;
-
-	write(1, ptr, 7);
+	write(1, "World!\n", 7);
 
 	return 0;
 }

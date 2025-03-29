@@ -52,12 +52,9 @@ fn fprint_uint64(int fd, uint64 x) -> int {
 
 fn fprint_uint64_quoted(int fd, uint64 x) -> int {
 
-	[char] buf = "\"";
-	*char ptr = buf;
-
-	fprint(fd, ptr);
+	fprint(fd, "\"");
 	fprint_uint64(fd, x);
-	fprint(fd, ptr);
+	fprint(fd, "\"");
 
 	return 0;
 }
@@ -74,10 +71,7 @@ fn println() -> int {
 
 fn fprintln(int fd) -> int {
 
-	[char] str1 = "\n";
-	*char ptr = str1;
-	write(fd, ptr, 1);
-
+	fprint(fd, "\n");
 	return 0;
 }
 
