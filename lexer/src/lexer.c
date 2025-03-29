@@ -90,27 +90,44 @@ static int handler2_hexconst(const char* buf, struct TokenList* o, size_t nchars
 	return i + 2;
 }
 
-static int handler2_stringconst(const char* buf, struct TokenList* o, size_t nchars_remain) {
+static size_t stringconst_len(const char* buf, size_t nchars_remain) {
 
-	int i = 1;
-	while (buf[i] != '"' && i < nchars_remain) {
-		i++;
+	int tmp_len = 1;
+	char prev = ' ';
+	while (tmp_len < nchars_remain) {
+		if (buf[tmp_len] == '"' && prev != '\\') {
+			break;
+		}
+		prev = buf[tmp_len];
+		tmp_len++;
 	}
 
-	char* plain = calloc(i, sizeof(char));
-	strncpy(plain, buf + 1, i - 1);
+	return tmp_len;
+}
 
-	size_t len = i - 1;
-	char* plain_escaped = calloc(i, sizeof(char));
+static int handler2_stringconst(const char* buf, struct TokenList* o, size_t nchars_remain) {
 
-	// unescape "\\n" -> "\n"
+	const int tmp_len = stringconst_len(buf, nchars_remain);
+
+	char* plain = calloc(tmp_len, sizeof(char));
+	strncpy(plain, buf + 1, tmp_len - 1);
+
+	size_t len = tmp_len - 1;
+	char* plain_escaped = calloc(tmp_len, sizeof(char));
 
 	int escaped_index = 0;
 	for (int i = 0; i < len; i++) {
 		char c = plain[i];
-		if (c == '\\' && i + 1 < len && plain[i + 1] == 'n') {
-			plain_escaped[escaped_index] = '\n';
-			i++;
+		if (c == '\\' && i + 1 < len) {
+			char next = plain[i + 1];
+			if (next == 'n') {
+				plain_escaped[escaped_index] = '\n';
+				i++;
+			}
+			if (next == '"') {
+				plain_escaped[escaped_index] = '"';
+				i++;
+			}
 		} else {
 			plain_escaped[escaped_index] = c;
 		}
@@ -123,7 +140,7 @@ static int handler2_stringconst(const char* buf, struct TokenList* o, size_t nch
 
 	free(plain_escaped);
 
-	return i + 1;
+	return tmp_len + 1;
 }
 
 static int handler2_charconst(const char* buf, struct TokenList* o, size_t nchars_remain) {

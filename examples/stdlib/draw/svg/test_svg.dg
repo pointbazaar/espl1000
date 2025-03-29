@@ -1,0 +1,20 @@
+
+fn main () -> int {
+	uint64 n = 400;
+	int fd = 1;
+
+	svg_start(fd, n, n);
+
+	svg_rect(fd, 100, 100, 10, 10);
+
+	svg_line(fd, 10, 10, 200, 200);
+
+	[char] buf = "textual";
+	*char ptr = buf;
+	svg_text(fd, 30, 30, ptr);
+
+	svg_end(fd);
+
+	return 0;
+}
+
