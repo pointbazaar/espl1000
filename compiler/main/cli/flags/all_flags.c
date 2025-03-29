@@ -27,6 +27,13 @@ struct Flag all_flags[] = {
 	.is_set = false,
     },
     {
+	.name = "debug-optimize-tacbuffer-reorder",
+	.description = "debug tacbuffer reordering optimization in detail",
+	.has_arg = false,
+	.arg_default_value = NULL,
+	.is_set = false,
+    },
+    {
 	.name = "version",
 	.description = "display version text",
 	.has_arg = false,

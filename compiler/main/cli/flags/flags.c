@@ -419,6 +419,9 @@ bool flags_debug(struct Flags* flags) {
 bool flags_debug_dead(struct Flags* flags) {
 	return flags_set(flags, "debug-dead");
 }
+bool flags_debug_optimize_tacbuffer_reorder(struct Flags* flags) {
+	return flags_set(flags, "debug-optimize-tacbuffer-reorder");
+}
 bool flags_version(struct Flags* flags) {
 	return flags_set(flags, "version");
 }

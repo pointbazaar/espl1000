@@ -6,7 +6,7 @@
 // @precondition  t1 immediately precedes t2
 // @param i  index of t1
 // @returns true if two IR statements may be swapped
-static bool tacbuffer_optimize_swap_criterion(size_t i, struct TAC* t1, struct TAC* t2) {
+static bool tacbuffer_optimize_swap_criterion(struct TAC* t1, struct TAC* t2, bool debug) {
 
 	// Currently there are only very simplistic examples here
 	// It can be improved in the future!
@@ -20,10 +20,10 @@ static bool tacbuffer_optimize_swap_criterion(size_t i, struct TAC* t1, struct T
 	// it to the needed register earlier, which shortens the live span
 	// of the temporary, freeing up registers!
 	if (k2 == TAC_PARAM) {
-		int32_t dest2 = tac_dest(t2);
+		const int32_t dest2 = tac_dest(t2);
 
-		if (k1 == TAC_CONST_VALUE) {
-			int32_t dest1 = tac_opt_dest(t1);
+		if (k1 == TAC_CONST_VALUE || k1 == TAC_CONST_DATA) {
+			const int32_t dest1 = tac_opt_dest(t1);
 
 			if (dest1 != dest2) {
 				// TAC_CONST_VALUE instance does not define the needed
@@ -32,8 +32,8 @@ static bool tacbuffer_optimize_swap_criterion(size_t i, struct TAC* t1, struct T
 			}
 		}
 
-		if (k1 == TAC_UNARY_OP) {
-			int32_t dest1 = tac_opt_dest(t1);
+		if (k1 == TAC_UNARY_OP || k1 == TAC_COPY || k1 == TAC_LOAD) {
+			const int32_t dest1 = tac_opt_dest(t1);
 
 			if (dest1 != dest2) {
 				// TAC_CONST_VALUE instance does not define the needed
@@ -63,10 +63,10 @@ static int32_t tacbuffer_optimize_iteration(struct TACBuffer* buffer, bool debug
 			return -1;
 		}
 
-		if (tacbuffer_optimize_swap_criterion(i, t1, t2)) {
+		if (tacbuffer_optimize_swap_criterion(t1, t2, debug)) {
 
 			if (debug) {
-				printf("TACBuffer optimization: swap %ld, %ld", i, i + 1);
+				printf("   TACBuffer optimization: swap %ld, %ld\n", i, i + 1);
 			}
 
 			if (!tacbuffer_swap(buffer, i, i + 1)) {
@@ -79,15 +79,22 @@ static int32_t tacbuffer_optimize_iteration(struct TACBuffer* buffer, bool debug
 	return status;
 }
 
-bool tacbuffer_optimize_reorder(struct TACBuffer* buffer, bool debug) {
+bool tacbuffer_optimize_reorder(struct TACBuffer* buffer, struct Flags* flags) {
+
+	const bool debug = flags_debug(flags) || flags_debug_optimize_tacbuffer_reorder(flags);
 
 	if (debug) {
 		printf("\nApplying TACBuffer reordering optimization\n");
 	}
 
 	bool changed = true;
+	size_t iteration = 1;
 
 	while (changed) {
+
+		if (debug) {
+			printf(" TACBuffer reorder iteration: %ld\n", iteration);
+		}
 
 		changed = false;
 
@@ -100,6 +107,8 @@ bool tacbuffer_optimize_reorder(struct TACBuffer* buffer, bool debug) {
 		if (status == -1) {
 			return false;
 		}
+
+		iteration++;
 	}
 
 	return true;

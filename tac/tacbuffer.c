@@ -96,6 +96,12 @@ char* tacbuffer_tostring(struct TACBuffer* buffer, bool graphviz, struct SST* ss
 	strcpy(res, "");
 
 	for (size_t k = 0; k < buffer->count; k++) {
+
+		// print indices for easy debugging
+		char num_str[50];
+		sprintf(num_str, "%03ld:   ", k);
+		strcat(res, num_str);
+
 		char* s = tac_tostring(buffer->buffer[k], sst, lvst);
 		strcat(res, s);
 
