@@ -1,90 +1,133 @@
 // reference: https://medium.com/a-few-words/making-an-svg-by-hand-2cc9c7de3fd
 
+fn svg_prop_uint64(int fd, *char prop, uint64 value) -> int {
+
+	fprint(fd, " ");
+	fprint(fd, prop);
+	fprint(fd, "=");
+	fprint_uint64_quoted(fd, value);
+	return 0;
+}
+
+fn svg_prop(int fd, *char prop, *char value) -> int {
+
+	fprint(fd, " ");
+	fprint(fd, prop);
+	fprint(fd, "=");
+	fprint_quoted(fd, value);
+	return 0;
+}
+
+fn svg_prop_open(int fd, *char name) -> int {
+
+	fprint(fd, "<");
+	fprint(fd, name);
+	return 0;
+}
+
+fn svg_prop_close(int fd) -> int {
+
+	fprint(fd, "/>");
+	fprintln(fd);
+	return 0;
+}
+
 fn svg_start(int fd, uint64 w, uint64 h) -> int {
 
-	fprint(fd, "<svg version=\"1.1\" baseProfile=\"full\" width=\"");
+	svg_prop_open(fd, "svg");
 
-	fprint_uint64(fd, w);
+	svg_prop(fd, "version", "1.1");
+	svg_prop(fd, "baseProfile", "full");
+	svg_prop_uint64(fd, "width", w);
+	svg_prop_uint64(fd, "height", h);
 
-	fprint(fd, "\" height=\"");
-
-	fprint_uint64(fd, h);
-
-	fprint(fd, "\" xmlns=\"http://www.w3.org/2000/svg\">");
+	svg_prop(fd, "xmlns", "http://www.w3.org/2000/svg");
+	fprint(fd, ">");
 
 	fprintln(fd);
+
+	return 0;
+}
+
+fn svg_rect_stroke (int fd, uint64 x, uint64 y, uint64 width, uint64 height, *char stroke) -> int {
+
+	svg_prop_open(fd, "rect");
+
+	svg_prop_uint64(fd, "x", x);
+	svg_prop_uint64(fd, "y", y);
+	svg_prop_uint64(fd, "width", width);
+	svg_prop_uint64(fd, "height", height);
+	svg_prop(fd, "fill", "transparent");
+	svg_prop(fd, "stroke", stroke);
+
+	svg_prop_close(fd);
 
 	return 0;
 }
 
 fn svg_rect (int fd, uint64 x, uint64 y, uint64 width, uint64 height) -> int {
 
-	fprint(fd, "<rect");
+	svg_prop_open(fd, "rect");
 
-	fprint(fd, " x=");
-	fprint_uint64_quoted(fd, x);
+	svg_prop_uint64(fd, "x", x);
+	svg_prop_uint64(fd, "y", y);
+	svg_prop_uint64(fd, "width", width);
+	svg_prop_uint64(fd, "height", height);
+	svg_prop(fd, "fill", "black");
 
-	fprint(fd, " y=");
-	fprint_uint64_quoted(fd, y);
-
-	fprint(fd, " width=\"");
-
-	fprint_uint64(fd, width);
-
-	fprint(fd, "\" height=\"");
-
-	fprint_uint64(fd, height);
-
-	fprint(fd, "\" fill=\"black\"/>");
-
-	fprintln(fd);
+	svg_prop_close(fd);
 
 	return 0;
 }
 
 fn svg_line (int fd, uint64 x1, uint64 y1, uint64 x2, uint64 y2) -> int {
 
-	fprint(fd, "<line");
+	return svg_line_stroke(fd, x1, y1, x2, y2, "black");
+}
 
-	fprint(fd, " x1=");
-	fprint_uint64_quoted(fd, x1);
+fn svg_line_stroke (int fd, uint64 x1, uint64 y1, uint64 x2, uint64 y2, *char stroke) -> int {
 
-	fprint(fd, " y1=");
-	fprint_uint64_quoted(fd, y1);
+	svg_prop_open(fd, "line");
 
-	fprint(fd, " x2=");
+	svg_prop_uint64(fd, "x1", x1);
+	svg_prop_uint64(fd, "y1", y1);
+	svg_prop_uint64(fd, "x2", x2);
+	svg_prop_uint64(fd, "y2", y2);
+	svg_prop(fd, "stroke", stroke);
 
-	fprint_uint64_quoted(fd, x2);
+	svg_prop_close(fd);
 
-	fprint(fd, " y2=");
+	return 0;
+}
 
-	fprint_uint64_quoted(fd, y2);
+fn svg_line_stroke_bold (int fd, uint64 x1, uint64 y1, uint64 x2, uint64 y2, *char stroke) -> int {
 
-	fprint(fd, " stroke=\"black\"");
+	svg_prop_open(fd, "line");
 
-	fprint(fd, "/>");
+	svg_prop_uint64(fd, "x1", x1);
+	svg_prop_uint64(fd, "y1", y1);
+	svg_prop_uint64(fd, "x2", x2);
+	svg_prop_uint64(fd, "y2", y2);
+	svg_prop(fd, "stroke", stroke);
+	svg_prop_uint64(fd, "stroke-width", 3);
 
-	fprintln(fd);
+	svg_prop_close(fd);
 
 	return 0;
 }
 
 fn svg_text (int fd, uint64 x, uint64 y, *char text) -> int {
 
-	fprint(fd, "<text");
+	svg_prop_open(fd, "text");
 
-	fprint(fd, " x=");
-	fprint_uint64_quoted(fd, x);
-
-	fprint(fd, " y=");
-	fprint_uint64_quoted(fd, y);
+	svg_prop_uint64(fd, "x", x);
+	svg_prop_uint64(fd, "y", y);
 
 	fprint(fd, ">");
 
 	fprint(fd, text);
 
 	fprint(fd, "</text>");
-
 	fprintln(fd);
 
 	return 0;
