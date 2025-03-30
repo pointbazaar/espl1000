@@ -59,6 +59,15 @@ fn fprint_uint64_quoted(int fd, uint64 x) -> int {
 	return 0;
 }
 
+fn fprint_quoted(int fd, *char ptr) -> int {
+
+	fprint(fd, "\"");
+	fprint(fd, ptr);
+	fprint(fd, "\"");
+
+	return 0;
+}
+
 fn fprint(int fd, *char ptr) -> int {
 
 	write(fd, ptr, strlen(ptr));
