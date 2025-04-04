@@ -41,7 +41,7 @@ bool tc_whilestmt(struct WhileStmt* w, struct TCCtx* tcctx) {
 	}
 
 	tcctx->depth_inside_loop++;
-	bool has_err = tc_stmtblock(w->block, tcctx);
+	bool has_err = tc_stmtblock(w->block, tcctx, false);
 	tcctx->depth_inside_loop--;
 
 	return has_err;

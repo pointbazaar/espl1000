@@ -25,9 +25,10 @@ bool tc_local_var_decl_stmt(struct LocalVarDeclStmt* a, struct TCCtx* tcctx);
 
 bool tc_methodcall(struct Call* m, struct TCCtx* tcctx);
 
-bool tc_stmt(struct Stmt* s, struct TCCtx* tcctx);
+bool tc_stmt(struct Stmt* s, struct TCCtx* tcctx, bool must_return);
+bool tc_stmt_must_return(struct Stmt* s, struct TCCtx* tcctx);
 
-bool tc_ifstmt(struct IfStmt* i, struct TCCtx* tcctx);
+bool tc_ifstmt(struct IfStmt* i, struct TCCtx* tcctx, bool must_return);
 bool tc_whilestmt(struct WhileStmt* w, struct TCCtx* tcctx);
 bool tc_retstmt(struct RetStmt* r, struct TCCtx* tcctx);
 bool tc_forstmt(struct ForStmt* f, struct TCCtx* tcctx);
@@ -47,4 +48,4 @@ bool tc_method(struct Method* m, struct TCCtx* tcctx);
 
 bool tc_namespace(struct Namespace* n, struct TCCtx* tcctx);
 
-bool tc_stmtblock(struct StmtBlock* s, struct TCCtx* tcctx);
+bool tc_stmtblock(struct StmtBlock* s, struct TCCtx* tcctx, bool must_return);
