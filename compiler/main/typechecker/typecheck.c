@@ -70,13 +70,15 @@ bool tc_namespace(struct Namespace* n, struct TCCtx* tcctx) {
 	return has_err;
 }
 
-bool tc_stmtblock(struct StmtBlock* s, struct TCCtx* tcctx) {
+bool tc_stmtblock(struct StmtBlock* s, struct TCCtx* tcctx, bool must_return) {
 
 	tcctx->current_line_num = s->super.line_num;
 
 	bool has_err = false;
 	for (uint16_t i = 0; i < s->count; i++) {
-		has_err |= tc_stmt(s->stmts[i], tcctx);
+
+		const bool last = i == (s->count - 1);
+		has_err |= tc_stmt(s->stmts[i], tcctx, last && must_return);
 	}
 	return has_err;
 }

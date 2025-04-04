@@ -14,7 +14,7 @@
 #include "typechecker/util/tc_utils.h"
 #include "tcctx.h"
 
-bool tc_ifstmt(struct IfStmt* i, struct TCCtx* tcctx) {
+bool tc_ifstmt(struct IfStmt* i, struct TCCtx* tcctx, bool must_return) {
 
 	if (tcctx->debug) {
 		printf("[debug] typecheck if stmt\n");
@@ -46,10 +46,10 @@ bool tc_ifstmt(struct IfStmt* i, struct TCCtx* tcctx) {
 		return false;
 	}
 
-	bool success = tc_stmtblock(i->block, tcctx);
+	bool success = tc_stmtblock(i->block, tcctx, must_return);
 
 	if (i->else_block != NULL) {
-		success &= tc_stmtblock(i->else_block, tcctx);
+		success &= tc_stmtblock(i->else_block, tcctx, must_return);
 	}
 
 	return success;

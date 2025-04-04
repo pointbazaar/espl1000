@@ -201,6 +201,20 @@ void test_typecheck_var_not_found() {
 	free_tc_errors(errors);
 }
 
+void test_typecheck_no_return_stmt() {
+
+	status_test_typechecker("typecheck return stmt not found");
+	char* filename = "compiler/test/typechecker/test-src/no_return_stmt.dg";
+
+	struct TCError* errors = typecheck_file(filename);
+
+	assert(errors != NULL);
+	assert(errors->err_kind == TC_ERR_MUST_RETURN);
+	assert(errors->next == NULL);
+
+	free_tc_errors(errors);
+}
+
 void test_typecheck_all_type_errors() {
 
 	status_test_typechecker("typecheck all type errors");

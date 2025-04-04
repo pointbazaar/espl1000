@@ -13,6 +13,9 @@ enum TC_ERR_KIND {
 
 	TC_ERR_WRONG_RETURN_TYPE,
 
+	// function should return here, but does not
+	TC_ERR_MUST_RETURN,
+
 	TC_ERR_BINOP_TYPE_MISMATCH,
 
 	TC_ERR_SUBR_NOT_FOUND,
