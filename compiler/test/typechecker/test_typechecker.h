@@ -13,4 +13,5 @@ void test_typecheck_wrong_op_unop();
 void test_typecheck_too_many_indices();
 void test_typecheck_local_var_not_a_subroutine();
 void test_typecheck_var_not_found();
+void test_typecheck_no_return_stmt();
 void test_typecheck_all_type_errors();

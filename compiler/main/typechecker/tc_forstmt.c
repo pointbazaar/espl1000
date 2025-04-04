@@ -25,7 +25,7 @@ bool tc_forstmt(struct ForStmt* f, struct TCCtx* tcctx) {
 	if (!tc_range(f->range, tcctx)) { return false; }
 
 	tcctx->depth_inside_loop++;
-	bool is_ok = tc_stmtblock(f->block, tcctx);
+	bool is_ok = tc_stmtblock(f->block, tcctx, false);
 	tcctx->depth_inside_loop--;
 
 	return is_ok;
