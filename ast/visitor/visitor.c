@@ -150,26 +150,27 @@ static bool visit_stmt(struct Stmt* s, VISITOR, void* arg) {
 
 	switch (s->kind) {
 
-		case 1:
-			return visit_call(s->ptr.m1, visitor, arg);
-		case 2:
-			return visit_while_stmt(s->ptr.m2, visitor, arg);
-		case 3:
-			return visit_if_stmt(s->ptr.m3, visitor, arg);
-		case 4:
-			return visit_ret_stmt(s->ptr.m4, visitor, arg);
-		case 5:
-			return visit_assign_stmt(s->ptr.m5, visitor, arg);
-		case 7:
-			return visit_for_stmt(s->ptr.m7, visitor, arg);
-		case 10:
-			visit_local_var_decl_stmt(s->ptr.m10, visitor, arg);
+		case STMT_KIND_CALL:
+			return visit_call(s->ptr.call, visitor, arg);
+		case STMT_KIND_WHILE:
+			return visit_while_stmt(s->ptr.while_stmt, visitor, arg);
+		case STMT_KIND_IF:
+			return visit_if_stmt(s->ptr.if_stmt, visitor, arg);
+		case STMT_KIND_RETURN:
+			return visit_ret_stmt(s->ptr.return_stmt, visitor, arg);
+		case STMT_KIND_ASSIGN:
+			return visit_assign_stmt(s->ptr.assign_stmt, visitor, arg);
+		case STMT_KIND_FOR:
+			return visit_for_stmt(s->ptr.for_stmt, visitor, arg);
+		case STMT_KIND_LOCAL_VAR_DECL:
+			visit_local_var_decl_stmt(s->ptr.local_var_decl_stmt, visitor, arg);
 			break;
-		case 99:
-			if (s->is_break) { visit_break_stmt(visitor, arg); }
-			if (s->is_continue) { visit_continue_stmt(visitor, arg); }
+		case STMT_KIND_BREAK:
+			visit_break_stmt(visitor, arg);
 			break;
-
+		case STMT_KIND_CONTINUE:
+			visit_continue_stmt(visitor, arg);
+			break;
 		default:
 			fprintf(stderr, "[Visitor] Fatal error in %s: kind == %d\n", __func__, s->kind);
 			return false;

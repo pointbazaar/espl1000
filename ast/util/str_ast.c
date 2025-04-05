@@ -658,22 +658,22 @@ char* str_stmt(struct Stmt* stmt) {
 
 	switch (stmt->kind) {
 
-		case 1: return str_call(stmt->ptr.m1);
-		case 2: return str_while_stmt(stmt->ptr.m2);
-		case 3: return str_if_stmt(stmt->ptr.m3);
-		case 4: return str_ret_stmt(stmt->ptr.m4);
-		case 5: return str_assign_stmt(stmt->ptr.m5);
-		case 7: return str_for_stmt(stmt->ptr.m7);
-		case 99: {
-			//break,continue,throw,...
+		case STMT_KIND_CALL: return str_call(stmt->ptr.call);
+		case STMT_KIND_WHILE: return str_while_stmt(stmt->ptr.while_stmt);
+		case STMT_KIND_IF: return str_if_stmt(stmt->ptr.if_stmt);
+		case STMT_KIND_RETURN: return str_ret_stmt(stmt->ptr.return_stmt);
+		case STMT_KIND_ASSIGN: return str_assign_stmt(stmt->ptr.assign_stmt);
+		case STMT_KIND_FOR: return str_for_stmt(stmt->ptr.for_stmt);
+		case STMT_KIND_BREAK:
+		case STMT_KIND_CONTINUE: {
 			char* res = malloc(sizeof(char) * 30);
 			if (!res) {
 				return NULL;
 			}
 			strcpy(res, "");
 
-			if (stmt->is_break) { sprintf(res, "break"); }
-			if (stmt->is_continue) { sprintf(res, "continue"); }
+			if (stmt->kind == STMT_KIND_BREAK) { sprintf(res, "break"); }
+			if (stmt->kind == STMT_KIND_CONTINUE) { sprintf(res, "continue"); }
 			return res;
 		}
 

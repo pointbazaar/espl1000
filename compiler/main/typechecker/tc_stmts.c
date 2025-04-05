@@ -18,14 +18,15 @@ bool tc_stmt_must_return(struct Stmt* s, struct TCCtx* tcctx) {
 
 	switch (s->kind) {
 
-		case 3: return tc_ifstmt(s->ptr.m3, tcctx, true);
-		case 4: return tc_retstmt(s->ptr.m4, tcctx);
-		case 1:
-		case 2:
-		case 5:
-		case 7:
-		case 10:
-		case 99: {
+		case STMT_KIND_IF: return tc_ifstmt(s->ptr.if_stmt, tcctx, true);
+		case STMT_KIND_RETURN: return tc_retstmt(s->ptr.return_stmt, tcctx);
+		case STMT_KIND_CALL:
+		case STMT_KIND_WHILE:
+		case STMT_KIND_ASSIGN:
+		case STMT_KIND_FOR:
+		case STMT_KIND_LOCAL_VAR_DECL:
+		case STMT_KIND_BREAK:
+		case STMT_KIND_CONTINUE: {
 			char* snippet = str_stmt(s);
 			error_snippet_and_msg(tcctx, snippet, "should return here", TC_ERR_MUST_RETURN);
 			free(snippet);
@@ -52,17 +53,16 @@ bool tc_stmt(struct Stmt* s, struct TCCtx* tcctx, bool must_return) {
 
 	switch (s->kind) {
 
-		case 1: return tc_methodcall(s->ptr.m1, tcctx);
-		case 2: return tc_whilestmt(s->ptr.m2, tcctx);
-		case 3: return tc_ifstmt(s->ptr.m3, tcctx, false);
-		case 4: return tc_retstmt(s->ptr.m4, tcctx);
-		case 5: return tc_assignstmt(s->ptr.m5, tcctx);
-		case 7: return tc_forstmt(s->ptr.m7, tcctx);
-		case 10: return tc_local_var_decl_stmt(s->ptr.m10, tcctx);
-
-		case 99:
-			if (s->is_continue) {}
-			if (s->is_break) {}
+		case STMT_KIND_CALL: return tc_methodcall(s->ptr.call, tcctx);
+		case STMT_KIND_WHILE: return tc_whilestmt(s->ptr.while_stmt, tcctx);
+		case STMT_KIND_IF: return tc_ifstmt(s->ptr.if_stmt, tcctx, false);
+		case STMT_KIND_RETURN: return tc_retstmt(s->ptr.return_stmt, tcctx);
+		case STMT_KIND_ASSIGN: return tc_assignstmt(s->ptr.assign_stmt, tcctx);
+		case STMT_KIND_FOR: return tc_forstmt(s->ptr.for_stmt, tcctx);
+		case STMT_KIND_LOCAL_VAR_DECL: return tc_local_var_decl_stmt(s->ptr.local_var_decl_stmt, tcctx);
+		case STMT_KIND_BREAK:
+		case STMT_KIND_CONTINUE:
+			return true;
 
 		default:
 			// invalid stmt

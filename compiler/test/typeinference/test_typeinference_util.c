@@ -69,9 +69,9 @@ struct Type* typeinfer_in_file(char* filename) {
 
 	struct Stmt* stmt = m->block->stmts[m->block->count - 1];
 	assert(stmt != NULL);
-	assert(stmt->kind == 4);
+	assert(stmt->kind == STMT_KIND_RETURN);
 
-	struct Expr* expr = stmt->ptr.m4->return_value;
+	struct Expr* expr = stmt->ptr.return_stmt->return_value;
 	struct Type* returned_type = infer_type_expr(ctx_tables(ctx), expr);
 
 	struct Type* copy = copy_type(returned_type);
