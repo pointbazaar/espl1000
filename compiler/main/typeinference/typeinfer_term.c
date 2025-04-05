@@ -29,16 +29,11 @@ struct Type* infer_type_term(struct ST* st, struct Term* t) {
 
 	switch (t->kind) {
 
-		case 4: return infer_type_methodcall(st, t->ptr.m4);
-		case 5: return infer_type_expr(st, t->ptr.m5);
-		case 6: return infer_type_variable(st, t->ptr.m6);
-		case 8: return typeFromStrArray(st, "char");
-		case 11:
-			printf("cannot infer type of lambda");
-			printf("[Typeinference][Error] Fatal. (in typeinfer_term.c).\n");
-			return NULL;
-
-		case 12: return infer_type_constvalue(st, t->ptr.m12);
+		case TERM_KIND_CALL: return infer_type_methodcall(st, t->ptr.call_term);
+		case TERM_KIND_EXPR: return infer_type_expr(st, t->ptr.expr_term);
+		case TERM_KIND_VAR: return infer_type_variable(st, t->ptr.var_term);
+		case TERM_KIND_STRINGCONST: return typeFromStrArray(st, "char");
+		case TERM_KIND_CONSTVALUE: return infer_type_constvalue(st, t->ptr.constvalue_term);
 
 		default:
 			fprintf(stderr, "[Typeinference][Error] Fatal. (in typeinfer_term.c).\n");

@@ -54,7 +54,7 @@ int simplevar_test_parse_simple_indexed_variable() {
 
 	assert(
 	    1 ==
-	    (node->indices[0]->term1->term->ptr.m12->ptr.m2_int_const));
+	    (node->indices[0]->term1->term->ptr.constvalue_term->ptr.m2_int_const));
 
 	freeTokenList(list);
 	free_simple_var(node);

@@ -93,11 +93,11 @@ struct Term* copy_term(struct Term* t) {
 
 	switch (t->kind) {
 
-		case 4: res->ptr.m4 = copy_call(t->ptr.m4); break;
-		case 5: res->ptr.m5 = copy_expr(t->ptr.m5); break;
-		case 6: res->ptr.m6 = copy_variable(t->ptr.m6); break;
-		case 8: res->ptr.m8 = copy_string_const(t->ptr.m8); break;
-		case 12: res->ptr.m12 = copy_const_value(t->ptr.m12); break;
+		case TERM_KIND_CALL: res->ptr.call_term = copy_call(t->ptr.call_term); break;
+		case TERM_KIND_EXPR: res->ptr.expr_term = copy_expr(t->ptr.expr_term); break;
+		case TERM_KIND_VAR: res->ptr.var_term = copy_variable(t->ptr.var_term); break;
+		case TERM_KIND_STRINGCONST: res->ptr.stringconst_term = copy_string_const(t->ptr.stringconst_term); break;
+		case TERM_KIND_CONSTVALUE: res->ptr.constvalue_term = copy_const_value(t->ptr.constvalue_term); break;
 		default:
 			fprintf(stderr, "[AST][Error] copy_term(...), kind was: %d\n", t->kind);
 			return NULL;

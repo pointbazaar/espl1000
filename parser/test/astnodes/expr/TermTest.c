@@ -41,7 +41,7 @@ int term_test_variable_term() {
 
 	assert(list_size(list) == 0);
 
-	struct Variable* v = t->ptr.m6;
+	struct Variable* v = t->ptr.var_term;
 	assert(v != NULL);
 
 	struct SimpleVar* sv = v->simple_var;
@@ -67,12 +67,12 @@ int term_test_parentheses() {
 	struct Term* t = makeTerm(list);
 	assert(t != NULL);
 
-	struct Expr* expr = t->ptr.m5;
+	struct Expr* expr = t->ptr.expr_term;
 	assert(expr != NULL);
 
 	assert(list_size(list) == 0);
 
-	struct Variable* v = expr->term1->term->ptr.m6;
+	struct Variable* v = expr->term1->term->ptr.var_term;
 	assert(v != NULL);
 
 	struct SimpleVar* sv = v->simple_var;

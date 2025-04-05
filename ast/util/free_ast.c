@@ -119,11 +119,11 @@ void free_struct_member(struct StructMember* sm) {
 bool free_term(struct Term* t) {
 
 	switch (t->kind) {
-		case 4: free_call(t->ptr.m4); break;
-		case 5: free_expr(t->ptr.m5); break;
-		case 6: free_variable(t->ptr.m6); break;
-		case 8: free_string_const(t->ptr.m8); break;
-		case 12: free_const_value(t->ptr.m12); break;
+		case TERM_KIND_CALL: free_call(t->ptr.call_term); break;
+		case TERM_KIND_EXPR: free_expr(t->ptr.expr_term); break;
+		case TERM_KIND_VAR: free_variable(t->ptr.var_term); break;
+		case TERM_KIND_STRINGCONST: free_string_const(t->ptr.stringconst_term); break;
+		case TERM_KIND_CONSTVALUE: free_const_value(t->ptr.constvalue_term); break;
 		default:
 			fprintf(stderr, "Error in free_term(...)\n");
 			free(t);

@@ -47,8 +47,8 @@ bool tc_assignstmt(struct AssignStmt* a, struct TCCtx* tcctx) {
 	} else {
 		assert(a->lvalue->deref);
 		struct Term* term = a->lvalue->deref->term;
-		assert(term->kind == 6);
-		name = term->ptr.m6->simple_var->name;
+		assert(term->kind == TERM_KIND_VAR);
+		name = term->ptr.var_term->simple_var->name;
 	}
 
 	struct LVSTLine* line = lvst_get(tcctx->st->lvst, name);

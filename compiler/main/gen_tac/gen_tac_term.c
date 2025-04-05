@@ -7,16 +7,11 @@
 bool tac_term(struct TACBuffer* buffer, struct Term* t, struct Ctx* ctx) {
 
 	switch (t->kind) {
-		case 4: tac_call(buffer, t->ptr.m4, ctx); break;
-		case 5: tac_expr(buffer, t->ptr.m5, ctx); break;
-		case 6: tac_variable(buffer, t->ptr.m6, ctx); break;
-		case 8: return tac_const_data(buffer, t->ptr.m8, ctx);
-		case 11:
-			fprintf(stderr, "Fatal Error. Lambdas should not exist at this stage.\n");
-			return false;
-			//lambdas should not exist anymore at this stage,
-			//having been converted into named functions
-		case 12: tac_constvalue(buffer, t->ptr.m12); break;
+		case TERM_KIND_CALL: tac_call(buffer, t->ptr.call_term, ctx); break;
+		case TERM_KIND_EXPR: tac_expr(buffer, t->ptr.expr_term, ctx); break;
+		case TERM_KIND_VAR: tac_variable(buffer, t->ptr.var_term, ctx); break;
+		case TERM_KIND_STRINGCONST: return tac_const_data(buffer, t->ptr.stringconst_term, ctx);
+		case TERM_KIND_CONSTVALUE: tac_constvalue(buffer, t->ptr.constvalue_term); break;
 		default:
 			fprintf(stderr, "%s: unsupported: %d\n", __func__, t->kind);
 			return false;
@@ -31,8 +26,8 @@ bool tac_term_addr(struct TACBuffer* buffer, struct Term* t, struct Ctx* ctx) {
 	uint8_t width;
 
 	switch (t->kind) {
-		case 5: tac_expr_addr(buffer, t->ptr.m5, ctx); break;
-		case 6: tac_variable_addr(buffer, t->ptr.m6, ctx, &width); break;
+		case TERM_KIND_EXPR: tac_expr_addr(buffer, t->ptr.expr_term, ctx); break;
+		case TERM_KIND_VAR: tac_variable_addr(buffer, t->ptr.var_term, ctx, &width); break;
 		default:
 			fprintf(stderr, "%s: unsupported: %d\n", __func__, t->kind);
 			return false;

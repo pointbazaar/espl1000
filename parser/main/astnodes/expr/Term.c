@@ -34,8 +34,8 @@ struct Term* makeTerm_other(struct Expr* expr) {
 	res->super.line_num = expr->super.line_num;
 	res->super.annotations = expr->super.annotations;
 
-	res->kind = 5;
-	res->ptr.m5 = expr;
+	res->kind = TERM_KIND_EXPR;
+	res->ptr.expr_term = expr;
 	return res;
 }
 
@@ -74,18 +74,18 @@ struct Term* makeTerm(struct TokenList* tokens) {
 
 other_term:
 
-	if ((res->ptr.m12 = makeConstValue(copy)) != NULL) {
-		res->kind = 12;
+	if ((res->ptr.constvalue_term = makeConstValue(copy)) != NULL) {
+		res->kind = TERM_KIND_CONSTVALUE;
 		goto end;
 	}
 
-	if ((res->ptr.m4 = makeCall(copy)) != NULL) {
-		res->kind = 4;
+	if ((res->ptr.call_term = makeCall(copy)) != NULL) {
+		res->kind = TERM_KIND_CALL;
 		goto end;
 	}
 
-	if ((res->ptr.m6 = makeVariable(copy)) != NULL) {
-		res->kind = 6;
+	if ((res->ptr.var_term = makeVariable(copy)) != NULL) {
+		res->kind = TERM_KIND_VAR;
 		goto end;
 	}
 exit_error:
@@ -105,7 +105,7 @@ struct Term* initTerm() {
 	struct Term* res = make(Term);
 
 	res->kind = 0;
-	res->ptr.m5 = NULL;
+	res->ptr.expr_term = NULL;
 
 	return res;
 }
@@ -114,9 +114,9 @@ static bool tryInitExpr(struct Term* res, struct TokenList* copy) {
 
 	list_consume(copy, 1);
 
-	res->kind = 5;
-	res->ptr.m5 = makeExpr(copy);
-	if (res->ptr.m5 == NULL) {
+	res->kind = TERM_KIND_EXPR;
+	res->ptr.expr_term = makeExpr(copy);
+	if (res->ptr.expr_term == NULL) {
 		free(res);
 		freeTokenListShallow(copy);
 		printf("expected an Expression, but got :");
@@ -136,9 +136,9 @@ static bool tryInitExpr(struct Term* res, struct TokenList* copy) {
 
 static bool tryInitStringConst(struct Term* res, struct TokenList* copy) {
 
-	res->kind = 8;
-	res->ptr.m8 = makeStringConst(copy);
-	if (res->ptr.m8 == NULL) {
+	res->kind = TERM_KIND_STRINGCONST;
+	res->ptr.stringconst_term = makeStringConst(copy);
+	if (res->ptr.stringconst_term == NULL) {
 
 		printf("expected an String, but got :");
 		list_print(copy);

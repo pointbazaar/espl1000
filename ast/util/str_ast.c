@@ -633,11 +633,11 @@ char* str_deref(struct Deref* d) {
 char* str_term(struct Term* t) {
 
 	switch (t->kind) {
-		case 4: return str_call(t->ptr.m4);
-		case 5: return str_expr(t->ptr.m5);
-		case 6: return str_variable(t->ptr.m6);
-		case 8: return str_string_const(t->ptr.m8);
-		case 12: return str_const_value(t->ptr.m12);
+		case TERM_KIND_CALL: return str_call(t->ptr.call_term);
+		case TERM_KIND_EXPR: return str_expr(t->ptr.expr_term);
+		case TERM_KIND_VAR: return str_variable(t->ptr.var_term);
+		case TERM_KIND_STRINGCONST: return str_string_const(t->ptr.stringconst_term);
+		case TERM_KIND_CONSTVALUE: return str_const_value(t->ptr.constvalue_term);
 	}
 
 	error("str_term");

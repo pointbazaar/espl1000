@@ -19,12 +19,12 @@ bool tac_whilestmt(struct TACBuffer* buffer, struct WhileStmt* w, struct Ctx* ct
 		struct UnOpTerm* u = e->term1;
 		if (u->op == OP_NONE) {
 			struct Term* t = u->term;
-			if (t->kind == 12) {
+			if (t->kind == TERM_KIND_CONSTVALUE) {
 				//const value, "while my_const { ... }"
 				//and the const ist known at compile time so we can
 				//just decide if we emit infinite loop or skip this block
 
-				struct ConstValue* c = t->ptr.m12;
+				struct ConstValue* c = t->ptr.constvalue_term;
 				bool inf = false;
 
 				switch (c->kind) {
