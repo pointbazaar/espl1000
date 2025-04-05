@@ -334,17 +334,17 @@ static bool visit_term(struct Term* t, VISITOR, void* arg) {
 	visitor(t, NODE_TERM, arg);
 
 	switch (t->kind) {
-		case 4:
-			return visit_call(t->ptr.m4, visitor, arg);
-		case 5:
-			return visit_expr(t->ptr.m5, visitor, arg);
-		case 6:
-			return visit_variable(t->ptr.m6, visitor, arg);
-		case 8:
-			visit_string_const(t->ptr.m8, visitor, arg);
+		case TERM_KIND_CALL:
+			return visit_call(t->ptr.call_term, visitor, arg);
+		case TERM_KIND_EXPR:
+			return visit_expr(t->ptr.expr_term, visitor, arg);
+		case TERM_KIND_VAR:
+			return visit_variable(t->ptr.var_term, visitor, arg);
+		case TERM_KIND_STRINGCONST:
+			visit_string_const(t->ptr.stringconst_term, visitor, arg);
 			break;
-		case 12:
-			visit_const_value(t->ptr.m12, visitor, arg);
+		case TERM_KIND_CONSTVALUE:
+			visit_const_value(t->ptr.constvalue_term, visitor, arg);
 			break;
 		default:
 			fprintf(stderr, "[Visitor][Error] Fatal(2)\n");

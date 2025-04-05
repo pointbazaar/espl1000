@@ -27,14 +27,17 @@ bool tc_term(struct Term* term, struct TCCtx* tcctx) {
 
 	switch (term->kind) {
 
-		case 4: return tc_methodcall(term->ptr.m4, tcctx);
-		case 5: return tc_expr(term->ptr.m5, tcctx);
-		case 6: return tc_var(term->ptr.m6, tcctx);
+		case TERM_KIND_CALL: return tc_methodcall(term->ptr.call_term, tcctx);
+		case TERM_KIND_EXPR: return tc_expr(term->ptr.expr_term, tcctx);
+		case TERM_KIND_VAR: return tc_var(term->ptr.var_term, tcctx);
 
-		case 8: return true; //stringconst
+		case TERM_KIND_STRINGCONST: return true;
 
-		case 11: return true; //lambdas are already handled at this point
-		case 12: return tc_constvalue(term->ptr.m12);
+		case TERM_KIND_CONSTVALUE: return tc_constvalue(term->ptr.constvalue_term);
+
+		default:
+			fprintf(stderr, "%s:%s: unhandled case: %d\n", __FILE__, __func__, term->kind);
+			return false;
 	}
 	return true;
 }

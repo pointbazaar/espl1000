@@ -180,7 +180,7 @@ int methodcall_test_can_parse_array_access() {
 
 	struct Expr* expr = call->callable->simple_var->indices[0];
 
-	assert(strcmp(expr->term1->term->ptr.m6->simple_var->name, "y") == 0);
+	assert(strcmp(expr->term1->term->ptr.var_term->simple_var->name, "y") == 0);
 
 	freeTokenList(tokens);
 	free_call(call);

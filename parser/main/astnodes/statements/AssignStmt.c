@@ -103,8 +103,8 @@ static struct UnOpTerm* convert_left(struct LValue* lv) {
 
 		struct Term* myterm1 = make(Term);
 		myterm1->super = myvar->super;
-		myterm1->kind = 6;
-		myterm1->ptr.m6 = myvar;
+		myterm1->kind = TERM_KIND_VAR;
+		myterm1->ptr.var_term = myvar;
 
 		struct UnOpTerm* uop1 = make(UnOpTerm);
 		uop1->super = myvar->super;
@@ -132,8 +132,8 @@ static struct UnOpTerm* convert_right(struct Expr* expr) {
 
 	struct Term* myterm2 = make(Term);
 	myterm2->super = expr->super;
-	myterm2->kind = 5;
-	myterm2->ptr.m5 = expr;
+	myterm2->kind = TERM_KIND_EXPR;
+	myterm2->ptr.expr_term = expr;
 
 	uop2->op = OP_NONE;
 	uop2->term = myterm2;

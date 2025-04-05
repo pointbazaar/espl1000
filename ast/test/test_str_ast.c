@@ -88,8 +88,8 @@ void test_ast_str_expr() {
 	struct ConstValue cv = {.ptr.m2_int_const = 45, .kind = 2};
 
 	struct Term b = {
-	    .kind = 12,
-	    .ptr.m12 = &cv};
+	    .kind = TERM_KIND_CONSTVALUE,
+	    .ptr.constvalue_term = &cv};
 
 	struct UnOpTerm u = {
 	    .op = OP_MINUS,
@@ -126,8 +126,8 @@ void test_ast_str_unopterm() {
 	struct ConstValue cv = {.ptr.m2_int_const = 3489, .kind = 2};
 
 	struct Term b = {
-	    .kind = 12,
-	    .ptr.m12 = &cv};
+	    .kind = TERM_KIND_CONSTVALUE,
+	    .ptr.constvalue_term = &cv};
 
 	struct UnOpTerm u = {
 	    .op = OP_MINUS,
@@ -146,8 +146,8 @@ void test_ast_str_term() {
 	struct ConstValue cv = {.ptr.m2_int_const = 3489, .kind = 2};
 
 	struct Term b = {
-	    .kind = 12,
-	    .ptr.m12 = &cv};
+	    .kind = TERM_KIND_CONSTVALUE,
+	    .ptr.constvalue_term = &cv};
 
 	char* s = str_term(&b);
 

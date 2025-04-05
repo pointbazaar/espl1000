@@ -23,7 +23,7 @@ int expr_test_simple_expression() {
 
 	assert(expr != NULL);
 	assert(expr->term1 != NULL);
-	assert(expr->term1->term->ptr.m12->ptr.m2_int_const == 4);
+	assert(expr->term1->term->ptr.constvalue_term->ptr.m2_int_const == 4);
 
 	freeTokenList(list);
 	free_expr(expr);
@@ -41,11 +41,11 @@ int expr_test_variable_name_expression() {
 	struct Expr* expr = makeExpr(list);
 
 	assert(expr != NULL);
-	assert(expr->term1->term->ptr.m6 != NULL);
-	assert(expr->term1->term->ptr.m6->simple_var != NULL);
+	assert(expr->term1->term->ptr.var_term != NULL);
+	assert(expr->term1->term->ptr.var_term->simple_var != NULL);
 	assert(
 	    strcmp(
-		expr->term1->term->ptr.m6->simple_var->name,
+		expr->term1->term->ptr.var_term->simple_var->name,
 		"x") == 0);
 
 	freeTokenList(list);
@@ -103,12 +103,12 @@ int expr_test_comparison() {
 
 	//assert about the terms
 
-	struct Variable* v = term1->ptr.m6;
+	struct Variable* v = term1->ptr.var_term;
 	assert(v != NULL);
 
-	assert(term2->ptr.m12->kind == 2);
+	assert(term2->ptr.constvalue_term->kind == 2);
 
-	assert(term2->ptr.m12->ptr.m2_int_const == 5);
+	assert(term2->ptr.constvalue_term->ptr.m2_int_const == 5);
 
 	struct SimpleVar* sv = v->simple_var;
 	assert(sv != NULL);

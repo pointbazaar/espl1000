@@ -70,18 +70,29 @@ struct UnOpTerm {
 	// may be NULL
 	struct Term* term;
 };
+
+enum TERM_KIND {
+
+	TERM_KIND_CALL,
+	TERM_KIND_EXPR,
+	TERM_KIND_VAR,
+	TERM_KIND_STRINGCONST,
+	TERM_KIND_CONSTVALUE,
+};
+
 struct Term {
 	struct ASTNode super;
+
 	//only one of these is present,
 	//check 'kind' for which it is.
 	union myptr2 {
 
-		struct Call* m4;
-		struct Expr* m5;
-		struct Variable* m6;
-		struct StringConst* m8;
-		struct ConstValue* m12;
+		struct Call* call_term;
+		struct Expr* expr_term;
+		struct Variable* var_term;
+		struct StringConst* stringconst_term;
+		struct ConstValue* constvalue_term;
 	} ptr;
 
-	uint8_t kind; // 4 .. 12
+	enum TERM_KIND kind;
 };
