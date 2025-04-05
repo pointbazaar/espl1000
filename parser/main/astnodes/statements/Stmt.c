@@ -40,22 +40,18 @@ struct Stmt* makeStmt(struct TokenList* tokens) {
 	parse_astnode(copy, &(res->super));
 
 	res->kind = -1;
-	res->is_break = false;
-	res->is_continue = false;
 
 	struct Token* first = list_head(copy);
 
 	switch (first->kind) {
 
 		case KEYWORD_BREAK:
-			res->kind = 99;
-			res->is_break = true;
+			res->kind = STMT_KIND_BREAK;
 			list_consume(copy, 2);
 			break;
 
 		case KEYWORD_CONTINUE:
-			res->kind = 99;
-			res->is_continue = true;
+			res->kind = STMT_KIND_CONTINUE;
 			list_consume(copy, 2);
 			break;
 
@@ -104,16 +100,16 @@ struct Stmt* initStmt() {
 	struct Stmt* res = make(Stmt);
 
 	res->kind = 0;
-	res->ptr.m1 = NULL;
+	res->ptr.call = NULL;
 
 	return res;
 }
 
 static bool stmt_make_local_var_decl_stmt(struct Stmt* res, struct TokenList* copy) {
 
-	res->kind = 10;
-	res->ptr.m10 = makeLocalVarDeclStmt(copy);
-	if (res->ptr.m10 == NULL) {
+	res->kind = STMT_KIND_LOCAL_VAR_DECL;
+	res->ptr.local_var_decl_stmt = makeLocalVarDeclStmt(copy);
+	if (res->ptr.local_var_decl_stmt == NULL) {
 		fprintf(stderr, "expected local var decl stmt stmt, but was: %s\n", list_code(copy));
 
 		freeTokenListShallow(copy);
@@ -125,9 +121,9 @@ static bool stmt_make_local_var_decl_stmt(struct Stmt* res, struct TokenList* co
 
 static bool stmt_make_while(struct Stmt* res, struct TokenList* copy) {
 
-	res->kind = 2;
-	res->ptr.m2 = makeWhileStmt(copy);
-	if (res->ptr.m2 == NULL) {
+	res->kind = STMT_KIND_WHILE;
+	res->ptr.while_stmt = makeWhileStmt(copy);
+	if (res->ptr.while_stmt == NULL) {
 		fprintf(stderr, "expected while stmt, but was:\n");
 		list_print(copy);
 
@@ -140,9 +136,9 @@ static bool stmt_make_while(struct Stmt* res, struct TokenList* copy) {
 
 static bool stmt_make_if(struct Stmt* res, struct TokenList* copy) {
 
-	res->kind = 3;
-	res->ptr.m3 = makeIfStmt(copy);
-	if (res->ptr.m3 == NULL) {
+	res->kind = STMT_KIND_IF;
+	res->ptr.if_stmt = makeIfStmt(copy);
+	if (res->ptr.if_stmt == NULL) {
 		fprintf(stderr, "expected if stmt, but was:\n");
 		list_print(copy);
 
@@ -155,9 +151,9 @@ static bool stmt_make_if(struct Stmt* res, struct TokenList* copy) {
 
 static bool stmt_make_return(struct Stmt* res, struct TokenList* copy) {
 
-	res->kind = 4;
-	res->ptr.m4 = makeRetStmt(copy);
-	if (res->ptr.m4 == NULL) {
+	res->kind = STMT_KIND_RETURN;
+	res->ptr.return_stmt = makeRetStmt(copy);
+	if (res->ptr.return_stmt == NULL) {
 		fprintf(stderr, "expected return stmt, but was:\n");
 		list_print(copy);
 
@@ -170,9 +166,9 @@ static bool stmt_make_return(struct Stmt* res, struct TokenList* copy) {
 
 static bool stmt_make_for(struct Stmt* res, struct TokenList* copy) {
 
-	res->kind = 7;
-	res->ptr.m7 = makeForStmt(copy);
-	if (res->ptr.m7 == NULL) {
+	res->kind = STMT_KIND_FOR;
+	res->ptr.for_stmt = makeForStmt(copy);
+	if (res->ptr.for_stmt == NULL) {
 		fprintf(stderr, "expected for stmt, but was:\n");
 		list_print(copy);
 
@@ -193,16 +189,16 @@ static bool stmt_make_other(struct Stmt* res, struct TokenList* copy) {
 	//because it gives good performance and
 	//to give good error messages
 
-	res->kind = 5;
-	res->ptr.m5 = makeAssignStmt(copy);
+	res->kind = STMT_KIND_ASSIGN;
+	res->ptr.assign_stmt = makeAssignStmt(copy);
 
-	if (res->ptr.m5 != NULL) {
+	if (res->ptr.assign_stmt != NULL) {
 		return true;
 	}
 
-	res->kind = 1;
-	res->ptr.m1 = makeCall(copy);
-	if (res->ptr.m1 == NULL) {
+	res->kind = STMT_KIND_CALL;
+	res->ptr.call = makeCall(copy);
+	if (res->ptr.call == NULL) {
 		fprintf(stderr, "expected method call, but was:\n");
 		list_print(copy);
 		return false;
@@ -210,7 +206,7 @@ static bool stmt_make_other(struct Stmt* res, struct TokenList* copy) {
 	if (!list_expect(copy, SEMICOLON)) {
 		fprintf(stderr, "expected ';', but was:\n");
 		list_print(copy);
-		free_call(res->ptr.m1);
+		free_call(res->ptr.call);
 		return false;
 	}
 

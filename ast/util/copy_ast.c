@@ -305,15 +305,20 @@ struct Stmt* copy_stmt(struct Stmt* stmt) {
 
 	res->kind = stmt->kind;
 	switch (stmt->kind) {
-		case 1: res->ptr.m1 = copy_call(stmt->ptr.m1); break;
-		case 2: res->ptr.m2 = copy_while_stmt(stmt->ptr.m2); break;
-		case 3: res->ptr.m3 = copy_if_stmt(stmt->ptr.m3); break;
-		case 4: res->ptr.m4 = copy_ret_stmt(stmt->ptr.m4); break;
-		case 5: res->ptr.m5 = copy_assign_stmt(stmt->ptr.m5); break;
-		case 7: res->ptr.m7 = copy_for_stmt(stmt->ptr.m7); break;
-		default:
-			res->is_break = stmt->is_break;
-			res->is_continue = stmt->is_continue;
+		case STMT_KIND_CALL: res->ptr.call = copy_call(stmt->ptr.call); break;
+		case STMT_KIND_WHILE: res->ptr.while_stmt = copy_while_stmt(stmt->ptr.while_stmt); break;
+		case STMT_KIND_IF: res->ptr.if_stmt = copy_if_stmt(stmt->ptr.if_stmt); break;
+		case STMT_KIND_RETURN: res->ptr.return_stmt = copy_ret_stmt(stmt->ptr.return_stmt); break;
+		case STMT_KIND_ASSIGN: res->ptr.assign_stmt = copy_assign_stmt(stmt->ptr.assign_stmt); break;
+		case STMT_KIND_FOR: res->ptr.for_stmt = copy_for_stmt(stmt->ptr.for_stmt); break;
+		case STMT_KIND_LOCAL_VAR_DECL:
+			res->ptr.local_var_decl_stmt = copy_local_var_decl_stmt(stmt->ptr.local_var_decl_stmt);
+			break;
+		case STMT_KIND_BREAK:
+			res->kind = STMT_KIND_BREAK;
+			break;
+		case STMT_KIND_CONTINUE:
+			res->kind = STMT_KIND_CONTINUE;
 			break;
 	}
 
@@ -386,6 +391,22 @@ struct ForStmt* copy_for_stmt(struct ForStmt* f) {
 	asprintf(&(res->index_name), "%s", f->index_name);
 	res->range = copy_range(f->range);
 	res->block = copy_stmt_block(f->block);
+
+	return res;
+}
+
+struct LocalVarDeclStmt* copy_local_var_decl_stmt(struct LocalVarDeclStmt* l) {
+
+	struct LocalVarDeclStmt* res = make(LocalVarDeclStmt);
+	if (!res) {
+		return NULL;
+	}
+
+	res->super.line_num = l->super.line_num;
+	res->super.annotations = l->super.annotations;
+
+	res->type = copy_type(l->type);
+	asprintf(&(res->name), "%s", l->name);
 
 	return res;
 }

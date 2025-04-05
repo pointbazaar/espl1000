@@ -21,6 +21,7 @@ struct RetStmt* copy_ret_stmt(struct RetStmt* r);
 struct Stmt* copy_stmt(struct Stmt* stmt);
 struct WhileStmt* copy_while_stmt(struct WhileStmt* w);
 struct ForStmt* copy_for_stmt(struct ForStmt* f);
+struct LocalVarDeclStmt* copy_local_var_decl_stmt(struct LocalVarDeclStmt* l);
 
 //c_types_util
 struct Type* copy_type(struct Type* t);

@@ -30,8 +30,6 @@ bool tac_deref(struct TACBuffer* buffer, struct Deref* d, struct Ctx* ctx);
 // @returns false on error
 bool tac_forstmt(struct TACBuffer* buffer, struct ForStmt* f, struct Ctx* ctx);
 
-void tac_switchstmt(struct TACBuffer* buffer, struct SwitchStmt* ss, struct Ctx* ctx);
-
 void tac_method(struct TACBuffer* buffer, struct Method* m, struct Ctx* ctx);
 
 void tac_stmtblock(struct TACBuffer* buffer, struct StmtBlock* block, struct Ctx* ctx);

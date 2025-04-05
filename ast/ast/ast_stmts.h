@@ -39,26 +39,35 @@ struct LocalVarDeclStmt {
 	struct Type* type;
 	char* name;
 };
+
+enum STMT_KIND {
+	STMT_KIND_CALL,
+	STMT_KIND_WHILE,
+	STMT_KIND_IF,
+	STMT_KIND_RETURN,
+	STMT_KIND_ASSIGN,
+	STMT_KIND_FOR,
+
+	STMT_KIND_LOCAL_VAR_DECL,
+
+	STMT_KIND_BREAK,
+	STMT_KIND_CONTINUE,
+};
+
 struct Stmt {
 	struct ASTNode super;
 
 	//only one of those will be present, 'kind' tells us
 	union myptr {
-		struct Call* m1;
-		struct WhileStmt* m2;
-		struct IfStmt* m3;
-		struct RetStmt* m4;
-		struct AssignStmt* m5;
-		struct ForStmt* m7;
-		struct SwitchStmt* m8;
-		struct LocalVarDeclStmt* m10;
+		struct Call* call;
+		struct WhileStmt* while_stmt;
+		struct IfStmt* if_stmt;
+		struct RetStmt* return_stmt;
+		struct AssignStmt* assign_stmt;
+		struct ForStmt* for_stmt;
+		struct LocalVarDeclStmt* local_var_decl_stmt;
 	} ptr;
-	uint8_t kind; //0-based
-
-	//if one of these is true,
-	//=> kind == 99
-	bool is_continue;
-	bool is_break;
+	enum STMT_KIND kind;
 };
 struct WhileStmt {
 	struct ASTNode super;

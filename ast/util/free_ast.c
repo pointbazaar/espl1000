@@ -215,27 +215,30 @@ bool free_stmt(struct Stmt* s) {
 
 	switch (s->kind) {
 
-		case 99: /* nothing to do here */ break;
-		case 1:
-			free_call(s->ptr.m1);
+		case STMT_KIND_BREAK:
+		case STMT_KIND_CONTINUE:
+			// nothing to do here
 			break;
-		case 2:
-			free_while_stmt(s->ptr.m2);
+		case STMT_KIND_CALL:
+			free_call(s->ptr.call);
 			break;
-		case 3:
-			free_if_stmt(s->ptr.m3);
+		case STMT_KIND_WHILE:
+			free_while_stmt(s->ptr.while_stmt);
 			break;
-		case 4:
-			free_ret_stmt(s->ptr.m4);
+		case STMT_KIND_IF:
+			free_if_stmt(s->ptr.if_stmt);
 			break;
-		case 5:
-			free_assign_stmt(s->ptr.m5);
+		case STMT_KIND_RETURN:
+			free_ret_stmt(s->ptr.return_stmt);
 			break;
-		case 7:
-			free_for_stmt(s->ptr.m7);
+		case STMT_KIND_ASSIGN:
+			free_assign_stmt(s->ptr.assign_stmt);
 			break;
-		case 10:
-			free_local_var_decl_stmt(s->ptr.m10);
+		case STMT_KIND_FOR:
+			free_for_stmt(s->ptr.for_stmt);
+			break;
+		case STMT_KIND_LOCAL_VAR_DECL:
+			free_local_var_decl_stmt(s->ptr.local_var_decl_stmt);
 			break;
 		default:
 			fprintf(stderr, "Error in free_stmt: unhandled: %d\n", s->kind);
