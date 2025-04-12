@@ -78,6 +78,7 @@ enum TERM_KIND {
 	TERM_KIND_VAR,
 	TERM_KIND_STRINGCONST,
 	TERM_KIND_CONSTVALUE,
+	TERM_KIND_ENUM_VALUE,
 };
 
 struct Term {
@@ -92,6 +93,7 @@ struct Term {
 		struct Variable* var_term;
 		struct StringConst* stringconst_term;
 		struct ConstValue* constvalue_term;
+		char* enum_value_term;
 	} ptr;
 
 	enum TERM_KIND kind;

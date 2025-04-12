@@ -34,6 +34,7 @@ struct Type* infer_type_term(struct ST* st, struct Term* t) {
 		case TERM_KIND_VAR: return infer_type_variable(st, t->ptr.var_term);
 		case TERM_KIND_STRINGCONST: return typeFromStrArray(st, "char");
 		case TERM_KIND_CONSTVALUE: return infer_type_constvalue(st, t->ptr.constvalue_term);
+		case TERM_KIND_ENUM_VALUE: return typeFromStrPrimitive(st, "uint64");
 
 		default:
 			fprintf(stderr, "[Typeinference][Error] Fatal. (in typeinfer_term.c).\n");

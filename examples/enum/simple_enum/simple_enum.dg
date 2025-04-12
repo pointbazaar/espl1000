@@ -1,0 +1,11 @@
+
+enum VALUES {
+	VALUE_1 = 1;
+	VALUE_28 = 28;
+	VALUE_29 = 29;
+}
+
+fn main () -> int {
+
+	return VALUE_28;
+}

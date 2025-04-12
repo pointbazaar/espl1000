@@ -11,6 +11,7 @@ struct AST;
 struct Namespace;
 struct Method;
 struct StructDecl;
+struct EnumDecl;
 struct MethodDecl;
 //---------------
 struct StmtBlock;

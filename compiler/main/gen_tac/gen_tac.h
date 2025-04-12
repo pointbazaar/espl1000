@@ -52,6 +52,3 @@ void tac_constvalue(struct TACBuffer* buffer, struct ConstValue* c);
 
 // @returns false on error
 bool tac_const_data(struct TACBuffer* buffer, struct StringConst* c, struct Ctx* ctx);
-
-//----
-int int_value_from_const(struct ConstValue* cv);

@@ -35,8 +35,19 @@
 	<a id="ast">AST</a>	::= <a href="#namespace">Namespace</a>+
 	<br><br>
 
-	<a id="namespace">Namespace</a>	::=  <a href="#structdecl">StructDecl</a>* <a href="#method">Method</a>*
+	<a id="namespace">Namespace</a>	::= <a href="#enumdecl">EnumDecl</a>*  <a href="#structdecl">StructDecl</a>* <a href="#method">Method</a>*
 
+	<br><br>
+
+	<h2>Enum</h2>
+
+	<a id="enumdecl">EnumDecl</a> ::= "enum" uppercase+ '{' <a href="#enummember">EnumMember</a>+ '}'
+	<br><br>
+
+	<a id="enummember">EnumMember</a>  ::= <a href="#enumvalue">EnumValue</a> '=' <a href="#constvalue">ConstValue</a> ';'
+	<br><br>
+
+	<a id="enumvalue">EnumValue</a>  ::= uppercase+
 	<br><br>
 
 	<h2>Struct</h2>
@@ -146,7 +157,7 @@
 	<a id="deref">Deref</a> ::= '*' <a href="#term">Term</a>
 	<br><br>
 
-	<a id="term">Term</a> ::= <a href="#constvalue">ConstValue</a> | StringConst | <a href="#call">Call</a> | '(' <a href="#expr">Expr</a> ')' | <a href="#variable">Variable</a>
+	<a id="term">Term</a> ::= <a href="#constvalue">ConstValue</a> | StringConst | <a href="#call">Call</a> | '(' <a href="#expr">Expr</a> ')' | <a href="#variable">Variable</a> | <a href="#enumvalue">EnumValue</a>
 	<br><br>
 
 	<a id="range">Range</a> ::= <a href="#expr">Expr</a> ".." <a href="#expr">Expr</a>

@@ -1,15 +1,15 @@
 
-struct A {
+struct As {
 	uint8 x;
-	B b;
+	Bs b;
 }
 
-struct B {
-	C c;
+struct Bs {
+	Cs c;
 	uint8 y;
 }
 
-struct C {
+struct Cs {
 	uint16 z1;
 	uint16 z2;
 	uint16 z3;
@@ -18,7 +18,7 @@ struct C {
 
 fn main () ~> int {
 
-	local A a;
+	local As a;
 
 	a.b.y = 33;
 

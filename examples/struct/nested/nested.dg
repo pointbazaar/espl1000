@@ -1,16 +1,16 @@
 
-struct A {
+struct Astruct {
 	uint8 x;
-	B b;
+	Bstruct b;
 }
 
-struct B {
+struct Bstruct {
 	uint8 y;
 }
 
 fn main () ~> int {
 
-	local A m;
+	local Astruct m;
 
 	m.b.y = 3;
 

@@ -333,6 +333,7 @@ static int handler2(const char* buf, struct TokenList* o, size_t nchars_remain) 
 	H2OUT_NOSTR(buf, "in", KEYWORD_IN, o);
 	H2OUT_NOSTR(buf, "break", KEYWORD_BREAK, o);
 	H2OUT_NOSTR(buf, "continue", KEYWORD_CONTINUE, o);
+	H2OUT_NOSTR(buf, "enum", KEYWORD_ENUM, o);
 
 	if (strncmp(buf, "0x", 2) == 0) {
 		return handler2_hexconst(buf, o, nchars_remain);
@@ -350,7 +351,19 @@ static int handler2(const char* buf, struct TokenList* o, size_t nchars_remain) 
 			out_length(o, ID, (char*)buf, index);
 			return index;
 		} else if (isupper(buf[0])) {
-			out_length(o, TYPEID, (char*)buf, index);
+
+			bool all_upper = true;
+			for (int i = 0; i < index; i++) {
+				if (islower(buf[i])) {
+					all_upper = false;
+				}
+			}
+
+			if (all_upper) {
+				out_length(o, TOKEN_ENUM_VALUE, (char*)buf, index);
+			} else {
+				out_length(o, TYPEID, (char*)buf, index);
+			}
 			return index;
 		}
 	}

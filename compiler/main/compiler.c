@@ -116,7 +116,9 @@ bool compile(struct Flags* flags) {
 
 	struct Ctx* ctx = ctx_ctor(flags, st_ctor());
 
-	fill_tables(ast, ctx);
+	if (!fill_tables(ast, ctx)) {
+		return false;
+	}
 
 	struct TCError* errors = typecheck_ast(ast, ctx, true);
 

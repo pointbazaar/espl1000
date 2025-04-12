@@ -34,6 +34,7 @@ bool tc_term(struct Term* term, struct TCCtx* tcctx) {
 		case TERM_KIND_STRINGCONST: return true;
 
 		case TERM_KIND_CONSTVALUE: return tc_constvalue(term->ptr.constvalue_term);
+		case TERM_KIND_ENUM_VALUE: return true;
 
 		default:
 			fprintf(stderr, "%s:%s: unhandled case: %d\n", __FILE__, __func__, term->kind);

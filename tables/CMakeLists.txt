@@ -14,6 +14,9 @@ add_library("sd-tables" STATIC
 
 	data/data.c
 
+	enum/enum_table.c
+	enum/enum_table.h
+
         symtable/symtable.c
 )
 

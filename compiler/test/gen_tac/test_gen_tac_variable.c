@@ -34,7 +34,7 @@ void test_gen_tac_variable_case_1_member_access() {
 	for (int8_t value = 0; value < 10; value++) {
 
 		char snippet[250];
-		char* template = "struct A {int8 a; int8 b;}fn main() -> int { local A m; m.b = %d; return m.b; }";
+		char* template = "struct Astruct {int8 a; int8 b;}fn main() -> int { local Astruct m; m.b = %d; return m.b; }";
 		sprintf(snippet, template, value);
 
 		vmcu_system_t* system = prepare_vmcu_system_from_code_snippet(snippet);

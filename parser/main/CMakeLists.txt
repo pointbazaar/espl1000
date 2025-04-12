@@ -35,6 +35,9 @@ add_library(dragon-parser-base
 	astnodes/struct/StructDecl.c
 	astnodes/struct/StructMember.c
 
+	astnodes/EnumDecl.c
+	astnodes/EnumMember.c
+
 	astnodes/subr/DeclArg.c
 	astnodes/subr/MethodDecl.c
 	astnodes/subr/Method.c

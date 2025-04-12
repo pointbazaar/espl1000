@@ -65,6 +65,11 @@ struct Term* makeTerm(struct TokenList* tokens) {
 			return NULL;
 		}
 
+	} else if (tk_kind == TOKEN_ENUM_VALUE) {
+		res->kind = TERM_KIND_ENUM_VALUE;
+		res->ptr.enum_value_term = strdup(list_head(copy)->value_ptr);
+		list_consume(copy, 1);
+
 	} else {
 		goto other_term;
 	}
