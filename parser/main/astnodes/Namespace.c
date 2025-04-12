@@ -17,6 +17,8 @@
 static bool ns_parse_methods(struct Namespace* res, struct TokenList* copy);
 // @returns false on error
 static bool ns_parse_structs(struct Namespace* res, struct TokenList* copy);
+// @returns false on error
+static bool ns_parse_enums(struct Namespace* res, struct TokenList* copy);
 
 // @returns false on error
 bool ns_parse_passthrough_includes(struct Namespace* p_namespace, struct TokenList* p_list);
@@ -73,15 +75,8 @@ struct Namespace* makeNamespace(struct TokenList* tokens, char* name) {
 		goto error_res_token_path;
 	}
 
-	struct Token* next = list_head(copy);
-
-	while (next->kind == KEYWORD_ENUM) {
-		res->enums[res->count_enums] = makeEnumDecl(copy);
-		if (!res->enums[res->count_enums]) {
-			goto error_res_parse_structs;
-		}
-		res->count_enums++;
-		next = list_head(copy);
+	if (!ns_parse_enums(res, copy)) {
+		goto error_res_parse_enums;
 	}
 
 	if (!ns_parse_structs(res, copy)) {
@@ -102,6 +97,11 @@ error_res_parse_structs:
 		free(res->includes[i]);
 	}
 	free(res->includes);
+error_res_parse_enums:
+	for (int i = 0; i < res->count_enums; i++) {
+		free(res->enums[i]->name);
+		free(res->enums[i]);
+	}
 error_res_token_path:
 	free(res->token_path);
 error_res_src_path:
@@ -118,6 +118,34 @@ error:
 	freeTokenListShallow(copy);
 	free(res);
 	return NULL;
+}
+
+static bool ns_parse_enums(struct Namespace* res, struct TokenList* copy) {
+
+	struct Token* next = list_head(copy);
+
+	while (next->kind == KEYWORD_ENUM) {
+
+		if ((res->count_enums + 1) >= res->capacity_enums) {
+			res->capacity_enums *= 2;
+			struct EnumDecl** new_enums = realloc(res->enums, sizeof(struct EnumDecl*) * res->capacity_enums);
+
+			if (!new_enums) {
+				return false;
+			}
+
+			res->enums = new_enums;
+		}
+
+		res->enums[res->count_enums] = makeEnumDecl(copy);
+		if (!res->enums[res->count_enums]) {
+			return false;
+		}
+		res->count_enums++;
+		next = list_head(copy);
+	}
+
+	return true;
 }
 
 bool ns_parse_passthrough_includes(struct Namespace* res, struct TokenList* copy) {
