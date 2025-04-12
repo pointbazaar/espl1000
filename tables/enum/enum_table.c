@@ -18,10 +18,20 @@ struct EnumTable {
 struct EnumTable* enum_table_ctor() {
 
 	struct EnumTable* res = calloc(1, sizeof(struct EnumTable));
+
+	if (!res) {
+		return NULL;
+	}
+
 	res->count_entries = 0;
 	res->capacity = 10;
 
 	res->entries = calloc(res->capacity, sizeof(struct EnumTableEntry*));
+
+	if (!res->entries) {
+		free(res);
+		return NULL;
+	}
 
 	return res;
 }
