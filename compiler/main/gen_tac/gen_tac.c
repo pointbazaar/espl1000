@@ -9,18 +9,6 @@
 #include "util/ctx.h"
 #include "tac/tacbuffer.h"
 
-int int_value_from_const(struct ConstValue* cv) {
-
-	switch (cv->kind) {
-		case 1: return (int)cv->ptr.m1_bool_const;
-		case 2: return (int)cv->ptr.m2_int_const;
-		case 3: return (int)cv->ptr.m3_char_const;
-		case 5: return (int)cv->ptr.m5_hex_const;
-		case 6: return (int)cv->ptr.m5_hex_const;
-	}
-	return -1;
-}
-
 void tac_method(struct TACBuffer* buffer, struct Method* m, struct Ctx* ctx) {
 
 	const uint32_t index = sst_index_of(ctx_tables(ctx)->sst, m->decl->name);

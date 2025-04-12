@@ -6,6 +6,7 @@
 #include "tables/sst/sst.h"
 #include "tables/stst/stst.h"
 #include "tables/data/data.h"
+#include "tables/enum/enum_table.h"
 
 struct ST {
 	//struct SymTable
@@ -21,6 +22,8 @@ struct ST {
 
 	// things which should be in .data segment
 	struct DataTable* data;
+
+	struct EnumTable* enum_table;
 
 	// -----------------------------
 

@@ -54,7 +54,7 @@ void test_gen_tac_assignstmt_case_local_struct() {
 	const int8_t value = 0x23;
 
 	char snippet[200];
-	sprintf(snippet, "struct A {int x;} fn main() -> int { local A m; m.x = %d; return m.x; }", value);
+	sprintf(snippet, "struct Astruct {int x;} fn main() -> int { local Astruct m; m.x = %d; return m.x; }", value);
 
 	vmcu_system_t* system = prepare_vmcu_system_from_code_snippet(snippet);
 

@@ -62,6 +62,10 @@ void free_namespace(struct Namespace* ns) {
 		free(ns->includes[i]);
 	}
 
+	for (int i = 0; i < ns->count_enums; i++) {
+		free_enum_decl(ns->enums[i]);
+	}
+
 	for (int i = 0; i < ns->count_methods; i++) {
 		free_method(ns->methods[i]);
 	}
@@ -74,6 +78,7 @@ void free_namespace(struct Namespace* ns) {
 
 	free(ns->methods);
 	free(ns->structs);
+	free(ns->enums);
 
 	free(ns->src_path);
 	free(ns->token_path);
@@ -101,6 +106,15 @@ void free_stmt_block(struct StmtBlock* block) {
 	free(block);
 }
 
+void free_enum_decl(struct EnumDecl* ed) {
+
+	for (int i = 0; i < ed->count_members; i++) {
+		free(ed->members[i]->name);
+		free(ed->members[i]);
+	}
+	free(ed);
+}
+
 void free_struct_decl(struct StructDecl* sd) {
 
 	free_simple_type(sd->type);
@@ -124,8 +138,9 @@ bool free_term(struct Term* t) {
 		case TERM_KIND_VAR: free_variable(t->ptr.var_term); break;
 		case TERM_KIND_STRINGCONST: free_string_const(t->ptr.stringconst_term); break;
 		case TERM_KIND_CONSTVALUE: free_const_value(t->ptr.constvalue_term); break;
+		case TERM_KIND_ENUM_VALUE: free(t->ptr.enum_value_term); break;
 		default:
-			fprintf(stderr, "Error in free_term(...)\n");
+			fprintf(stderr, "Error in free_term(...), unhandled case %d\n", t->kind);
 			free(t);
 			return false;
 	}

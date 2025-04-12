@@ -5,6 +5,7 @@
 #include "Namespace.h"
 #include "subr/Method.h"
 #include "struct/StructDecl.h"
+#include "EnumDecl.h"
 
 #include "ast/util/free_ast.h"
 
@@ -33,10 +34,12 @@ struct Namespace* makeNamespace(struct TokenList* tokens, char* name) {
 
 	res->count_methods = 0;
 	res->count_structs = 0;
+	res->count_enums = 0;
 
 	const uint16_t INITIAL_CAPACITY = 5;
 	res->capacity_methods = INITIAL_CAPACITY;
 	res->capacity_structs = INITIAL_CAPACITY;
+	res->capacity_enums = INITIAL_CAPACITY;
 
 	res->methods = malloc(sizeof(struct Method*) * res->capacity_methods);
 	if (!res->methods) {
@@ -45,6 +48,10 @@ struct Namespace* makeNamespace(struct TokenList* tokens, char* name) {
 	res->structs = malloc(sizeof(struct StructDecl*) * res->capacity_structs);
 	if (!res->structs) {
 		goto error_res_methods;
+	}
+	res->enums = malloc(sizeof(struct EnumDecl*) * res->capacity_enums);
+	if (!res->enums) {
+		goto error_res_enums;
 	}
 	res->src_path = malloc(sizeof(char) * (strlen(name) + 3 + 1));
 	if (!res->src_path) {
@@ -66,6 +73,17 @@ struct Namespace* makeNamespace(struct TokenList* tokens, char* name) {
 		goto error_res_token_path;
 	}
 
+	struct Token* next = list_head(copy);
+
+	while (next->kind == KEYWORD_ENUM) {
+		res->enums[res->count_enums] = makeEnumDecl(copy);
+		if (!res->enums[res->count_enums]) {
+			goto error_res_parse_structs;
+		}
+		res->count_enums++;
+		next = list_head(copy);
+	}
+
 	if (!ns_parse_structs(res, copy)) {
 		goto error_res_parse_structs;
 	}
@@ -78,6 +96,7 @@ struct Namespace* makeNamespace(struct TokenList* tokens, char* name) {
 	freeTokenListShallow(copy);
 
 	return res;
+
 error_res_parse_structs:
 	for (int i = 0; i < res->count_includes; i++) {
 		free(res->includes[i]);
@@ -89,6 +108,8 @@ error_res_src_path:
 	free(res->src_path);
 error_res_name:
 	free(res->name);
+error_res_enums:
+	free(res->enums);
 error_res_structs:
 	free(res->structs);
 error_res_methods:

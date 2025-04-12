@@ -28,6 +28,9 @@ void free_namespace(struct Namespace* ns);
 void free_stmt_block(struct StmtBlock* block);
 void free_range(struct Range* range);
 
+// enum
+void free_enum_decl(struct EnumDecl* ed);
+
 //struct
 void free_struct_decl(struct StructDecl* sd);
 void free_struct_member(struct StructMember* sm);

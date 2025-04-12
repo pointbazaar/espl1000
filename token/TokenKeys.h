@@ -1,15 +1,16 @@
 #pragma once
 
 //Special
-#define EMPTY 1
-#define LINE_NO 2
+#define EMPTY 0
+#define LINE_NO 1
 
 //Type Parameter Token
-#define TPARAM 3
+#define TPARAM 2
 
 //Identifier
-#define ID 4
+#define ID 3
 
+#define TOKEN_ENUM_VALUE 4
 #define TYPEID 5
 #define TYPEID_PRIMITIVE_BOOL 7
 #define TYPEID_PRIMITIVE_CHAR 8
@@ -95,6 +96,8 @@
 // 'IN' by itself seems to already be used somewhere
 // so we prefix with 'KEYWORD_' here
 #define KEYWORD_IN 62
+
+#define KEYWORD_ENUM 63
 
 #define INCLUDE_DECL 70
 

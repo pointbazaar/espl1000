@@ -7,6 +7,7 @@
 #include "tables/sst/sst.h"
 #include "tables/stst/stst.h"
 #include "tables/data/data.h"
+#include "tables/enum/enum_table.h"
 #include "symtable.h"
 
 struct ST* st_ctor() {
@@ -33,6 +34,7 @@ struct ST* st_ctor() {
 	st->lvst = lvst_ctor();
 
 	st->data = data_ctor();
+	st->enum_table = enum_table_ctor();
 
 	return st;
 }
@@ -43,6 +45,7 @@ void st_free(struct ST* st) {
 	if (st->lvst != NULL) { lvst_free(st->lvst); }
 	if (st->stst != NULL) { stst_free(st->stst); }
 	data_dtor(st->data);
+	enum_table_dtor(st->enum_table);
 
 	for (int i = 0; i < st->inferred_types_count; i++) {
 		free_type(st->inferred_types[i]);

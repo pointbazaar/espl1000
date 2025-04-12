@@ -10,6 +10,7 @@
 #include "ast/ast_stmts.h"
 #include "ast/ast_const.h"
 #include "ast/ast_struct.h"
+#include "ast/ast_enum.h"
 #include "ast/ast_var.h"
 #include "ast/ast_expr.h"
 #include "ast/ast_subr.h"
@@ -38,6 +39,11 @@ struct Namespace {
 
 	uint16_t count_includes;
 	char** includes;
+
+	// enum declarations
+	struct EnumDecl** enums;
+	uint16_t count_enums;
+	size_t capacity_enums;
 
 	//structs must be declared before the subroutines
 	struct StructDecl** structs;

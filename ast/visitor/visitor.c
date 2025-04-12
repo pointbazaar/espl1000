@@ -53,12 +53,17 @@ static bool visit_term(struct Term* t, VISITOR, ARG);
 //const
 static void visit_const_value(struct ConstValue* cv, VISITOR, ARG);
 static void visit_string_const(struct StringConst* s, VISITOR, ARG);
+static void visit_enum_value(char* s, VISITOR, ARG);
 
 //var
 // @returns false on error
 static bool visit_variable(struct Variable* v, VISITOR, ARG);
 // @returns false on error
 static bool visit_simple_var(struct SimpleVar* v, VISITOR, ARG);
+
+// enum
+static bool visit_enum_decl(struct EnumDecl* ed, VISITOR, ARG);
+static bool visit_enum_member(struct EnumMember* em, VISITOR, ARG);
 
 bool visit_ast(struct AST* ast, VISITOR, void* arg) {
 
@@ -78,6 +83,10 @@ bool visit_namespace(struct Namespace* n, VISITOR, void* arg) {
 	//we do not visit the passthrough include declarations as they
 	//are just a workaround for now
 
+	for (int i = 0; i < n->count_enums; i++) {
+		visit_enum_decl(n->enums[i], visitor, arg);
+	}
+
 	for (int i = 0; i < n->count_structs; i++) {
 		visit_struct_decl(n->structs[i], visitor, arg);
 	}
@@ -88,6 +97,25 @@ bool visit_namespace(struct Namespace* n, VISITOR, void* arg) {
 		}
 	}
 
+	return true;
+}
+
+static bool visit_enum_decl(struct EnumDecl* ed, VISITOR, ARG) {
+
+	visitor(ed, NODE_ENUM_DECL, arg);
+
+	for (int i = 0; i < ed->count_members; i++) {
+		if (!visit_enum_member(ed->members[i], visitor, arg)) {
+			return false;
+		}
+	}
+
+	return true;
+}
+
+static bool visit_enum_member(struct EnumMember* em, VISITOR, ARG) {
+
+	visitor(em, NODE_ENUM_MEMBER, arg);
 	return true;
 }
 
@@ -346,6 +374,9 @@ static bool visit_term(struct Term* t, VISITOR, void* arg) {
 		case TERM_KIND_CONSTVALUE:
 			visit_const_value(t->ptr.constvalue_term, visitor, arg);
 			break;
+		case TERM_KIND_ENUM_VALUE:
+			visit_enum_value(t->ptr.enum_value_term, visitor, arg);
+			break;
 		default:
 			fprintf(stderr, "[Visitor][Error] Fatal(2)\n");
 			return false;
@@ -363,6 +394,11 @@ static void visit_const_value(struct ConstValue* cv, VISITOR, void* arg) {
 static void visit_string_const(struct StringConst* s, VISITOR, void* arg) {
 
 	visitor(s, NODE_STRINGCONST, arg);
+}
+
+static void visit_enum_value(char* s, VISITOR, ARG) {
+
+	visitor(s, NODE_ENUM_VALUE, arg);
 }
 
 static bool visit_variable(struct Variable* v, VISITOR, void* arg) {
