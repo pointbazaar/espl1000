@@ -20,14 +20,16 @@ static void case_indices(struct TACBuffer* buffer, struct AssignStmt* a, struct 
 static void case_member(struct TACBuffer* buffer, struct AssignStmt* a, struct Ctx* ctx, const uint8_t width);
 static void case_variable(struct TACBuffer* buffer, struct AssignStmt* a, struct Ctx* ctx);
 
-void tac_assignstmt(struct TACBuffer* buffer, struct AssignStmt* a, struct Ctx* ctx) {
+bool tac_assignstmt(struct TACBuffer* buffer, struct AssignStmt* a, struct Ctx* ctx) {
 
 	if (flags_debug(ctx_flags(ctx))) {
 		printf("[debug] %s\n", __func__);
 	}
 
 	assert(a->expr);
-	tac_expr(buffer, a->expr, ctx);
+	if (!tac_expr(buffer, a->expr, ctx)) {
+		return false;
+	}
 	const uint32_t texpr = tacbuffer_last_dest(buffer);
 
 	struct Type* expr_type = infer_type_expr(ctx_tables(ctx), a->expr);
@@ -37,18 +39,22 @@ void tac_assignstmt(struct TACBuffer* buffer, struct AssignStmt* a, struct Ctx* 
 
 	if (a->lvalue->var) {
 		case_variable(buffer, a, ctx);
-		return;
+		return true;
 	}
 	if (a->lvalue->deref) {
 
-		tac_term(buffer, a->lvalue->deref->term, ctx);
+		if (!tac_term(buffer, a->lvalue->deref->term, ctx)) {
+			return false;
+		}
 		const uint32_t taddr = tacbuffer_last_dest(buffer);
 
 		tacbuffer_append(buffer, makeTACStore(taddr, texpr, width));
-		return;
+		return true;
 	}
 
 	assert(false);
+
+	return true;
 }
 
 static void case_variable(struct TACBuffer* buffer, struct AssignStmt* a, struct Ctx* ctx) {

@@ -14,7 +14,11 @@ static bool operator_immediate_applicable(enum TAC_OP op, int32_t immediate);
 
 bool tac_expr(struct TACBuffer* buffer, struct Expr* expr, struct Ctx* ctx) {
 
-	tac_unopterm(buffer, expr->term1, ctx);
+	bool success = tac_unopterm(buffer, expr->term1, ctx);
+
+	if (!success) {
+		return false;
+	}
 
 	if (expr->term2 != NULL) {
 

@@ -69,13 +69,14 @@ static bool enum_table_resize(struct EnumTable* data) {
 	return true;
 }
 
-bool enum_table_insert(struct EnumTable* et, char* name, uint64_t value) {
+bool enum_table_insert(struct EnumTable* et, char* name, int64_t value) {
 
 	if (!name) {
 		return false;
 	}
 
-	if (enum_table_lookup(et, name) >= 0) {
+	int64_t value_out = 0;
+	if (enum_table_lookup(et, name, &value_out)) {
 		fprintf(stderr, "Error: enum value %s was already registered\n", name);
 		return false;
 	}
@@ -112,7 +113,7 @@ bool enum_table_insert(struct EnumTable* et, char* name, uint64_t value) {
 	return true;
 }
 
-int64_t enum_table_lookup(struct EnumTable* et, char* name) {
+bool enum_table_lookup(struct EnumTable* et, char* name, int64_t* value_out) {
 
 	assert(et);
 	assert(name);
@@ -123,11 +124,12 @@ int64_t enum_table_lookup(struct EnumTable* et, char* name) {
 		assert(entry->name);
 
 		if (strcmp(entry->name, name) == 0) {
-			return entry->value;
+			*value_out = entry->value;
+			return true;
 		}
 	}
 
-	return -1;
+	return false;
 }
 
 int int_value_from_const(struct ConstValue* cv) {

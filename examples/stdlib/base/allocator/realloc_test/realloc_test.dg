@@ -1,7 +1,7 @@
 
 fn main () -> int {
 
-	*uint8 p1 = malloc(4096);
+	*uint8 p1 = malloc(PAGE_SIZE_COMMON);
 
 	if p1 == 0 {
 		return 1;
@@ -9,7 +9,7 @@ fn main () -> int {
 
 	*p1 = 9;
 
-	*uint8 p2 = realloc(p1, 8192);
+	*uint8 p2 = realloc(p1, PAGE_SIZE_COMMON * 2);
 
 	if p2 == 0 {
 		return 2;
@@ -24,7 +24,7 @@ fn main () -> int {
 		return 4;
 	}
 
-	*uint8 p3 = realloc(p2, 4096);
+	*uint8 p3 = realloc(p2, PAGE_SIZE_COMMON);
 
 	if p3 != p2 {
 		// it should re-use the block, it is big enough

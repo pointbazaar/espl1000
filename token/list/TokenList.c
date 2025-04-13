@@ -177,6 +177,12 @@ bool list_set(struct TokenList* list, struct TokenList* copy) {
 
 struct Token* list_get(struct TokenList* list, int i) {
 
+	const size_t index = list->index_head + i;
+
+	if (index >= list->tokens_stored) {
+		return NULL;
+	}
+
 	return list->tokens[list->index_head + i];
 }
 

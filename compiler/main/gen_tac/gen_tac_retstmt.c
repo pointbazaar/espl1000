@@ -5,13 +5,17 @@
 
 #include "gen_tac.h"
 
-void tac_retstmt(struct TACBuffer* buffer, struct RetStmt* r, struct Ctx* ctx) {
+bool tac_retstmt(struct TACBuffer* buffer, struct RetStmt* r, struct Ctx* ctx) {
 
 	if (r->return_value != NULL) {
-		tac_expr(buffer, r->return_value, ctx);
+		if (!tac_expr(buffer, r->return_value, ctx)) {
+			return false;
+		}
 	}
 
 	struct TAC* t = makeTACReturn(tacbuffer_last_dest(buffer));
 
 	tacbuffer_append(buffer, t);
+
+	return true;
 }

@@ -17,7 +17,11 @@ bool tac_unopterm(struct TACBuffer* buffer, struct UnOpTerm* u, struct Ctx* ctx)
 		return tac_address_of(buffer, u->address_of, ctx);
 	}
 
-	tac_term(buffer, u->term, ctx);
+	bool success = tac_term(buffer, u->term, ctx);
+
+	if (!success) {
+		return false;
+	}
 
 	if (u->op != OP_NONE) {
 
