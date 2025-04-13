@@ -6,14 +6,17 @@
 
 struct TACBuffer;
 
-void tac_retstmt(struct TACBuffer* buffer, struct RetStmt* r, struct Ctx* ctx);
+// @returns false on error
+bool tac_retstmt(struct TACBuffer* buffer, struct RetStmt* r, struct Ctx* ctx);
 
-void tac_ifstmt(struct TACBuffer* buffer, struct IfStmt* s, struct Ctx* ctx);
+// @returns false on error
+bool tac_ifstmt(struct TACBuffer* buffer, struct IfStmt* s, struct Ctx* ctx);
 
 // @returns false on error
 bool tac_whilestmt(struct TACBuffer* buffer, struct WhileStmt* w, struct Ctx* ctx);
 
-void tac_assignstmt(struct TACBuffer* buffer, struct AssignStmt* a, struct Ctx* ctx);
+// @returns false on error
+bool tac_assignstmt(struct TACBuffer* buffer, struct AssignStmt* a, struct Ctx* ctx);
 
 // @returns false on error
 bool tac_stmt(struct TACBuffer* buffer, struct Stmt* stmt, struct Ctx* ctx);
@@ -30,9 +33,11 @@ bool tac_deref(struct TACBuffer* buffer, struct Deref* d, struct Ctx* ctx);
 // @returns false on error
 bool tac_forstmt(struct TACBuffer* buffer, struct ForStmt* f, struct Ctx* ctx);
 
-void tac_method(struct TACBuffer* buffer, struct Method* m, struct Ctx* ctx);
+// @returns false on error
+bool tac_method(struct TACBuffer* buffer, struct Method* m, struct Ctx* ctx);
 
-void tac_stmtblock(struct TACBuffer* buffer, struct StmtBlock* block, struct Ctx* ctx);
+// @returns false on error
+bool tac_stmtblock(struct TACBuffer* buffer, struct StmtBlock* block, struct Ctx* ctx);
 
 void tac_variable(struct TACBuffer* buffer, struct Variable* v, struct Ctx* ctx);
 

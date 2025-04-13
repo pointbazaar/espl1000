@@ -2,8 +2,8 @@
 
 fn timer0_mode(uint8 value) -> int {
 
-	*uint8 tccr0a = 0x44;
-	*tccr0a = value; //TCCR0A
+	*uint8 tccr0a = TCCR0A;
+	*tccr0a = value;
 	return 0;
 }
 
@@ -11,14 +11,13 @@ fn timer0_prescaler(uint8 value) -> int {
 
 	//valid values: 1,2,3,4,5
 
-	//[0x45] = value & 0b111; //TCCR0B
-	*uint8 tccr0b = 0x45;
+	*uint8 tccr0b = TCCR0B;
 	*tccr0b = value;
 	return 0;
 }
 
 fn timer0_read() -> uint8 {
 
-	*uint8 tcnt0 = 0x46;
-	return *tcnt0; //TCNT0
+	*uint8 tcnt0 = TCNT0;
+	return *tcnt0;
 }

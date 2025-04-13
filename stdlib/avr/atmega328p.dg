@@ -1,0 +1,84 @@
+
+enum AVR_REGISTERS {
+
+	// Port B
+	DDRB = 0x24;
+	PORTB = 0x25;
+
+	// Eeprom
+	EECR = 0x3f;
+	EEDR = 0x40;
+	EEARL = 0x41;
+
+	GPIOR0 = 0x3e;
+	GPIOR1 = 0x4a;
+	GPIOR2 = 0x4b;
+
+	// General timer counter control register
+	GTCCR = 0x43;
+
+	// TC0 control register A
+	TCCR0A = 0x44;
+	TCCR0B = 0x45;
+	// TC0 counter value register
+	TCNT0 = 0x46;
+
+	// TC0 interrupt mask register
+	TIMSK0 = 0x6e;
+
+	// sleep mode control register
+	SMCR = 0x53;
+
+	// MCU status register
+	MCUSR = 0x54;
+	// MCU control register
+	MCUCR = 0x55;
+
+	// Power reduction register
+	PRR = 0x64;
+
+	// Watchdog timer control register
+	WDTCSTR = 0x60;
+
+	CLKPR = 0x61;
+	OSCCAL = 0x66;
+
+	// External interrupt control register
+	EICRA = 0x69;
+	// External interrupt mask register
+	EIMSK = 0x3d;
+	// External interrupt flag register
+	EIFR = 0x3c;
+
+	// Pin change interrupt control register
+	PCICR = 0x68;
+	// Pin change interrupt flag register
+	PCIFR = 0x3b;
+
+	// USART control and status register 0 A
+	UCSR0A = 0xc0;
+	UDRE0 = 0b100000;
+
+	// USART control and status register 0 B
+	UCSR0B = 0xc1;
+	TXEN0 = 0b1000;
+	RXEN0 = 0b10000;
+
+
+	// USART control and status register 0 C
+	UCSR0C = 0xc2;
+	UCSZ00 = 0b000010;
+	UCSZ01 = 0b000100;
+	USBS0  = 0b001000;
+	UPM00  = 0b010000;
+	UPM01  = 0b100000;
+
+	// USART baud rate register
+	UBRR0L = 0xc4;
+	UBRR0H = 0xc5;
+
+	// USART I/O data register 0
+	UDR0 = 0xc6;
+
+	// ... TODO: complete list of registers
+}

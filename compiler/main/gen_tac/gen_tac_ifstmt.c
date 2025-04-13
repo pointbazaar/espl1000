@@ -4,18 +4,18 @@
 #include "tac/tacbuffer.h"
 #include "gen_tac.h"
 
-static void tac_ifstmt_1_block(struct TACBuffer* buffer, struct IfStmt* s, struct Ctx* ctx);
-static void tac_ifstmt_2_block(struct TACBuffer* buffer, struct IfStmt* s, struct Ctx* ctx);
+static bool tac_ifstmt_1_block(struct TACBuffer* buffer, struct IfStmt* s, struct Ctx* ctx);
+static bool tac_ifstmt_2_block(struct TACBuffer* buffer, struct IfStmt* s, struct Ctx* ctx);
 
-void tac_ifstmt(struct TACBuffer* buffer, struct IfStmt* s, struct Ctx* ctx) {
+bool tac_ifstmt(struct TACBuffer* buffer, struct IfStmt* s, struct Ctx* ctx) {
 
 	if (s->else_block == NULL)
-		tac_ifstmt_1_block(buffer, s, ctx);
+		return tac_ifstmt_1_block(buffer, s, ctx);
 	else
-		tac_ifstmt_2_block(buffer, s, ctx);
+		return tac_ifstmt_2_block(buffer, s, ctx);
 }
 
-static void tac_ifstmt_1_block(struct TACBuffer* buffer, struct IfStmt* s, struct Ctx* ctx) {
+static bool tac_ifstmt_1_block(struct TACBuffer* buffer, struct IfStmt* s, struct Ctx* ctx) {
 
 	//t1 = expr
 	//if-goto t1 ltrue
@@ -27,7 +27,9 @@ static void tac_ifstmt_1_block(struct TACBuffer* buffer, struct IfStmt* s, struc
 	uint32_t lend = make_label();
 	uint32_t ltrue = make_label();
 
-	tac_expr(buffer, s->condition, ctx);
+	if (!tac_expr(buffer, s->condition, ctx)) {
+		return false;
+	}
 
 	struct TAC* t_if_goto_end = makeTACIfGoto(tacbuffer_last_dest(buffer), ltrue);
 	tacbuffer_append(buffer, t_if_goto_end);
@@ -35,13 +37,19 @@ static void tac_ifstmt_1_block(struct TACBuffer* buffer, struct IfStmt* s, struc
 	tacbuffer_append(buffer, makeTACGoto(lend));
 
 	tacbuffer_append(buffer, makeTACLabel(ltrue));
-	tac_stmtblock(buffer, s->block, ctx);
+
+	if (!tac_stmtblock(buffer, s->block, ctx)) {
+		return false;
+	}
+
 	tacbuffer_append(buffer, makeTACGoto(lend));
 
 	tacbuffer_append(buffer, makeTACLabel(lend));
+
+	return true;
 }
 
-static void tac_ifstmt_2_block(struct TACBuffer* buffer, struct IfStmt* s, struct Ctx* ctx) {
+static bool tac_ifstmt_2_block(struct TACBuffer* buffer, struct IfStmt* s, struct Ctx* ctx) {
 	//t1 = expr
 	//if-goto t1 L1
 	//goto L2:
@@ -56,7 +64,9 @@ static void tac_ifstmt_2_block(struct TACBuffer* buffer, struct IfStmt* s, struc
 	uint32_t l2 = make_label();
 	uint32_t lend = make_label();
 
-	tac_expr(buffer, s->condition, ctx);
+	if (!tac_expr(buffer, s->condition, ctx)) {
+		return false;
+	}
 
 	struct TAC* t = makeTACIfGoto(tacbuffer_last_dest(buffer), l1);
 	tacbuffer_append(buffer, t);
@@ -65,15 +75,21 @@ static void tac_ifstmt_2_block(struct TACBuffer* buffer, struct IfStmt* s, struc
 
 	tacbuffer_append(buffer, makeTACLabel(l1));
 
-	tac_stmtblock(buffer, s->block, ctx);
+	if (!tac_stmtblock(buffer, s->block, ctx)) {
+		return false;
+	}
 
 	tacbuffer_append(buffer, makeTACGoto(lend));
 
 	tacbuffer_append(buffer, makeTACLabel(l2));
 
-	tac_stmtblock(buffer, s->else_block, ctx);
+	if (!tac_stmtblock(buffer, s->else_block, ctx)) {
+		return false;
+	}
 
 	tacbuffer_append(buffer, makeTACGoto(lend));
 
 	tacbuffer_append(buffer, makeTACLabel(lend));
+
+	return true;
 }

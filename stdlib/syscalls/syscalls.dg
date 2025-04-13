@@ -1,21 +1,39 @@
-
-
-@syscall
-fn write(uint fd, *char buf, uint64 count) -> int64 {}
-
 // https://man7.org/linux/man-pages/man2/open.2.html
 // flags:
-// - O_RDONLY 0
-// - O_WRONLY 1
-// - O_RDWR 2
-// - O_CREAT 0x40
-// - O_EXCL 0x80
-// - O_TRUNC 0x200
-// - ...
+enum OPEN_FLAGS {
+	O_RDONLY = 0;
+	O_WRONLY = 1;
+	O_RDWR = 2;
+	O_CREAT = 0x40;
+	O_EXCL = 0x80;
+	O_TRUNC = 0x200;
+	// ...
+}
 // mode:
 // - 0666 -> 0x1b6 // good choice?
 // - 0444 -> 0x124
 // - 0777 -> 0x1FF
+
+enum MMAP_FLAGS {
+	PROT_READ = 0x1;
+	PROT_WRITE = 0x2;
+
+	MAP_SHARED = 0x1;
+	MAP_ANONYMOUS = 0x20;
+}
+
+enum MMAP_RETURN {
+	MAP_FAILED = 0xffffffffffffffff;
+}
+
+enum MMAP_MISC {
+	// This is a common page size. May not apply to all systems.
+	PAGE_SIZE_COMMON = 4096;
+}
+
+@syscall
+fn write(uint fd, *char buf, uint64 count) -> int64 {}
+
 @syscall
 fn open(*char filename, int flags, int mode) -> int {}
 

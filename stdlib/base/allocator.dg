@@ -4,12 +4,6 @@
 
 fn malloc(uint64 nbytes) -> *# {
 
-	// PROT_READ = 0x1
-	// PROT_WRITE = 0x2
-
-	// MAP_SHARED = 0x1
-	// MAP_ANONYMOUS = 0x20
-
 	if nbytes == 0 {
 		return 0;
 	}
@@ -23,7 +17,7 @@ fn malloc(uint64 nbytes) -> *# {
 	}
 
 	local *uint64 ptr;
-	ptr = mmap(0, n, 0x3, 0x21, -1, 0);
+	ptr = mmap(0, n, PROT_READ | PROT_WRITE, MAP_SHARED | MAP_ANONYMOUS, -1, 0);
 
 	// preserve number of bytes for calling munmap later
 	*ptr = n;

@@ -143,6 +143,10 @@ static bool ns_parse_enums(struct Namespace* res, struct TokenList* copy) {
 		}
 		res->count_enums++;
 		next = list_head(copy);
+
+		if (!next) {
+			break;
+		}
 	}
 
 	return true;

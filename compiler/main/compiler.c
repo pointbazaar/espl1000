@@ -94,6 +94,10 @@ bool compile(struct Flags* flags) {
 
 		char* filename = flags_filenames(flags, i);
 
+		if (flags_debug(flags)) {
+			printf("[debug] parsing %s\n", filename);
+		}
+
 		struct Namespace* ns = build_namespace(tokenLists[i], filename);
 
 		if (ns == NULL) {

@@ -1,23 +1,20 @@
-//CONSTANTS:
-// PORTB 0x25
-// DDRB  0x24
 
 fn portb_ddrd(uint8 value) -> int {
 
-	*uint8 ptr = 0x24;
+	*uint8 ptr = DDRB;
 	*ptr = value;
 	return 0;
 }
 
 fn portb_write(uint8 value) -> int {
 
-	*uint8 portb_data = 0x25;
+	*uint8 portb_data = PORTB;
 	*portb_data = value;
 	return 0;
 }
 
 fn portb_read() -> uint8 {
 
-	*uint8 ptr = 0x25;
+	*uint8 ptr = PORTB;
 	return *ptr;
 }

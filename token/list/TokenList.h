@@ -26,8 +26,12 @@ struct TokenList* list_copy(struct TokenList* list);
 // @returns false on error
 bool list_set(struct TokenList* list, struct TokenList* other);
 
+// @returns NULL if index is out of bounds
 struct Token* list_get(struct TokenList* list, int i);
+
+// @returns NULL if all tokens have been consumed
 struct Token* list_head(struct TokenList* list);
+
 struct Token* list_head_without_annotations(struct TokenList* list);
 int list_size(struct TokenList* list);
 

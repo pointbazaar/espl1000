@@ -30,8 +30,8 @@ bool tac_stmt(struct TACBuffer* buffer, struct Stmt* stmt, struct Ctx* ctx) {
 	switch (stmt->kind) {
 		case STMT_KIND_CALL: return tac_call(buffer, stmt->ptr.call, ctx); break;
 		case STMT_KIND_WHILE: return tac_whilestmt(buffer, stmt->ptr.while_stmt, ctx); break;
-		case STMT_KIND_IF: tac_ifstmt(buffer, stmt->ptr.if_stmt, ctx); break;
-		case STMT_KIND_RETURN: tac_retstmt(buffer, stmt->ptr.return_stmt, ctx); break;
+		case STMT_KIND_IF: return tac_ifstmt(buffer, stmt->ptr.if_stmt, ctx); break;
+		case STMT_KIND_RETURN: return tac_retstmt(buffer, stmt->ptr.return_stmt, ctx); break;
 		case STMT_KIND_ASSIGN: tac_assignstmt(buffer, stmt->ptr.assign_stmt, ctx); break;
 		case STMT_KIND_FOR: return tac_forstmt(buffer, stmt->ptr.for_stmt, ctx); break;
 

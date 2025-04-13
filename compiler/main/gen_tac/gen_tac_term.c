@@ -15,9 +15,10 @@ static bool tac_term_enum_value(struct TACBuffer* buffer, struct Term* t, struct
 	char* name = t->ptr.enum_value_term;
 	assert(name);
 
-	const int64_t value = enum_table_lookup(st->enum_table, name);
+	int64_t value = 0;
+	const bool success = enum_table_lookup(st->enum_table, name, &value);
 
-	if (value < 0) {
+	if (!success) {
 		fprintf(stderr, "could not find value for '%s' in enum table\n", name);
 
 		enum_table_print(st->enum_table);

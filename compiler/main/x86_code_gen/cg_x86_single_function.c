@@ -64,7 +64,9 @@ bool compile_and_write_x86_single_function(struct Method* m, struct Ctx* ctx, st
 	if (flags_debug(ctx_flags(ctx)))
 		lvst_print(st->lvst);
 
-	tac_method(buffer, m, ctx);
+	if (!tac_method(buffer, m, ctx)) {
+		return false;
+	}
 
 	if (flags_debug(ctx_flags(ctx))) {
 
