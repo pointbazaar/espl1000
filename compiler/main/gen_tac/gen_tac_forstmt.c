@@ -52,14 +52,18 @@ bool tac_forstmt(struct TACBuffer* buffer, struct ForStmt* f, struct Ctx* ctx) {
 	//char t3str[10];
 	//sprintf(t3str, "t%d", t3);
 
-	tac_expr(buffer, f->range->start, ctx);
+	if (!tac_expr(buffer, f->range->start, ctx)) {
+		return false;
+	}
 	uint32_t t1 = tacbuffer_last_dest(buffer);
 	tacbuffer_append(buffer, makeTACStoreLocal(local_index, t1));
 
 	//L0:
 	tacbuffer_append(buffer, makeTACLabel(l0));
 
-	tac_expr(buffer, f->range->end, ctx);
+	if (!tac_expr(buffer, f->range->end, ctx)) {
+		return false;
+	}
 	uint32_t t2 = tacbuffer_last_dest(buffer);
 
 	tacbuffer_append(buffer, makeTACLoadLocalAddr(make_temp(), local_index, addr_width));
@@ -72,7 +76,9 @@ bool tac_forstmt(struct TACBuffer* buffer, struct ForStmt* f, struct Ctx* ctx) {
 	//L1:
 	tacbuffer_append(buffer, makeTACLabel(l1));
 
-	tac_stmtblock(buffer, f->block, ctx);
+	if (!tac_stmtblock(buffer, f->block, ctx)) {
+		return false;
+	}
 
 	// t3++
 	tacbuffer_append(buffer, makeTACLoadLocalAddr(make_temp(), local_index, addr_width));

@@ -15,10 +15,10 @@
 
 #include "gen_tac.h"
 
-static void case_default(struct TACBuffer* buffer, struct AssignStmt* a, struct Ctx* ctx);
-static void case_indices(struct TACBuffer* buffer, struct AssignStmt* a, struct Ctx* ctx, const uint8_t width);
-static void case_member(struct TACBuffer* buffer, struct AssignStmt* a, struct Ctx* ctx, const uint8_t width);
-static void case_variable(struct TACBuffer* buffer, struct AssignStmt* a, struct Ctx* ctx);
+static bool case_default(struct TACBuffer* buffer, struct AssignStmt* a, struct Ctx* ctx);
+static bool case_indices(struct TACBuffer* buffer, struct AssignStmt* a, struct Ctx* ctx, const uint8_t width);
+static bool case_member(struct TACBuffer* buffer, struct AssignStmt* a, struct Ctx* ctx, const uint8_t width);
+static bool case_variable(struct TACBuffer* buffer, struct AssignStmt* a, struct Ctx* ctx);
 
 bool tac_assignstmt(struct TACBuffer* buffer, struct AssignStmt* a, struct Ctx* ctx) {
 
@@ -38,8 +38,7 @@ bool tac_assignstmt(struct TACBuffer* buffer, struct AssignStmt* a, struct Ctx* 
 	const uint8_t width = lvst_sizeof_type(expr_type, x86);
 
 	if (a->lvalue->var) {
-		case_variable(buffer, a, ctx);
-		return true;
+		return case_variable(buffer, a, ctx);
 	}
 	if (a->lvalue->deref) {
 
@@ -57,7 +56,7 @@ bool tac_assignstmt(struct TACBuffer* buffer, struct AssignStmt* a, struct Ctx* 
 	return true;
 }
 
-static void case_variable(struct TACBuffer* buffer, struct AssignStmt* a, struct Ctx* ctx) {
+static bool case_variable(struct TACBuffer* buffer, struct AssignStmt* a, struct Ctx* ctx) {
 
 	struct Type* member_type = infer_type_variable(ctx_tables(ctx), a->lvalue->var);
 	assert(member_type != NULL);
@@ -66,15 +65,15 @@ static void case_variable(struct TACBuffer* buffer, struct AssignStmt* a, struct
 	const uint8_t width = lvst_sizeof_type(member_type, x86);
 
 	if (a->lvalue->var->member_access != NULL) {
-		case_member(buffer, a, ctx, width);
+		return case_member(buffer, a, ctx, width);
 	} else if (a->lvalue->var->simple_var->count_indices != 0) {
-		case_indices(buffer, a, ctx, width);
+		return case_indices(buffer, a, ctx, width);
 	} else {
-		case_default(buffer, a, ctx);
+		return case_default(buffer, a, ctx);
 	}
 }
 
-static void case_default(struct TACBuffer* buffer, struct AssignStmt* a, struct Ctx* ctx) {
+static bool case_default(struct TACBuffer* buffer, struct AssignStmt* a, struct Ctx* ctx) {
 
 	const uint32_t local_index = lvst_index_of(ctx_tables(ctx)->lvst, a->lvalue->var->simple_var->name);
 
@@ -83,9 +82,11 @@ static void case_default(struct TACBuffer* buffer, struct AssignStmt* a, struct 
 	    tacbuffer_last_dest(buffer));
 
 	tacbuffer_append(buffer, t);
+
+	return true;
 }
 
-static void case_indices(struct TACBuffer* buffer, struct AssignStmt* a, struct Ctx* ctx, const uint8_t width) {
+static bool case_indices(struct TACBuffer* buffer, struct AssignStmt* a, struct Ctx* ctx, const uint8_t width) {
 
 	struct LVST* lvst = ctx_tables(ctx)->lvst;
 
@@ -111,7 +112,9 @@ static void case_indices(struct TACBuffer* buffer, struct AssignStmt* a, struct 
 	for (int i = 0; i < a->lvalue->var->simple_var->count_indices; i++) {
 		//calculate offset due to index
 		//toffset
-		tac_expr(buffer, a->lvalue->var->simple_var->indices[0], ctx);
+		if (!tac_expr(buffer, a->lvalue->var->simple_var->indices[0], ctx)) {
+			return false;
+		}
 		uint32_t toffset = tacbuffer_last_dest(buffer);
 
 		//add offset, t1 += toffset
@@ -120,9 +123,11 @@ static void case_indices(struct TACBuffer* buffer, struct AssignStmt* a, struct 
 
 	//[t1] = texpr
 	tacbuffer_append(buffer, makeTACStore(t1, texpr, width));
+
+	return true;
 }
 
-static void case_member(struct TACBuffer* buffer, struct AssignStmt* a, struct Ctx* ctx, const uint8_t width) {
+static bool case_member(struct TACBuffer* buffer, struct AssignStmt* a, struct Ctx* ctx, const uint8_t width) {
 
 	uint32_t texpr = tacbuffer_last_dest(buffer);
 
@@ -134,4 +139,6 @@ static void case_member(struct TACBuffer* buffer, struct AssignStmt* a, struct C
 	uint32_t taddr = tacbuffer_last_dest(buffer);
 
 	tacbuffer_append(buffer, makeTACStore(taddr, texpr, width));
+
+	return true;
 }

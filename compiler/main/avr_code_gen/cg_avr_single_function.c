@@ -31,7 +31,10 @@ bool compile_and_write_avr_single_function(struct Method* m, struct Ctx* ctx, st
 	if (flags_debug(ctx_flags(ctx)))
 		lvst_print(st->lvst);
 
-	tac_method(buffer, m, ctx);
+	if (!tac_method(buffer, m, ctx)) {
+		status = false;
+		goto error_tacbuffer;
+	}
 
 	//print the TAC for debug
 	if (flags_debug(ctx_flags(ctx)))
@@ -57,6 +60,7 @@ bool compile_and_write_avr_single_function(struct Method* m, struct Ctx* ctx, st
 	}
 	free(graph);
 
+error_tacbuffer:
 	tacbuffer_dtor(buffer);
 
 	return status;

@@ -107,7 +107,9 @@ static enum TAC_OP op_to_tac_op(enum OP o, bool* reverse_operands) {
 
 static bool tac_expr_part_2_no_constvalue(struct TACBuffer* buffer, struct Expr* expr, uint32_t t1, struct Ctx* ctx) {
 
-	tac_unopterm(buffer, expr->term2, ctx);
+	if (!tac_unopterm(buffer, expr->term2, ctx)) {
+		return false;
+	}
 	const uint32_t t2 = tacbuffer_last_dest(buffer);
 
 	bool reverse_operands = false;
