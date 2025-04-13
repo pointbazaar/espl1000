@@ -71,7 +71,9 @@ static bool case_loop(struct TACBuffer* buffer, struct WhileStmt* w, struct Ctx*
 
 	tacbuffer_append(buffer, makeTACLabel(l0));
 
-	tac_stmtblock(buffer, w->block, ctx);
+	if (!tac_stmtblock(buffer, w->block, ctx)) {
+		return false;
+	}
 
 	tacbuffer_append(buffer, makeTACGoto(l0));
 
@@ -98,7 +100,9 @@ static bool case_default(struct TACBuffer* buffer, struct WhileStmt* w, struct C
 
 	tacbuffer_append(buffer, makeTACLabel(l0));
 
-	tac_expr(buffer, w->condition, ctx);
+	if (!tac_expr(buffer, w->condition, ctx)) {
+		return false;
+	}
 
 	struct TAC* t = makeTACIfGoto(tacbuffer_last_dest(buffer), l1);
 	tacbuffer_append(buffer, t);
@@ -107,7 +111,9 @@ static bool case_default(struct TACBuffer* buffer, struct WhileStmt* w, struct C
 
 	tacbuffer_append(buffer, makeTACLabel(l1));
 
-	tac_stmtblock(buffer, w->block, ctx);
+	if (!tac_stmtblock(buffer, w->block, ctx)) {
+		return false;
+	}
 
 	tacbuffer_append(buffer, makeTACGoto(l0));
 
