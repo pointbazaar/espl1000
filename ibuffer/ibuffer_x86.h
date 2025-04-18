@@ -37,6 +37,7 @@ void ibu_push4(struct IBuffer* ibu, enum IKEY key, int64_t x1, int64_t x2, int64
 #define mov_store(dest, src, c) ibu2(X86_MOV_STORE, dest, src, c)
 #define mov_load_width(dest, src, width, c) ibu3(X86_MOV_LOAD_WIDTH, dest, src, width, c)
 #define movzx_load_width(dest, src, width, c) ibu3(X86_MOVZX_LOAD_WIDTH, dest, src, width, c)
+#define movzx_regs(dest, src, width, c) ibu3(X86_MOVZX_REGS_WIDTH, dest, src, width, c)
 #define mov_store_width(dest, src, width, c) ibu3(X86_MOV_STORE_WIDTH, dest, src, width, c)
 
 #define mov_const_symbol(dest, name, c) ibu_push4(ibu, X86_MOV_CONST_SYMBOL, dest, 0, 0, name, c)
@@ -60,7 +61,11 @@ void ibu_push4(struct IBuffer* ibu, enum IKEY key, int64_t x1, int64_t x2, int64
 #define dec(dest, c) ibu1(X86_DEC, dest, c)
 #define neg(dest, c) ibu1(X86_NEG, dest, c)
 #define cmp(dest, src, c) ibu2(X86_CMP, dest, src, c)
+#define cmp_const(dest, value, c) ibu2(X86_CMP_CONST, dest, value, c)
 #define test(dest, src, c) ibu2(X86_TEST, dest, src, c)
+
+// set bit if equals
+#define sete(dest, c) ibu1(X86_SETE, dest, c)
 
 #define and(dest, src, c) ibu2(X86_AND, dest, src, c)
 #define or(dest, src, c) ibu2(X86_OR, dest, src, c)

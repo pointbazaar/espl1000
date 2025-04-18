@@ -187,6 +187,9 @@ static bool write_middle(enum IKEY key, int64_t x1, int64_t x2, char* str, char*
 		case X86_MOVZX_LOAD_WIDTH:
 			sprintf(s, "%s, %s [%s]", rat_regname_x86(x1), width_str, rat_regname_x86(x2));
 			break;
+		case X86_MOVZX_REGS_WIDTH:
+			sprintf(s, "%s, %s", rat_regname_x86(x1), rat_regname_x86_width(x2, nbytes));
+			break;
 		case X86_MOV_STORE_WIDTH:
 			assert(width_str != NULL);
 			sprintf(s, "%s [%s], %s", width_str, rat_regname_x86(x1), rat_regname_x86_width(x2, nbytes));
@@ -202,6 +205,9 @@ static bool write_middle(enum IKEY key, int64_t x1, int64_t x2, char* str, char*
 		case X86_NOT:
 		case X86_DIV:
 			sprintf(s, "%s", rat_regname_x86(x1));
+			break;
+		case X86_SETE:
+			sprintf(s, "%s", rat_regname_x86_width(x1, 1));
 			break;
 		case X86_MOV_CONST:
 		case X86_SHL:
@@ -224,6 +230,9 @@ static bool write_middle(enum IKEY key, int64_t x1, int64_t x2, char* str, char*
 		case X86_MOV_REGS:
 		case X86_CMOVE:
 			sprintf(s, "%s, %s", rat_regname_x86(x1), rat_regname_x86(x2));
+			break;
+		case X86_CMP_CONST:
+			sprintf(s, "%s, %ld", rat_regname_x86(x1), x2);
 			break;
 		case X86_JMP:
 		case X86_JE:

@@ -176,11 +176,13 @@ enum IKEY {
 	X86_MOV_LOAD = 406, // mov rdest, [rsrc]
 	X86_MOV_STORE = 407, // mov [rdest], rsrc
 	X86_MOV_LOAD_WIDTH = 408, // e.g. mov dword rdest, [rsrc]
-	X86_MOVZX_LOAD_WIDTH = 409, // e.g. mov dword rdest, [rsrc]
 	X86_MOV_STORE_WIDTH = 410, // e.g. movzx qword [rdest], rsrc
 	X86_MOV_CONST_SYMBOL = 411, // e.g. mov rax, my_function
 	X86_CMOVE = 412,
 	X86_XCHG = 413,
+
+	X86_MOVZX_LOAD_WIDTH = 414, // e.g. movzx dword rdest, [rsrc]
+	X86_MOVZX_REGS_WIDTH = 415, // e.g. movzx r11, r11b
 
 	X86_PUSH = 420,
 	X86_POP = 421,
@@ -200,7 +202,10 @@ enum IKEY {
 	X86_DEC, // --
 	X86_NEG,
 	X86_CMP,
+	X86_CMP_CONST, // compare to constant
 	X86_TEST,
+
+	X86_SETE, // set bit if equal
 
 	// bitwise logical
 	X86_AND,
