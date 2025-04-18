@@ -4,7 +4,6 @@ enum FILE_DESCRIPTORS {
 	STDERR = 2;
 }
 
-// untested
 fn strlen(*char str) -> uint64 {
 
 	uint64 l = 0;
@@ -17,6 +16,26 @@ fn strlen(*char str) -> uint64 {
 		c = *p;
 	}
 	return l;
+}
+
+fn streq([char] s1, [char] s2) -> bool {
+
+	uint64 l1 = strlen(s1);
+	uint64 l2 = strlen(s2);
+
+	if l1 != l2 {
+		return false;
+	}
+
+	uint64 i = 0;
+	while i < l1 {
+		if s1[i] != s2[i] {
+			return false;
+		}
+		i++;
+	}
+
+	return true;
 }
 
 fn print_digit(uint64 d) -> int {

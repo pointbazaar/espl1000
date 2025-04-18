@@ -4,6 +4,7 @@
 #include "rat/rat.h"
 #include "tac/tac.h"
 #include "x86_code_gen/compile_ir/compile_tac.h"
+#include "ibuffer/ibuffer_x86.h"
 
 void compile_tac_unary_op_x86(struct RAT* rat, struct TAC* tac, struct IBuffer* ibu) {
 
@@ -18,8 +19,9 @@ void compile_tac_unary_op_x86(struct RAT* rat, struct TAC* tac, struct IBuffer* 
 	switch (tac_op(tac)) {
 
 		case TAC_OP_UNARY_NOT:
-			mov_regs(reg_dest, reg_src, c);
-			not(reg_dest, c);
+			cmp_const(reg_src, 0, c);
+			sete(reg_dest, c);
+			movzx_regs(reg_dest, reg_dest, 1, c);
 			break;
 
 		case TAC_OP_UNARY_BITWISE_NEG:
