@@ -126,6 +126,17 @@ struct DerefLL* derefll_ctor_variable(struct Variable* v, struct Ctx* ctx) {
 
 	struct DerefLL* res = derefll_ctor_simplevar(v->simple_var, ctx);
 
+	if (lvst_contains(lvst, v->simple_var->name)) {
+		// in case of member access to pointer,
+		// first load the pointer value to add the offset
+
+		struct LVSTLine* line = lvst_get(lvst, v->simple_var->name);
+
+		if (line->type && line->type->pointer_type && (v->member_access != NULL)) {
+			derefll_append(res, derefll_deref());
+		}
+	}
+
 	struct Variable* current = v;
 
 	// for example, a function pointer is not in LVST

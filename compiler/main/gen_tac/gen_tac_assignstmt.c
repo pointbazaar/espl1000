@@ -11,13 +11,14 @@
 #include "tables/lvst/lvst.h"
 #include "tables/symtable/symtable.h"
 
+#include "typechecker/util/tc_utils.h"
 #include "typeinference/typeinfer.h"
 
 #include "gen_tac.h"
 
 static bool case_default(struct TACBuffer* buffer, struct AssignStmt* a, struct Ctx* ctx);
 static bool case_indices(struct TACBuffer* buffer, struct AssignStmt* a, struct Ctx* ctx, const uint8_t width);
-static bool case_member(struct TACBuffer* buffer, struct AssignStmt* a, struct Ctx* ctx, const uint8_t width);
+static bool case_member(struct TACBuffer* buf, struct AssignStmt* a, struct Ctx* ctx, const uint8_t width);
 static bool case_variable(struct TACBuffer* buffer, struct AssignStmt* a, struct Ctx* ctx);
 
 bool tac_assignstmt(struct TACBuffer* buffer, struct AssignStmt* a, struct Ctx* ctx) {
@@ -127,18 +128,20 @@ static bool case_indices(struct TACBuffer* buffer, struct AssignStmt* a, struct 
 	return true;
 }
 
-static bool case_member(struct TACBuffer* buffer, struct AssignStmt* a, struct Ctx* ctx, const uint8_t width) {
+static bool case_member(struct TACBuffer* buf, struct AssignStmt* a, struct Ctx* ctx, const uint8_t width) {
 
-	uint32_t texpr = tacbuffer_last_dest(buffer);
+	const uint32_t texpr = tacbuffer_last_dest(buf);
 
 	assert(a->lvalue->var);
 
 	//find out the address of the variable
-	tac_variable_addr(buffer, a->lvalue->var, ctx, NULL);
+	tac_variable_addr(buf, a->lvalue->var, ctx, NULL);
 
-	uint32_t taddr = tacbuffer_last_dest(buffer);
+	struct Type* tvar = infer_type_variable(ctx_tables(ctx), a->lvalue->var);
 
-	tacbuffer_append(buffer, makeTACStore(taddr, texpr, width));
+	uint32_t taddr = tacbuffer_last_dest(buf);
+
+	tacbuffer_append(buf, makeTACStore(taddr, texpr, width));
 
 	return true;
 }
