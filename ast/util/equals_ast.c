@@ -7,6 +7,10 @@
 
 bool eq_type(struct Type* a, struct Type* b) {
 
+	if (a->is_anytype || b->is_anytype) {
+		return true;
+	}
+
 	if (a == NULL || b == NULL) { return false; }
 
 	if (a->basic_type != NULL) { return eq_basictype(a->basic_type, b->basic_type); }
@@ -16,10 +20,6 @@ bool eq_type(struct Type* a, struct Type* b) {
 	if (a->array_type != NULL) { return eq_arraytype(a->array_type, b->array_type); }
 
 	if (a->pointer_type != NULL) { return eq_pointertype(a->pointer_type, b->pointer_type); }
-
-	if (a->is_anytype && b->is_anytype) {
-		return true;
-	}
 
 	return false;
 }

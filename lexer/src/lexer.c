@@ -153,6 +153,10 @@ static int handler2_charconst(const char* buf, struct TokenList* o, size_t nchar
 		out_length(o, CCONST, "'\n'", 3);
 		return 4;
 	}
+	if (buf[1] == '\\' && buf[2] == 't') {
+		out_length(o, CCONST, "'\t'", 3);
+		return 4;
+	}
 	if (buf[1] == '\\' && buf[3] == '\'') {
 		out_length(o, CCONST, (char*)buf, 4);
 		return 4;

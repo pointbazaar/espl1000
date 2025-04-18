@@ -14,8 +14,12 @@ struct Type* infer_type_deref(struct ST* st, struct Deref* d) {
 
 	struct Type* t = infer_type_term(st, d->term);
 
-	// can only deref pointer types
-	assert(t->pointer_type);
+	// can only deref pointer types and array types
+	assert(t->pointer_type || t->array_type);
 
-	return t->pointer_type->element_type;
+	if (t->pointer_type) {
+		return t->pointer_type->element_type;
+	} else {
+		return t->array_type->element_type;
+	}
 }

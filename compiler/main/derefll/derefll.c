@@ -197,9 +197,22 @@ void derefll_annotate_types(struct DerefLL* dll, struct Ctx* ctx, struct Type* p
 
 		case DEREFLL_MEMBER: {
 			assert(prev_type != NULL);
-			assert(prev_type->basic_type != NULL);
+			assert(prev_type->basic_type != NULL || prev_type->pointer_type != NULL);
 
-			char* struct_name = prev_type->basic_type->simple_type->struct_type->type_name;
+			struct Type* prev = prev_type;
+
+			if (prev_type->pointer_type != NULL) {
+				struct Type* underlying = prev_type->pointer_type->element_type;
+				assert(underlying->basic_type != NULL);
+				prev = underlying;
+			}
+
+			struct BasicType* bt = prev->basic_type;
+
+			assert(bt->simple_type != NULL);
+			assert(bt->simple_type->struct_type != NULL);
+
+			char* struct_name = bt->simple_type->struct_type->type_name;
 
 			struct StructMember* sm = stst_get_member(stst, struct_name, current->member_name);
 

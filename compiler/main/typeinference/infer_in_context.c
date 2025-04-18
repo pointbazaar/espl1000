@@ -3,6 +3,7 @@
 #include "ast/util/free_ast.h"
 
 #include <assert.h>
+#include <stdlib.h>
 
 #include "ast/util/str_ast.h"
 #include "tables/stst/stst.h"
@@ -14,18 +15,37 @@ struct Type* infer_in_context_once(struct ST* st, struct MemberAccess* ma) {
 	struct Type* structType = ma->structType;
 	struct Variable* member = ma->member;
 
-	assert(structType->basic_type != NULL);
-	assert(structType->basic_type->simple_type != NULL);
-
-	if (structType->basic_type->simple_type->struct_type == NULL) {
-		char* s = str_simple_type(structType->basic_type->simple_type);
-		printf("was not struct type: %s\n", s);
+	// We can do member access through a pointer.
+	// The result will be the element type
+	if (structType->pointer_type != NULL) {
+		structType = structType->pointer_type->element_type;
 	}
 
-	assert(structType->basic_type->simple_type->struct_type != NULL);
-	assert(structType->basic_type->simple_type->struct_type->type_name != NULL);
+	if (structType->basic_type == NULL) {
+		char* s1 = str_type(structType);
+		fprintf(stderr, "was not struct type: %s\n", s1);
+		free(s1);
+		return NULL;
+	}
 
-	char* structName = structType->basic_type->simple_type->struct_type->type_name;
+	struct BasicType* bt = structType->basic_type;
+
+	assert(structType->basic_type->simple_type != NULL);
+
+	struct SimpleType* simple_type = bt->simple_type;
+
+	if (simple_type->struct_type == NULL) {
+		char* s = str_simple_type(simple_type);
+		fprintf(stderr, "was not struct type: %s\n", s);
+	}
+
+	assert(simple_type->struct_type != NULL);
+
+	struct StructType* struct_type = simple_type->struct_type;
+
+	assert(struct_type->type_name != NULL);
+
+	char* structName = struct_type->type_name;
 	char* memberName = member->simple_var->name;
 
 	struct Type* memberType = stst_get_member(st->stst, structName, memberName)->type;
