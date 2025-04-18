@@ -106,8 +106,25 @@ bool compile_and_write_x86_single_function(struct Method* m, struct Ctx* ctx, st
 
 	if (flags_debug(ctx_flags(ctx))) {
 
-		printf("RAT for function '%s'\n", m->decl->name);
-		rat_print(rat);
+		char* rat_filename = NULL;
+		asprintf(&rat_filename, "%s.rat", current_function_name);
+
+		if (!rat_filename) {
+			success = false;
+			goto exit;
+		}
+
+		FILE* fout_rat = fopen(rat_filename, "w");
+		if (!fout_rat) {
+			success = false;
+			goto exit;
+		}
+
+		rat_print(rat, fout_rat);
+		printf("RAT for function '%s' dumped to %s\n", m->decl->name, rat_filename);
+
+		free(rat_filename);
+		fclose(fout_rat);
 	}
 
 	success = emit_asm_x86_basic_block(root, ctx, ibu, rat, current_function_name);

@@ -46,7 +46,7 @@ bool emit_asm_avr_basic_block(struct BasicBlock* block, struct Ctx* ctx, struct 
 	status = allocate_registers(block->buffer, rat, ctx_tables(ctx));
 
 	if (flags_debug(ctx_flags(ctx))) {
-		rat_print(rat);
+		rat_print(rat, stderr);
 	}
 
 	if (!status) {

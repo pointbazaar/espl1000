@@ -3,6 +3,7 @@
 #include <stdbool.h>
 #include <inttypes.h>
 #include <stddef.h>
+#include <stdio.h>
 
 struct RAT;
 
@@ -25,4 +26,4 @@ char* rat_regname_x86(size_t i);
 // @returns NULL on error
 char* rat_regname_x86_width(size_t i, uint8_t nbytes);
 
-void rat_print_regname_x86(struct RAT* rat, size_t reg);
+void rat_print_regname_x86(struct RAT* rat, FILE* fout, size_t reg);

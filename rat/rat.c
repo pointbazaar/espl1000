@@ -69,31 +69,31 @@ void rat_reserve_reg(struct RAT* rat, uint32_t reg, char* note) {
 	rat->note[reg] = note;
 }
 
-static void rat_print_regname(struct RAT* rat, size_t i) {
+static void rat_dump_regname(struct RAT* rat, FILE* fout, size_t i) {
 
 	switch (rat->arch) {
 		// on avr, r16 is our scratch register
 		case RAT_ARCH_AVR:
-			printf("r%02ld", i);
+			fprintf(fout, "r%02ld", i);
 			break;
 		case RAT_ARCH_X86:
-			rat_print_regname_x86(rat, i);
+			rat_print_regname_x86(rat, fout, i);
 		default: return;
 	}
 }
 
-static void rat_print_reg(struct RAT* rat, size_t i) {
+static bool rat_dump_reg(struct RAT* rat, FILE* fout, size_t i) {
 
 	const int status = rat->status[i];
 	const bool valid = status != REG_INVALID_ARCH;
 
 	if (!valid) {
-		return;
+		return true;
 	}
 
-	rat_print_regname(rat, i);
+	rat_dump_regname(rat, fout, i);
 
-	printf(": ");
+	fprintf(fout, ": ");
 
 	switch (rat->status[i]) {
 
@@ -101,31 +101,39 @@ static void rat_print_reg(struct RAT* rat, size_t i) {
 			for (size_t t = 0; t < rat->ntemps; t++) {
 
 				if (rat->occupant[i][t]) {
-					printf("t%ld, ", t);
+					fprintf(fout, "t%ld, ", t);
 				}
 			}
 			break;
 		case REG_FREE:
-			printf("%20s", " - ");
+			fprintf(fout, "%20s", " - ");
 			break;
 		case REG_RESERVED:
-			printf("%20s", rat->note[i]);
+			fprintf(fout, "%20s", rat->note[i]);
 			break;
 		case REG_INVALID_ARCH:
 			break;
 	}
 
-	printf("\n");
+	fprintf(fout, "\n");
+
+	return true;
 }
 
-void rat_print(struct RAT* rat) {
+bool rat_print(struct RAT* rat, FILE* fout) {
 
-	printf("Register Allocation Table:\n");
+	if (fout == NULL) {
+		return false;
+	}
+
+	fprintf(fout, "Register Allocation Table:\n");
 	for (size_t i = 0; i < rat_capacity(rat); i++) {
 
-		rat_print_reg(rat, i);
+		rat_dump_reg(rat, fout, i);
 	}
-	printf("------------\n");
+	fprintf(fout, "------------\n");
+
+	return true;
 }
 
 bool rat_has_register(struct RAT* rat, uint32_t tmp_index) {
@@ -153,7 +161,7 @@ int rat_get_register(struct RAT* rat, uint32_t tmp_index) {
 	}
 
 	fprintf(stderr, "[RAT] rat_get_register: t%d has no register\n", tmp_index);
-	rat_print(rat);
+	rat_print(rat, stdout);
 
 	return -1;
 }
@@ -162,7 +170,7 @@ int32_t rat_occupant(struct RAT* rat, uint8_t reg) {
 
 	if (rat->status[reg] != REG_OCCUPIED) {
 		fprintf(stderr, "[RAT] rat_occupant: requesting occupant for unoccupied register\n");
-		rat_print(rat);
+		rat_print(rat, stdout);
 		return -1;
 	}
 
@@ -317,7 +325,7 @@ static int rat_get_free_register(struct RAT* rat, bool high_regs_only, bool wide
 	}
 
 	fprintf(stderr, "RAT could not find a free register, they are all occupied.\n");
-	rat_print(rat);
+	rat_print(rat, stdout);
 	return -1;
 }
 
