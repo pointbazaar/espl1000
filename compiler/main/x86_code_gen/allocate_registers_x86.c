@@ -71,7 +71,7 @@ static int32_t rat_ensure_register_x86(struct RAT* rat, uint32_t tmp, struct Liv
 
 	if (reg < 0) {
 		fprintf(stderr, "%s:%s: could not find register for t%d\n", __FILE__, __func__, tmp);
-		rat_print(rat);
+		rat_print(rat, stderr);
 	}
 
 	free(live_overlap);

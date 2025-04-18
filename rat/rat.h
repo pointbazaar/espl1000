@@ -3,6 +3,7 @@
 #include <stdbool.h>
 #include <inttypes.h>
 #include <stddef.h>
+#include <stdio.h>
 
 #include "register.h"
 
@@ -20,7 +21,8 @@ void rat_dtor(struct RAT* rat);
 
 void rat_init_avr(struct RAT* rat);
 
-void rat_print(struct RAT* rat);
+// @returns false on error
+bool rat_print(struct RAT* rat, FILE* fout);
 
 void rat_reserve_reg(struct RAT* rat, uint32_t reg, char* note);
 

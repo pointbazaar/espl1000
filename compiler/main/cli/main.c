@@ -21,7 +21,7 @@ static int rat_main(struct Flags* flags) {
 
 	struct RAT* rat = rat_ctor(RAT_ARCH_X86, 0);
 
-	rat_print(rat);
+	rat_print(rat, stdout);
 
 	return 0;
 }
