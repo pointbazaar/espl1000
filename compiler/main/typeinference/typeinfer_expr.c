@@ -238,7 +238,7 @@ static struct Type* infer_type_expr_primitive(struct ST* st, struct Expr2Types* 
 
 		if (i1 && i2) { return typeFromStrPrimitive(st, "int"); }
 
-		if (c1 && c2) { return typeFromStrPrimitive(st, "char"); }
+		if (c1 && c2) { return typeFromStrPrimitive(st, "int"); }
 
 		if ((c1 && i2) || (i1 && c2)) { return typeFromStrPrimitive(st, "char"); }
 	}
