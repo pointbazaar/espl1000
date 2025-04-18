@@ -2,7 +2,7 @@
 // This is a really bad allocator.
 // It allocates in multiples of page size.
 
-fn malloc(uint64 nbytes) -> *# {
+fn malloc(uint64 nbytes) -> [#] {
 
 	if nbytes == 0 {
 		return 0;
@@ -16,7 +16,7 @@ fn malloc(uint64 nbytes) -> *# {
 		npages++;
 	}
 
-	local *uint64 ptr;
+	local [uint64] ptr;
 	ptr = mmap(0, n, PROT_READ | PROT_WRITE, MAP_SHARED | MAP_ANONYMOUS, -1, 0);
 
 	// preserve number of bytes for calling munmap later

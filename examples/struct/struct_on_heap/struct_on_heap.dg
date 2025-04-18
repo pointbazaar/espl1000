@@ -1,0 +1,27 @@
+
+struct Astruct {
+
+	uint64 count_members;
+	uint64 capacity_members;
+	[uint8] members;
+}
+
+fn main () -> int {
+
+	*Astruct ptr = malloc(100);
+
+	if ptr == 0 {
+		fprint(STDERR, "malloc failure\n");
+		return 1;
+	}
+
+	uint64 x1 = ptr;
+
+	ptr.count_members = 43;
+
+	uint64 x2 = ptr;
+
+	println_uint64(x1-x2);
+
+	return ptr.count_members;
+}
