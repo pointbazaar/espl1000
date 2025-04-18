@@ -59,8 +59,13 @@ static bool check_expr_well_formed(struct Type* left, struct Type* right) {
 
 	if (is_integer_type(left) && is_integer_type(right)) { return true; }
 
+	// adding pointer and integer forms a pointer type
 	if (left->pointer_type && is_integer_type(right)) { return true; }
 	if (right->pointer_type && is_integer_type(left)) { return true; }
+
+	// adding array type and integer forms an array type
+	if (left->array_type && is_integer_type(right)) { return true; }
+	if (right->array_type && is_integer_type(left)) { return true; }
 
 	if (!eq_type(left, right)) {
 

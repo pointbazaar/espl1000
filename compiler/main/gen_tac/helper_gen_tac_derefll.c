@@ -58,7 +58,19 @@ void tac_derefll_single(struct TACBuffer* buffer, struct DerefLL* dll, struct Ty
 		case DEREFLL_MEMBER: {
 			//find member offset
 			struct STST* stst = ctx_tables(ctx)->stst;
-			char* struct_name = prev_type->basic_type->simple_type->struct_type->type_name;
+
+			struct BasicType* bt = prev_type->basic_type;
+
+			if (!bt) {
+				assert(prev_type->pointer_type);
+				bt = prev_type->pointer_type->element_type->basic_type;
+			}
+
+			assert(bt);
+			assert(bt->simple_type);
+			assert(bt->simple_type->struct_type);
+
+			char* struct_name = bt->simple_type->struct_type->type_name;
 			uint32_t offset = stst_member_offset(stst, struct_name, dll->member_name, x86);
 
 			//add that offset
@@ -71,8 +83,8 @@ void tac_derefll_single(struct TACBuffer* buffer, struct DerefLL* dll, struct Ty
 		} break;
 
 		case DEREFLL_DEREF:
-			// TODO: the width there needs to be architecture specific, for x86 it's not 2 but 8 bytes
-			tacbuffer_append(buffer, makeTACLoad(make_temp(), tacbuffer_last_dest(buffer), 2));
+			// TODO: the width has to be specific to what is being dereferenced
+			tacbuffer_append(buffer, makeTACLoad(make_temp(), tacbuffer_last_dest(buffer), width));
 			break;
 	}
 }

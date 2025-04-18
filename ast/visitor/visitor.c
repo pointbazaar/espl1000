@@ -231,6 +231,10 @@ static bool visit_while_stmt(struct WhileStmt* w, VISITOR, void* arg) {
 
 	visitor(w, NODE_WHILESTMT, arg);
 
+	if (!visit_expr(w->condition, visitor, arg)) {
+		return false;
+	}
+
 	return visit_stmt_block(w->block, visitor, arg);
 }
 

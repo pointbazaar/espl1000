@@ -22,6 +22,7 @@ static struct Type* infer_type_expr_primitive(struct ST* st, struct Expr2Types* 
 static struct Type* infer_type_expr_both_tparam(struct ST* st, struct TypeParam* tp1, enum OP op, struct TypeParam* tp2);
 
 static struct Type* infer_type_expr_ptr_arithmetic(struct ST* st, struct Type* t1, struct Type* t2, enum OP op);
+static struct Type* infer_type_expr_array_arithmetic(struct ST* st, struct Type* t1, struct Type* t2, enum OP op);
 
 static void typeinfer_err_fatal(char* opt_str) {
 	fprintf(stderr, "%s\n", opt_str);
@@ -48,6 +49,12 @@ struct Type* infer_type_expr(struct ST* st, struct Expr* expr) {
 	}
 	if (type2->pointer_type) {
 		return infer_type_expr_ptr_arithmetic(st, type2, type1, op);
+	}
+	if (type1->array_type) {
+		return infer_type_expr_array_arithmetic(st, type1, type2, op);
+	}
+	if (type2->array_type) {
+		return infer_type_expr_array_arithmetic(st, type2, type1, op);
 	}
 
 	struct BasicType* btw1 = type1->basic_type;
@@ -119,6 +126,56 @@ static struct Type* infer_type_expr_ptr_arithmetic(struct ST* st, struct Type* t
 	}
 
 	if (asprintf(&msg, "pointer arithmetic: not an integer type: %s", str) == -1) {
+		free(str);
+		return NULL;
+	}
+
+	free(str);
+
+	typeinfer_err_fatal(msg);
+
+	free(msg);
+
+	return NULL;
+}
+
+static struct Type* infer_type_expr_array_arithmetic(struct ST* st, struct Type* t1, struct Type* t2, enum OP op) {
+
+	struct ArrayType* pt = t1->array_type;
+
+	if (!pt) {
+		typeinfer_err_fatal("pointer arithmetic: not a pointer");
+		return NULL;
+	}
+
+	if (t2->pointer_type) {
+		if (op == OP_EQ || op == OP_NEQ || op == OP_GE || op == OP_GT || op == OP_LE || op == OP_LT) {
+			return typeFromStrPrimitive(st, "bool");
+		}
+	}
+
+	if (t2->basic_type && t2->basic_type->simple_type) {
+		struct SimpleType* stype = t2->basic_type->simple_type;
+
+		if (stype->primitive_type && stype->primitive_type->is_int_type) {
+
+			if (op == OP_EQ || op == OP_NEQ || op == OP_GE || op == OP_GT || op == OP_LE || op == OP_LT) {
+
+				return typeFromStrPrimitive(st, "bool");
+			}
+
+			return t1;
+		}
+	}
+
+	char* str = str_type(t2);
+	char* msg = NULL;
+
+	if (!str) {
+		return NULL;
+	}
+
+	if (asprintf(&msg, "array arithmetic: not an integer type: %s", str) == -1) {
 		free(str);
 		return NULL;
 	}

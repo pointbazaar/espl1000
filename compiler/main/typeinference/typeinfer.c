@@ -2,6 +2,7 @@
 #include <stdlib.h>
 
 #include "ast/ast.h"
+#include "ast/util/str_ast.h"
 #include "typeinference/typeinfer.h"
 
 static char* ERR_NO_ARRAYTYPE = "Expected an ArrayType\n";
@@ -30,6 +31,9 @@ struct Type* unwrap(struct Type* t) {
 
 	if (t->array_type == NULL) {
 		print_error(ERR_NO_ARRAYTYPE);
+		char* s = str_type(t);
+		fprintf(stderr, "instance: %s\n", s);
+		free(s);
 		return NULL;
 	}
 
