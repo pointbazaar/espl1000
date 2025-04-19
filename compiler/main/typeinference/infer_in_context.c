@@ -37,9 +37,9 @@ struct Type* infer_in_context_once(struct ST* st, struct MemberAccess* ma) {
 	if (simple_type->struct_type == NULL) {
 		char* s = str_simple_type(simple_type);
 		fprintf(stderr, "was not struct type: %s\n", s);
+		free(s);
+		return NULL;
 	}
-
-	assert(simple_type->struct_type != NULL);
 
 	struct StructType* struct_type = simple_type->struct_type;
 

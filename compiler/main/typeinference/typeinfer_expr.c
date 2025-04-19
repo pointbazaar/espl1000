@@ -141,10 +141,8 @@ static struct Type* infer_type_expr_ptr_arithmetic(struct ST* st, struct Type* t
 
 static struct Type* infer_type_expr_array_arithmetic(struct ST* st, struct Type* t1, struct Type* t2, enum OP op) {
 
-	struct ArrayType* pt = t1->array_type;
-
-	if (!pt) {
-		typeinfer_err_fatal("pointer arithmetic: not a pointer");
+	if (!t1->array_type) {
+		typeinfer_err_fatal("pointer arithmetic: lhs is not an array type");
 		return NULL;
 	}
 

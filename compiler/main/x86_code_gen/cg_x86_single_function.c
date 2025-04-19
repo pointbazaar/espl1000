@@ -117,6 +117,7 @@ bool compile_and_write_x86_single_function(struct Method* m, struct Ctx* ctx, st
 		FILE* fout_rat = fopen(rat_filename, "w");
 		if (!fout_rat) {
 			success = false;
+			free(rat_filename);
 			goto exit;
 		}
 
