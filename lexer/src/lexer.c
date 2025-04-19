@@ -66,6 +66,26 @@ static int handler2_intconst(const char* buf, struct TokenList* o, size_t nchars
 	while (isdigit(buf[i]) && i < nchars_remain) {
 		i++;
 	}
+
+	if (buf[0] == '0' && i > 1) {
+		// octal notation
+		char* buf2 = calloc(1, i + 1);
+		int value = 0;
+
+		for (int j = 1; j < i; j++) {
+
+			value += (buf[j] - '0');
+			if (j < i - 1) {
+				value *= 8;
+			}
+		}
+		const int nchars = sprintf(buf2, "%d", value);
+		out_length(o, INTEGER, (char*)buf2, nchars);
+
+		free(buf2);
+		return i;
+	}
+
 	out_length(o, INTEGER, (char*)buf, i);
 	return i;
 }
