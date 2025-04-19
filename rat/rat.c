@@ -78,6 +78,7 @@ static void rat_dump_regname(struct RAT* rat, FILE* fout, size_t i) {
 			break;
 		case RAT_ARCH_X86:
 			rat_print_regname_x86(rat, fout, i);
+			break;
 		default: return;
 	}
 }
