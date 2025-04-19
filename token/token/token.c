@@ -166,7 +166,6 @@ char* tokenstr[255] = {
     [KEYWORD_CONTINUE] = "continue",
     [FOR] = "for",
     [KEYWORD_IN] = "in",
-    [INCLUDE_DECL] = "include",
 
     [OPKEY_ARITHMETIC_PLUS] = "+",
     [OPKEY_ARITHMETIC_MINUS] = "-",

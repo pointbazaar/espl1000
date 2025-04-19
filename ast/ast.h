@@ -37,9 +37,6 @@ struct Namespace {
 
 	char* name;
 
-	uint16_t count_includes;
-	char** includes;
-
 	// enum declarations
 	struct EnumDecl** enums;
 	uint16_t count_enums;
