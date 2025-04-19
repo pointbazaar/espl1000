@@ -1,6 +1,4 @@
-#include <stdio.h>
-#include <stdlib.h>
-//The goal of this example is to 
+//The goal of this example is to
 //contain all Statement c_types_util
 //and use as many features of smalldragon
 //as possible

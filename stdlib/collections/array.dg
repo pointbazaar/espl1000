@@ -1,4 +1,3 @@
-#include <stdlib.h>
 //simple functions dealing with arrays of integers
 
 fn array_contains([int] arr, uint size, int elem) -> bool {

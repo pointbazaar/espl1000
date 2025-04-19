@@ -168,7 +168,6 @@ void (*tests_lexer[])() = {
 
     test_brackets,
 
-    test_include_decl,
     NULL,
 };
 

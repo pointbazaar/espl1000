@@ -99,8 +99,6 @@
 
 #define KEYWORD_ENUM 63
 
-#define INCLUDE_DECL 70
-
 //operator groups
 #define OPKEY_ARITHMETIC_PLUS 71
 #define OPKEY_ARITHMETIC_MINUS 72

@@ -209,16 +209,6 @@ static int handler2_newline(const char* buf, struct TokenList* o, size_t nchars_
 	return 1;
 }
 
-static int handler2_include_decl(const char* buf, struct TokenList* o, size_t nchars_remain) {
-
-	int i = 10;
-	while (buf[i] != '>' && i < nchars_remain) {
-		i++;
-	}
-	out_length(o, INCLUDE_DECL, (char*)(buf + 10), i - 10);
-	return i + 1;
-}
-
 static int handler2(const char* buf, struct TokenList* o, size_t nchars_remain) {
 
 	int n;
@@ -309,9 +299,6 @@ static int handler2(const char* buf, struct TokenList* o, size_t nchars_remain) 
 		H2OUT_NOSTR(buf, "@syscall", ANNOT_SYSCALL, o);
 	}
 	if (buf[0] == '#') {
-		if (strncmp(buf, "#include <", 10) == 0) {
-			return handler2_include_decl(buf, o, nchars_remain);
-		}
 		H2OUT_CHAR(buf, '#', ANYTYPE, o);
 	}
 	if (buf[0] == '"') {
