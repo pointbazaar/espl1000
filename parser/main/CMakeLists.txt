@@ -56,8 +56,6 @@ add_library(dragon-parser-base
 	astnodes/var/Variable.c
 )
 
-target_compile_options(dragon-parser-base PUBLIC ${COMMON_OPTS})
-
 target_link_libraries(dragon-parser-base sd-util sd-ast sd-token)
 
 target_include_directories(dragon-parser-base PUBLIC "astnodes")

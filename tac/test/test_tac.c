@@ -118,9 +118,6 @@ void test_tac_tostring() {
 
 	status("tac_tostring");
 
-	struct TAC* t;
-	char* s;
-
 	//TODO: missing SST here
 	//assert_str(makeTACCall(1, 0), "t1 = call main");
 

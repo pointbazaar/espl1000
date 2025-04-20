@@ -8,7 +8,7 @@
 
 void sst_fill(struct ST* st, struct SST* sst, struct Namespace* ns) {
 
-	for (int i = 0; i < ns->count_methods; i++) {
+	for (size_t i = 0; i < ns->count_methods; i++) {
 
 		struct Method* m = ns->methods[i];
 

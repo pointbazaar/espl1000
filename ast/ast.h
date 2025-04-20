@@ -39,16 +39,16 @@ struct Namespace {
 
 	// enum declarations
 	struct EnumDecl** enums;
-	uint16_t count_enums;
+	size_t count_enums;
 	size_t capacity_enums;
 
 	//structs must be declared before the subroutines
 	struct StructDecl** structs;
-	uint16_t count_structs;
+	size_t count_structs;
 	size_t capacity_structs;
 
 	struct Method** methods;
-	uint16_t count_methods;
+	size_t count_methods;
 	size_t capacity_methods;
 };
 

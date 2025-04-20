@@ -58,15 +58,15 @@ void free_method_decl(struct MethodDecl* m) {
 
 void free_namespace(struct Namespace* ns) {
 
-	for (int i = 0; i < ns->count_enums; i++) {
+	for (size_t i = 0; i < ns->count_enums; i++) {
 		free_enum_decl(ns->enums[i]);
 	}
 
-	for (int i = 0; i < ns->count_methods; i++) {
+	for (size_t i = 0; i < ns->count_methods; i++) {
 		free_method(ns->methods[i]);
 	}
 
-	for (int i = 0; i < ns->count_structs; i++) {
+	for (size_t i = 0; i < ns->count_structs; i++) {
 		free_struct_decl(ns->structs[i]);
 	}
 

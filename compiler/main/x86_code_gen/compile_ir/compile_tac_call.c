@@ -18,6 +18,8 @@
 
 bool compile_tac_call_x86(struct RAT* rat, struct TAC* tac, struct IBuffer* ibu, struct Ctx* ctx, char* current_function_name) {
 
+	(void)current_function_name;
+
 	int reg_dest = rat_get_register(rat, tac_dest(tac));
 	char* c = "TAC_CALL";
 
@@ -32,8 +34,6 @@ bool compile_tac_call_x86(struct RAT* rat, struct TAC* tac, struct IBuffer* ibu,
 	const struct SSTLine* line = sst_at(sst, tac_arg1(tac));
 
 	char* function_name = line->name;
-
-	const uint32_t arg_count = sst_args_count(sst, current_function_name);
 
 	if (line->is_syscall) {
 		mov_const(SD_REG_RAX, syscall_number(line->name), c);

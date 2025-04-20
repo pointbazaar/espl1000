@@ -82,9 +82,9 @@ void test_gen_tac_simplevar_case_2_index() {
 	const int index1 = (3) & 0b01111111;
 	const int index2 = (2) & 0b01111111;
 
-	char snippet[200];
+	char snippet[400];
 	char* template = "fn main() -> int { %s }";
-	char snippet2[200];
+	char snippet2[300];
 	char* body = "[[int]] arr = 0xc7; return arr[%d][%d];";
 	sprintf(snippet2, body, index1, index2);
 	sprintf(snippet, template, snippet2);

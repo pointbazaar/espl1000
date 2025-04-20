@@ -57,7 +57,7 @@ bool analyze_dead_code(struct Ctx* ctx, struct AST* ast) {
 
 	for (int i = 0; i < ast->count_namespaces; i++) {
 		struct Namespace* ns = ast->namespaces[i];
-		for (int j = 0; j < ns->count_methods; j++) {
+		for (size_t j = 0; j < ns->count_methods; j++) {
 			struct Method* m = ns->methods[j];
 
 			if (!m || !m->decl || !m->decl->name) {

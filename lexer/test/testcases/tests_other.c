@@ -225,7 +225,7 @@ void test_typeidentifier_primitive() {
 
 	size_t expect_count = 6;
 
-	for (int i = 0; i < expect_count; i++) {
+	for (size_t i = 0; i < expect_count; i++) {
 		assert(tokens[i]->kind == expect_kind[i]);
 	}
 

@@ -47,7 +47,7 @@ bool lvst_clear(struct LVST* lvst) {
 
 	struct LVSTLine* prev = NULL;
 
-	for (int i = 0; i < lvst->count; i++) {
+	for (size_t i = 0; i < lvst->count; i++) {
 		if (lvst->lines[i] != prev) {
 			prev = lvst->lines[i];
 			free(lvst->lines[i]->name);
@@ -71,7 +71,7 @@ void lvst_free(struct LVST* lvst) {
 
 	struct LVSTLine* prev = NULL;
 
-	for (int i = 0; i < lvst->count; i++) {
+	for (size_t i = 0; i < lvst->count; i++) {
 		struct LVSTLine* line = lvst->lines[i];
 
 		if (line != prev) {
@@ -87,7 +87,7 @@ void lvst_free(struct LVST* lvst) {
 
 void lvst_add(struct LVST* lvst, struct LVSTLine* line) {
 
-	for (int i = 0; i < lvst->count; i++) {
+	for (size_t i = 0; i < lvst->count; i++) {
 
 		struct LVSTLine* current_line = lvst->lines[i];
 
@@ -126,7 +126,7 @@ struct LVSTLine* lvst_line_ctor(char* name, struct Type* type, bool is_arg) {
 
 struct LVSTLine* lvst_get(struct LVST* lvst, const char* name) {
 
-	for (int i = 0; i < lvst->count; i++) {
+	for (size_t i = 0; i < lvst->count; i++) {
 
 		struct LVSTLine* line = lvst->lines[i];
 
@@ -150,7 +150,7 @@ struct LVSTLine* lvst_at(struct LVST* lvst, uint32_t index) {
 struct LVSTLine* lvst_arg_at(struct LVST* lvst, uint32_t index) {
 
 	uint32_t count = 0;
-	for (int i = 0; i < lvst->count; i++) {
+	for (size_t i = 0; i < lvst->count; i++) {
 
 		struct LVSTLine* line = lvst->lines[i];
 		if (!line->is_arg) {
@@ -173,7 +173,7 @@ struct LVSTLine* lvst_arg_at(struct LVST* lvst, uint32_t index) {
 
 int32_t lvst_index_of(struct LVST* lvst, const char* name) {
 
-	for (int i = 0; i < lvst->count; i++) {
+	for (size_t i = 0; i < lvst->count; i++) {
 
 		struct LVSTLine* line = lvst->lines[i];
 		if (strcmp(line->name, name) == 0) { return i; }
@@ -186,7 +186,7 @@ int32_t lvst_index_of(struct LVST* lvst, const char* name) {
 
 bool lvst_contains(struct LVST* lvst, const char* name) {
 
-	for (int i = 0; i < lvst->count; i++) {
+	for (size_t i = 0; i < lvst->count; i++) {
 
 		char* lv_name = lvst->lines[i]->name;
 
@@ -204,7 +204,7 @@ void lvst_print(struct LVST* lvst) {
 	printf("Local Variable Symbol Table [LVST]\n");
 	printf(fmt, "name", "is_arg", "Type");
 	printf(fmt, linebig, line5, linebig);
-	for (int i = 0; i < lvst->count; i++) {
+	for (size_t i = 0; i < lvst->count; i++) {
 		struct LVSTLine* line = lvst->lines[i];
 
 		printf(fmt,
@@ -246,6 +246,7 @@ static int32_t lvst_sizeof_primitivetype(struct PrimitiveType* pt, bool x86) {
 }
 
 uint32_t lvst_sizeof_structtype(struct StructType* st, bool x86) {
+	(void)st;
 	if (x86) {
 		return 8;
 	}
@@ -265,6 +266,7 @@ uint32_t lvst_sizeof_simpletype(struct SimpleType* st, bool x86) {
 }
 
 uint32_t lvst_sizeof_subrtype(struct SubrType* st, bool x86) {
+	(void)st;
 	if (x86) {
 		return 8;
 	}
@@ -284,10 +286,12 @@ uint32_t lvst_sizeof_basictype(struct BasicType* bt, bool x86) {
 }
 
 uint32_t lvst_sizeof_typeparam(struct TypeParam* tp) {
+	(void)tp;
 	return 2; // could be wide
 }
 
 uint32_t lvst_sizeof_arraytype(struct ArrayType* at, bool x86) {
+	(void)at;
 	if (x86) {
 		return 8;
 	}
@@ -327,7 +331,7 @@ size_t lvst_stack_frame_size_local_vars_x86(struct LVST* lvst) {
 
 	uint32_t sum = 0;
 
-	for (int i = 0; i < lvst->count; i++) {
+	for (size_t i = 0; i < lvst->count; i++) {
 		if (lvst->lines[i]->is_arg) { continue; }
 		sum += lvst_sizeof_type(lvst->lines[i]->type, true);
 	}
@@ -338,7 +342,7 @@ size_t lvst_stack_frame_size_x86(struct LVST* lvst) {
 
 	uint32_t sum = 0;
 
-	for (int i = 0; i < lvst->count; i++) {
+	for (size_t i = 0; i < lvst->count; i++) {
 		sum += lvst_sizeof_type(lvst->lines[i]->type, true);
 	}
 	return sum;
@@ -349,7 +353,7 @@ size_t lvst_stack_frame_size_avr(struct LVST* lvst) {
 	//(here meaning just the local variables)
 	uint32_t sum = 0;
 
-	for (int i = 0; i < lvst->count; i++) {
+	for (size_t i = 0; i < lvst->count; i++) {
 		if (lvst->lines[i]->is_arg) continue;
 		sum += lvst_sizeof_type(lvst->lines[i]->type, false);
 	}
@@ -361,7 +365,7 @@ size_t lvst_stack_frame_size_avr(struct LVST* lvst) {
 ssize_t lvst_stack_frame_offset_x86(struct LVST* lvst, char* local_var_name) {
 	uint32_t offset = 0;
 
-	for (int i = 0; i < lvst->count; i++) {
+	for (size_t i = 0; i < lvst->count; i++) {
 
 		struct LVSTLine* line = lvst->lines[i];
 
@@ -374,7 +378,7 @@ ssize_t lvst_stack_frame_offset_x86(struct LVST* lvst, char* local_var_name) {
 		}
 	}
 
-	for (int i = 0; i < lvst->count; i++) {
+	for (size_t i = 0; i < lvst->count; i++) {
 
 		struct LVSTLine* line = lvst->lines[i];
 
@@ -396,7 +400,7 @@ int32_t lvst_arg_index(struct LVST* lvst, char* name) {
 
 	uint32_t index = 0;
 
-	for (int i = 0; i < lvst->count; i++) {
+	for (size_t i = 0; i < lvst->count; i++) {
 
 		struct LVSTLine* line = lvst->lines[i];
 
@@ -417,7 +421,7 @@ ssize_t lvst_stack_frame_offset_avr(struct LVST* lvst, char* local_var_name) {
 	uint32_t offset = 1;
 
 	//we first look at the local vars
-	for (int i = 0; i < lvst->count; i++) {
+	for (size_t i = 0; i < lvst->count; i++) {
 
 		struct LVSTLine* line = lvst->lines[i];
 
@@ -431,7 +435,7 @@ ssize_t lvst_stack_frame_offset_avr(struct LVST* lvst, char* local_var_name) {
 	offset += 2; //because of the return address
 
 	//we then look at the arguments
-	for (int i = 0; i < lvst->count; i++) {
+	for (size_t i = 0; i < lvst->count; i++) {
 
 		struct LVSTLine* line = lvst->lines[i];
 
@@ -456,7 +460,7 @@ uint32_t lvst_sizeof_var(struct LVST* lvst, const char* name, bool x86) {
 
 size_t lvst_nvars(struct LVST* lvst) {
 	size_t count = 0;
-	for (int i = 0; i < lvst->count; i++) {
+	for (size_t i = 0; i < lvst->count; i++) {
 		if (!lvst->lines[i]->is_arg) {
 			count++;
 		}
@@ -466,7 +470,7 @@ size_t lvst_nvars(struct LVST* lvst) {
 
 size_t lvst_nargs(struct LVST* lvst) {
 	size_t count = 0;
-	for (int i = 0; i < lvst->count; i++) {
+	for (size_t i = 0; i < lvst->count; i++) {
 		if (lvst->lines[i]->is_arg) {
 			count++;
 		}

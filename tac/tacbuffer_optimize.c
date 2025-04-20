@@ -8,6 +8,8 @@
 // @returns true if two IR statements may be swapped
 static bool tacbuffer_optimize_swap_criterion(struct TAC* t1, struct TAC* t2, bool debug) {
 
+	(void)debug;
+
 	// Currently there are only very simplistic examples here
 	// It can be improved in the future!
 	// There are lots more opportunities to optimize

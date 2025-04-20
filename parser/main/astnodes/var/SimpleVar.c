@@ -69,7 +69,7 @@ error_indices:
 		free_expr(res->indices[i]);
 	}
 	free(res->indices);
-error:
+
 	freeTokenListShallow(copy);
 	free(res);
 	return NULL;

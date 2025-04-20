@@ -5,4 +5,3 @@ add_library("sd-ast-test"
 
 target_link_libraries("sd-ast-test" sd-util)
 target_include_directories("sd-ast-test" PUBLIC "../..")
-target_compile_options("sd-ast-test" PUBLIC ${COMMON_OPTS})

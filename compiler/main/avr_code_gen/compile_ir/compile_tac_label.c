@@ -24,7 +24,7 @@ void compile_tac_label(struct TAC* tac, struct IBuffer* ibu, struct Ctx* ctx) {
 		//in case of tests, sst may not be filled
 		char* function_name = "main";
 
-		if (tac_dest(tac) < sst_size(ctx_tables(ctx)->sst)) {
+		if ((size_t)tac_dest(tac) < sst_size(ctx_tables(ctx)->sst)) {
 
 			function_name = sst_at(ctx_tables(ctx)->sst, tac_dest(tac))->name;
 		}

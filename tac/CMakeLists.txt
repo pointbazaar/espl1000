@@ -6,8 +6,6 @@ add_library("sd-tac" STATIC
         tacbuffer_optimize.c
 )
 
-target_compile_options("sd-tac" PUBLIC ${COMMON_OPTS})
-
 target_include_directories("sd-tac" PUBLIC "..")
 
 add_subdirectory(test)

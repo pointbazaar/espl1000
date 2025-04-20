@@ -12,8 +12,6 @@ void compile_tac_unary_op_x86(struct RAT* rat, struct TAC* tac, struct IBuffer* 
 
 	int reg_dest = rat_get_register(rat, tac_dest(tac));
 
-	const int RAT_SCRATCH_REG = rat_scratch_reg(rat);
-
 	char* c = "TAC_UNARY_OP";
 
 	switch (tac_op(tac)) {

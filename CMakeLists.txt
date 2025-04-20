@@ -8,7 +8,7 @@ set(CMAKE_VERBOSE_MAKEFILE ON)
 # such as language server when editing
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-set(COMMON_OPTS, "-g" "-march=native" "-Wall" "-Wextra" "-Werror")
+add_compile_options("-g" "-march=native" "-Wall" "-Wextra" "-Werror")
 
 # this helps to provide the correct flags to include
 # debug symbols at every step so that we get

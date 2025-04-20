@@ -15,7 +15,7 @@ void stst_print(struct STST* stst) {
 
 	printf("----------------|----------------|\n");
 
-	for (int i = 0; i < stst_size(stst); i++) {
+	for (size_t i = 0; i < stst_size(stst); i++) {
 
 		struct STSTLine* line = stst_at(stst, i);
 
