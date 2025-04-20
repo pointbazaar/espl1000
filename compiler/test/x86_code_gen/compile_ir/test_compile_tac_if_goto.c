@@ -16,7 +16,7 @@ void test_x86_compile_tac_if_goto_case_true() {
 
 	status_test_x86_codegen("TAC_IF_GOTO true");
 
-	const int8_t value = 0x33 | 0x1;
+	const uint64_t value = 0x33 | 0x1;
 	const uint64_t address1 = sd_uc_default_stack_addr() + 0x80;
 
 	//labels
@@ -86,7 +86,7 @@ void test_x86_compile_tac_if_goto_case_false() {
 
 	uint64_t read = 0;
 	sd_uc_mem_read64(system, address1, &read);
-	assert(read != value);
+	assert((int)read != (int)value);
 
 	sd_uc_close(system);
 }

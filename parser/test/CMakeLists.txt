@@ -46,9 +46,6 @@ add_library(sd-parser-test
 	test_parser_util.h
 )
 
-target_compile_options(sd-parser-test PUBLIC ${COMMON_OPTS})
-
-
 target_link_libraries(sd-parser-test dragon-parser-base sd-util sd-ast sd-token)
 
 target_include_directories(sd-parser-test PUBLIC "main/commandline")

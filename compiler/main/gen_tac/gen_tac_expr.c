@@ -10,7 +10,6 @@
 // @returns false on error
 static bool tac_expr_part_2_no_constvalue(struct TACBuffer* buffer, struct Expr* expr, uint32_t t1, struct Ctx* ctx);
 static enum TAC_OP op_to_tac_op(enum OP op_str, bool* reverse_operands);
-static bool operator_immediate_applicable(enum TAC_OP op, int32_t immediate);
 
 bool tac_expr(struct TACBuffer* buffer, struct Expr* expr, struct Ctx* ctx) {
 
@@ -40,24 +39,6 @@ bool tac_expr_addr(struct TACBuffer* buffer, struct Expr* expr, struct Ctx* ctx)
 	assert(expr->term2 == NULL);
 
 	return tac_unopterm_addr(buffer, expr->term1, ctx);
-}
-
-static bool operator_immediate_applicable(enum TAC_OP op, int32_t immediate) {
-	//is the given operator applicable for immediate
-	//operations, such as ANDI, SUBI, ORI, ...
-	switch (op) {
-		case TAC_OP_ADD:
-			//in that case, we can use INC
-			return immediate == 1;
-		case TAC_OP_SUB:
-		case TAC_OP_AND:
-		case TAC_OP_OR:
-		case TAC_OP_SHIFT_LEFT:
-		case TAC_OP_SHIFT_RIGHT:
-			return true;
-		default:
-			return false;
-	}
 }
 
 static enum TAC_OP op_to_tac_op(enum OP o, bool* reverse_operands) {

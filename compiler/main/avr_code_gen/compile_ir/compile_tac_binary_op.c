@@ -11,7 +11,6 @@ static void case_arithmetic(struct RAT* rat, struct TAC* tac, struct IBuffer* ib
 static void case_compare(struct RAT* rat, struct TAC* tac, struct IBuffer* ibu);
 static void case_shift(struct RAT* rat, struct TAC* tac, struct IBuffer* ibu);
 
-static void case_cmp_lti(int RAT_SCRATCH_REG, struct IBuffer* ibu, int rdest, int rsrc, bool wide);
 static void case_cmp_ge(int RAT_SCRATCH_REG, struct IBuffer* ibu, int rdest, int rsrc, bool wide);
 static void case_cmp_neq(int RAT_SCRATCH_REG, struct IBuffer* ibu, int rdest, int rsrc, bool wide);
 static void case_cmp_eq(int RAT_SCRATCH_REG, struct IBuffer* ibu, int rdest, int rsrc, bool wide);

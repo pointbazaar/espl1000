@@ -62,7 +62,6 @@ struct Namespace* build_namespace(struct TokenList* list, char* filename_display
 error_tokens_left:
 	free_namespace(ns);
 error_namespace:
-error:
 	freeTokenList(list);
 	return NULL;
 }

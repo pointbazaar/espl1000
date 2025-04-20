@@ -26,7 +26,7 @@ void tacbuffer_append(struct TACBuffer* buffer, struct TAC* node) {
 	buffer->count += 1;
 }
 
-bool tacbuffer_set(struct TACBuffer* buffer, int index, struct TAC* node) {
+bool tacbuffer_set(struct TACBuffer* buffer, size_t index, struct TAC* node) {
 
 	if (index >= buffer->cap || index >= buffer->count) {
 		fprintf(stderr, "trying to write to TACBuffer outside its bounds...");
@@ -37,10 +37,10 @@ bool tacbuffer_set(struct TACBuffer* buffer, int index, struct TAC* node) {
 	return true;
 }
 
-struct TAC* tacbuffer_get(struct TACBuffer* buffer, int index) {
+struct TAC* tacbuffer_get(struct TACBuffer* buffer, size_t index) {
 
 	if (index >= buffer->count) {
-		fprintf(stderr, "TACBuffer: no value at index %d ...", index);
+		fprintf(stderr, "TACBuffer: no value at index %ld ...", index);
 		return NULL;
 	}
 

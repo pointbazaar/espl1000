@@ -16,8 +16,8 @@ static void common(int a, enum TAC_OP op, int b, bool expect_true, bool debug);
 
 static void common(int a1, enum TAC_OP op, int a2, bool expect_true, bool debug) {
 
-	const int8_t valuetrue = 17;
-	const int8_t valuefalse = valuetrue + 1;
+	const uint64_t valuetrue = 17;
+	const uint64_t valuefalse = valuetrue + 1;
 	const uint64_t address = sd_uc_default_stack_addr() + 0x80;
 
 	const uint16_t ltrue = 1;

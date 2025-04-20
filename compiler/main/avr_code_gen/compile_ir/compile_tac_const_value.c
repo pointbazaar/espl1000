@@ -16,7 +16,7 @@ void compile_tac_const_value(struct RAT* rat, struct TAC* tac, struct IBuffer* i
 	//change to unsigned value here, for shifting
 	const uint16_t value = tac_const_value(tac);
 
-	char c[30];
+	char c[60];
 	sprintf(c, "TAC_CONST_VALUE %d (0x%x)", value, value);
 
 	ldi(reg, (value & 0xff), c);

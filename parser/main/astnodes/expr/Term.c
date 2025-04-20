@@ -93,7 +93,7 @@ other_term:
 		res->kind = TERM_KIND_VAR;
 		goto end;
 	}
-exit_error:
+
 	free(res);
 	freeTokenListShallow(copy);
 	return NULL;

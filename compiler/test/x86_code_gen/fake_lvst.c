@@ -52,10 +52,10 @@ void sd_uc_fake_lvst(struct Ctx* ctx, size_t fake_lvst_size, size_t stackframe_n
 
 	size_t nlocals = fake_lvst_size - stackframe_nargs;
 
-	for (int i = 0; i < nlocals; i++) {
+	for (size_t i = 0; i < nlocals; i++) {
 		sd_uc_fake_lvst_line(ctx, lvst, i, false);
 	}
-	for (int i = 0; i < stackframe_nargs; i++) {
+	for (size_t i = 0; i < stackframe_nargs; i++) {
 		sd_uc_fake_lvst_line(ctx, lvst, i, true);
 	}
 }

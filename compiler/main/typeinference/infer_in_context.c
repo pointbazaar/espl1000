@@ -57,7 +57,6 @@ struct Type* infer_in_context_once(struct ST* st, struct MemberAccess* ma) {
 
 struct Type* infer_in_context(struct ST* st, struct MemberAccess* ma) {
 
-	struct Type* structType = ma->structType;
 	struct Variable* member = ma->member;
 
 	struct Type* memberType = infer_in_context_once(st, ma);

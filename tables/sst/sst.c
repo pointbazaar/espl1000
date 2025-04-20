@@ -51,7 +51,7 @@ struct SST* sst_ctor() {
 
 void sst_clear(struct SST* sst) {
 
-	for (int i = 0; i < sst->count; i++) {
+	for (uint32_t i = 0; i < sst->count; i++) {
 
 		sst_line_free(sst->lines[i]);
 	}
@@ -66,7 +66,7 @@ void sst_clear(struct SST* sst) {
 
 void sst_free(struct SST* sst) {
 
-	for (int i = 0; i < sst->count; i++) {
+	for (uint32_t i = 0; i < sst->count; i++) {
 		sst_line_free(sst->lines[i]);
 	}
 
@@ -81,6 +81,10 @@ struct SSTLine* sst_line_ctor(
     bool isLibC,
     enum HALTS halts,
     bool has_side_effect) {
+
+	// TODO: why is this unused?
+	(void)isLibC;
+
 	struct SSTLine* line = make(SSTLine);
 
 	asprintf(&(line->name), "%s", name);
@@ -162,7 +166,7 @@ bool sst_add(struct SST* sst, struct SSTLine* line) {
 
 struct SSTLine* sst_get(struct SST* sst, const char* name) {
 
-	for (int i = 0; i < sst->count; i++) {
+	for (uint32_t i = 0; i < sst->count; i++) {
 
 		struct SSTLine* line = sst->lines[i];
 
@@ -188,7 +192,7 @@ struct SSTLine* sst_at(struct SST* sst, uint32_t index) {
 
 int32_t sst_index_of(struct SST* sst, const char* name) {
 
-	for (int i = 0; i < sst->count; i++) {
+	for (size_t i = 0; i < sst->count; i++) {
 		if (strcmp(sst->lines[i]->name, name) == 0) { return i; }
 	}
 
@@ -219,7 +223,7 @@ uint32_t sst_args_count(struct SST* sst, char* name) {
 
 bool sst_contains(struct SST* sst, const char* name) {
 
-	for (int i = 0; i < sst->count; i++) {
+	for (size_t i = 0; i < sst->count; i++) {
 		if (strcmp(sst->lines[i]->name, name) == 0) { return true; }
 	}
 

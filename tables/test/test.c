@@ -31,8 +31,6 @@ void test_tables_lvst_sizeof_type_primitive() {
 	struct BasicType bt;
 	struct SimpleType st;
 	struct PrimitiveType pt;
-	struct StructType stt;
-	struct SubrType subrt;
 
 	pt.is_int_type = true;
 	pt.is_char_type = false;

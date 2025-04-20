@@ -24,7 +24,7 @@ bool compile_tac_label_x86(struct TAC* tac, struct IBuffer* ibu, struct Ctx* ctx
 
 		char* function_name;
 
-		if (tac_dest(tac) < sst_size(ctx_tables(ctx)->sst)) {
+		if (tac_dest(tac) < (int32_t)sst_size(ctx_tables(ctx)->sst)) {
 
 			function_name = sst_at(ctx_tables(ctx)->sst, tac_dest(tac))->name;
 		} else {

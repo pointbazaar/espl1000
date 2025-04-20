@@ -40,6 +40,8 @@ struct Namespace* makeNamespace(struct TokenList* tokens, char* name) {
 	res->capacity_structs = INITIAL_CAPACITY;
 	res->capacity_enums = INITIAL_CAPACITY;
 
+	struct TokenList* copy = list_copy(tokens);
+
 	res->methods = malloc(sizeof(struct Method*) * res->capacity_methods);
 	if (!res->methods) {
 		goto error;
@@ -66,8 +68,6 @@ struct Namespace* makeNamespace(struct TokenList* tokens, char* name) {
 
 	asprintf(&(res->name), "%s", name);
 
-	struct TokenList* copy = list_copy(tokens);
-
 	if (!ns_parse_enums(res, copy)) {
 		goto error_res_parse_enums;
 	}
@@ -87,15 +87,13 @@ struct Namespace* makeNamespace(struct TokenList* tokens, char* name) {
 
 error_res_parse_structs:
 error_res_parse_enums:
-	for (int i = 0; i < res->count_enums; i++) {
+	for (size_t i = 0; i < res->count_enums; i++) {
 		free(res->enums[i]->name);
 		free(res->enums[i]);
 	}
-error_res_token_path:
 	free(res->token_path);
 error_res_src_path:
 	free(res->src_path);
-error_res_name:
 	free(res->name);
 error_res_enums:
 	free(res->enums);

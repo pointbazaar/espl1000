@@ -24,7 +24,6 @@ void vmcu_system_step_debug(vmcu_system_t* system) {
 
 	static uint8_t old_regs[32] = {0};
 	static uint8_t data[2048] = {0};
-	bool change = false;
 
 	vmcu_system_step(system);
 	printf("[debug] ");
@@ -34,7 +33,6 @@ void vmcu_system_step_debug(vmcu_system_t* system) {
 
 		if (value != old_regs[i]) {
 			printf("r%d=0x%x ", i, value);
-			change = true;
 		}
 		old_regs[i] = value;
 	}
@@ -44,7 +42,6 @@ void vmcu_system_step_debug(vmcu_system_t* system) {
 		const uint8_t value = vmcu_system_read_data(system, i);
 		if (value != data[i]) {
 			printf("[0x%x]=0x%x ", i, value);
-			change = true;
 		}
 		data[i] = value;
 	}

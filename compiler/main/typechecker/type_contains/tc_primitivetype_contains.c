@@ -39,8 +39,7 @@ static bool tc_primitivetype_contains_simpletype(struct PrimitiveType* expect, s
 	return false;
 }
 
-static bool tc_primitivetype_contains_pointertype(struct PrimitiveType* expect, struct Type* actual) {
-	struct PointerType* pt = actual->pointer_type;
+static bool tc_primitivetype_contains_pointertype(struct PrimitiveType* expect) {
 
 	return expect->is_int_type && expect->int_type == UINT64;
 }
@@ -56,7 +55,7 @@ bool tc_primitivetype_contains(struct PrimitiveType* expect, struct Type* actual
 	}
 
 	if (actual->pointer_type) {
-		return tc_primitivetype_contains_pointertype(expect, actual);
+		return tc_primitivetype_contains_pointertype(expect);
 	}
 
 	return false;

@@ -53,6 +53,8 @@ uint64_t sd_uc_default_stack_addr() {
 // callback for tracing instruction
 static void hook_code(uc_engine* uc, uint64_t address, uint32_t size,
                       void* user_data) {
+
+	(void)user_data;
 	uint64_t rip;
 
 	uc_reg_read(uc, UC_X86_REG_RIP, &rip);
@@ -66,6 +68,9 @@ static void hook_code(uc_engine* uc, uint64_t address, uint32_t size,
 
 static void hook_mem64(uc_engine* uc, uc_mem_type type, uint64_t address,
                        int size, int64_t value, void* user_data) {
+
+	(void)uc;
+	(void)user_data;
 	switch (type) {
 		default:
 			printf(">>> %s hit default case with type=%d\n", __FUNCTION__, type);
@@ -183,7 +188,7 @@ void sd_uc_print_regs(struct sd_uc_engine* sduc) {
 	    UC_X86_REG_RSP,
 	    UC_X86_REG_RBP,
 	};
-	for (int i = 0; i < sizeof(indexes) / sizeof(indexes[0]); i++) {
+	for (size_t i = 0; i < sizeof(indexes) / sizeof(indexes[0]); i++) {
 		uc_reg_read(sduc->uc, indexes[i], &reg);
 		printf("%s = %04lx\n", names[i], reg);
 	}
@@ -335,8 +340,6 @@ static struct Method* fake_method(char* name, size_t nargs) {
 
 	struct Type* returnType = fake_uint64_type();
 
-	//TODO: probably wrong, would need to be SubrType?
-	struct Type* type = returnType;
 	struct Method* m = calloc(1, sizeof(struct Method));
 	struct MethodDecl* decl = calloc(1, sizeof(struct MethodDecl));
 	struct StmtBlock* block = calloc(1, sizeof(struct StmtBlock));
@@ -344,7 +347,7 @@ static struct Method* fake_method(char* name, size_t nargs) {
 	decl->name = strdup(name);
 	decl->count_args = nargs;
 	decl->args = calloc(1, sizeof(struct DeclArg*));
-	for (int i = 0; i < nargs; i++) {
+	for (size_t i = 0; i < nargs; i++) {
 		decl->args[i] = fake_declarg();
 	}
 
@@ -366,7 +369,7 @@ static struct Type* fake_subr_type(struct Type* return_type, size_t nargs) {
 
 	st->count_arg_types = nargs;
 	st->arg_types = calloc(1, sizeof(struct Type*) * nargs);
-	for (int i = 0; i < nargs; i++) {
+	for (size_t i = 0; i < nargs; i++) {
 		st->arg_types[i] = fake_uint64_type();
 	}
 	st->return_type = return_type;
@@ -559,7 +562,7 @@ bool sd_uc_some_reg_has_value(struct sd_uc_engine* sduc, uint64_t value) {
 	};
 
 	uint64_t reg = 0;
-	for (int i = 0; i < sizeof(regs) / sizeof(regs[0]); i++) {
+	for (size_t i = 0; i < sizeof(regs) / sizeof(regs[0]); i++) {
 
 		err = sd_uc_reg_read(sduc, regs[i], &reg);
 		assert(err == UC_ERR_OK);

@@ -83,15 +83,15 @@ bool visit_namespace(struct Namespace* n, VISITOR, void* arg) {
 	//we do not visit the passthrough include declarations as they
 	//are just a workaround for now
 
-	for (int i = 0; i < n->count_enums; i++) {
+	for (size_t i = 0; i < n->count_enums; i++) {
 		visit_enum_decl(n->enums[i], visitor, arg);
 	}
 
-	for (int i = 0; i < n->count_structs; i++) {
+	for (size_t i = 0; i < n->count_structs; i++) {
 		visit_struct_decl(n->structs[i], visitor, arg);
 	}
 
-	for (int i = 0; i < n->count_methods; i++) {
+	for (size_t i = 0; i < n->count_methods; i++) {
 		if (!visit_method(n->methods[i], visitor, arg)) {
 			return false;
 		}
