@@ -63,7 +63,14 @@ static int handler2_intconst(const char* buf, struct TokenList* o, size_t nchars
 
 		for (size_t j = 1; j < i; j++) {
 
-			value += (buf[j] - '0');
+			int32_t digit = (buf[j] - '0');
+
+			if (digit > 7 || digit < 0) {
+				goto case_int;
+			}
+
+			value += digit;
+
 			if (j < i - 1) {
 				value *= 8;
 			}
@@ -74,6 +81,8 @@ static int handler2_intconst(const char* buf, struct TokenList* o, size_t nchars
 		free(buf2);
 		return i;
 	}
+
+case_int:
 
 	out_length(o, INTEGER, (char*)buf, i);
 	return i;

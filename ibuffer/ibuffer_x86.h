@@ -17,7 +17,7 @@ void ibu_write(struct IBuffer* ibu, FILE* fout);
 
 void ibu_push(struct IBuffer* ibu, struct Instr* i);
 
-void ibu_push4(struct IBuffer* ibu, enum IKEY key, int64_t x1, int64_t x2, int64_t x3, char* label, char* comment);
+void ibu_push4(struct IBuffer* ibu, enum IKEY key, int64_t x1, int64_t x2, int64_t x3, char* label, const char* comment);
 
 //constructions macros
 #define ibu_branch(instr, label, comment) ibu_push4(ibu, instr, 0, 0, 0, label, comment)
