@@ -63,8 +63,18 @@ bool compile_and_write_x86_single_function(struct Method* m, struct Ctx* ctx, st
 	lvst_fill(m, st);
 
 	//print the LVST for debug
-	if (flags_debug(ctx_flags(ctx)))
-		lvst_print(st->lvst);
+	if (flags_debug(ctx_flags(ctx))) {
+		char* lvst_filename = NULL;
+		asprintf(&lvst_filename, "%s.lvst", current_function_name);
+
+		if (!lvst_filename) {
+			return false;
+		}
+
+		lvst_print_filename(st->lvst, lvst_filename);
+
+		free(lvst_filename);
+	}
 
 	if (!tac_method(buffer, m, ctx)) {
 		return false;

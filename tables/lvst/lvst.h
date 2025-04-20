@@ -51,7 +51,9 @@ int32_t lvst_index_of(struct LVST* lvst, const char* name);
 
 bool lvst_contains(struct LVST* lvst, const char* name);
 
-void lvst_print(struct LVST* lvst);
+void lvst_print(struct LVST* lvst, FILE* fout);
+
+void lvst_print_filename(struct LVST* lvst, char* filename);
 
 // @returns     the size of a type in bytes
 // @returns     0 on failure

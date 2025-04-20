@@ -27,5 +27,19 @@ bool tc_method(struct Method* m, struct TCCtx* tcctx) {
 	lvst_clear(tcctx->st->lvst);
 	lvst_fill(m, tcctx->st);
 
-	return tc_stmtblock(m->block, tcctx, true);
+	const bool tc_ok = tc_stmtblock(m->block, tcctx, true);
+
+	if (tcctx->debug && !tc_ok) {
+		char* lvst_filename = NULL;
+		asprintf(&lvst_filename, "%s.lvst", m->decl->name);
+
+		if (!lvst_filename) {
+			fprintf(stderr, "could not allocate filename for lvst\n");
+			return false;
+		}
+
+		lvst_print_filename(tcctx->st->lvst, lvst_filename);
+	}
+
+	return tc_ok;
 }

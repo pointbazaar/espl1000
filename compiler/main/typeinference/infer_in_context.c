@@ -50,9 +50,11 @@ struct Type* infer_in_context_once(struct ST* st, struct MemberAccess* ma) {
 
 	struct Type* memberType = stst_get_member(st->stst, structName, memberName)->type;
 
-	memberType = unwrap_indices(memberType, member->simple_var->count_indices);
+	if (!memberType) {
+		return NULL;
+	}
 
-	return memberType;
+	return unwrap_indices(memberType, member->simple_var->count_indices);
 }
 
 struct Type* infer_in_context(struct ST* st, struct MemberAccess* ma) {
@@ -60,6 +62,10 @@ struct Type* infer_in_context(struct ST* st, struct MemberAccess* ma) {
 	struct Variable* member = ma->member;
 
 	struct Type* memberType = infer_in_context_once(st, ma);
+
+	if (!memberType) {
+		return NULL;
+	}
 
 	if (member->member_access == NULL) { return memberType; }
 
