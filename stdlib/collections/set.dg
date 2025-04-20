@@ -1,4 +1,3 @@
-#include <stdlib.h>
 
 struct Set {
 	@private uint size;

@@ -17,7 +17,7 @@ void sst_print(struct SST* sst) {
 	printf(fmt, "namespace", "name", "type / return type", "halts?");
 	printf("--------------------+--------------------+------------------------------+--------\n");
 
-	for (int i = 0; i < sst_size(sst); i++) {
+	for (size_t i = 0; i < sst_size(sst); i++) {
 
 		struct SSTLine* line = sst_at(sst, i);
 		sst_print_line(line, fmt);

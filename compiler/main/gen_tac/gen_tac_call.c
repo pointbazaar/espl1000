@@ -27,7 +27,7 @@ static int32_t tac_call_prep_param(struct TACBuffer* buffer, struct Call* call, 
 
 static bool emit_param_transfer(struct TACBuffer* buffer, uint32_t* param_temps, uint8_t* param_widths, bool is_syscall, size_t count) {
 
-	for (int i = 0; i < count; i++) {
+	for (size_t i = 0; i < count; i++) {
 		const bool push16 = param_widths[i] == 2;
 		struct TAC* t = makeTACParam(param_temps[i], push16, i, is_syscall);
 
@@ -67,7 +67,6 @@ static bool tac_call_prep_params_case_sst(struct TACBuffer* buffer, struct Call*
 	for (size_t i = 0; i < call->count_args; i++) {
 		const uint32_t param_width = lvst_sizeof_type(decl->args[i]->type, x86);
 		assert(param_width <= 8);
-		const bool push16 = param_width == 2;
 
 		const int32_t tmp_param = tac_call_prep_param(buffer, call, ctx, i);
 		if (tmp_param < 0) {

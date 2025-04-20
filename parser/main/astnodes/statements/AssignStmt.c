@@ -18,7 +18,7 @@
 #include "ast/util/copy_ast.h"
 #include "expr/Op.h"
 
-static int handle_assignment_operator(struct AssignStmt* res, int token_key, char* assign_op);
+static int handle_assignment_operator(struct AssignStmt* res, int token_key);
 static struct UnOpTerm* convert_left(struct LValue* myvar);
 static struct UnOpTerm* convert_right(struct Expr* expr);
 
@@ -80,7 +80,7 @@ struct AssignStmt* makeAssignStmt(struct TokenList* tokens) {
 	//handle the assignment operator,
 	//can be [=, +=, -=, *=, ...]
 	//(transform:  a ?= b  ->  a = a ? b)
-	int status = handle_assignment_operator(res, tkn_assign->kind, tkn_assign->value_ptr);
+	int status = handle_assignment_operator(res, tkn_assign->kind);
 
 	if (status != 0) {
 		free_expr(res->expr);
@@ -162,7 +162,7 @@ static enum OP assignop_to_op(int token_key) {
 	}
 }
 
-static int handle_assignment_operator(struct AssignStmt* res, int token_key, char* assign_op) {
+static int handle_assignment_operator(struct AssignStmt* res, int token_key) {
 
 	//in case assign_op != "=",
 	//we must transform

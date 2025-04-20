@@ -249,33 +249,6 @@ static void case_cmp_ge_8bit(int RAT_SCRATCH_REG, struct IBuffer* ibu, int rdest
 	mov_regs(rdest, RAT_SCRATCH_REG, c);
 }
 
-static void case_cmp_ge_16bit(int RAT_SCRATCH_REG, struct IBuffer* ibu, int rdest, int rsrc) {
-
-	char* c = "TAC_BINARY_OP >=";
-
-	char Ltrue[20];
-	char Lfalse[20];
-	sprintf(Ltrue, "Ltrue%d", label_counter++);
-	sprintf(Lfalse, "Lfalse%d", label_counter++);
-
-	mov_const(RAT_SCRATCH_REG, 1, c);
-
-	// compare the upper bytes
-	cmp(rdest + 1, rsrc + 1, c);
-	jl(Lfalse, c);
-	cmp(rsrc + 1, rdest + 1, c);
-	jl(Ltrue, c);
-
-	cmp(rdest, rsrc, c);
-	jge(Ltrue, c);
-
-	label(Lfalse);
-	mov_const(RAT_SCRATCH_REG, 0, c);
-
-	label(Ltrue);
-	mov_regs(rdest, RAT_SCRATCH_REG, c);
-}
-
 static void case_cmp_ge(int RAT_SCRATCH_REG, struct IBuffer* ibu, int rdest, int rsrc) {
 
 	case_cmp_ge_8bit(RAT_SCRATCH_REG, ibu, rdest, rsrc);
@@ -290,18 +263,6 @@ static void case_cmp_neq_8bit(struct IBuffer* ibu, int rdest, int rsrc) {
 	//otherwise it will be nonzero, meaning true
 
 	sub(rdest, rsrc, c);
-}
-
-static void case_cmp_neq_16bit(int RAT_SCRATCH_REG, struct IBuffer* ibu, int rdest, int rsrc) {
-
-	char* c = "TAC_BINARY_OP !=";
-
-	mov_const(RAT_SCRATCH_REG, 0, c);
-	//cpse(rdest, rsrc, c);
-	mov_const(RAT_SCRATCH_REG, 1, c);
-	//cpse(rdest + 1, rsrc + 1, c);
-	mov_const(RAT_SCRATCH_REG, 1, c);
-	mov_regs(rdest, RAT_SCRATCH_REG, c);
 }
 
 static void case_cmp_neq(struct IBuffer* ibu, int rdest, int rsrc) {

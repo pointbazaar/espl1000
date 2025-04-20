@@ -60,7 +60,7 @@ bool compile(struct Flags* flags) {
 
 	assert(tokenLists);
 
-	for (int i = 0; i < count_filenames; i++) {
+	for (size_t i = 0; i < count_filenames; i++) {
 
 		char* filename = flags_filenames(flags, i);
 
@@ -90,7 +90,7 @@ bool compile(struct Flags* flags) {
 		return true;
 	}
 
-	for (int i = 0; i < count_filenames; i++) {
+	for (size_t i = 0; i < count_filenames; i++) {
 
 		char* filename = flags_filenames(flags, i);
 
@@ -165,7 +165,7 @@ bool compile(struct Flags* flags) {
 		return false;
 	}
 
-	for (int i = 0; i < count_filenames; i++) {
+	for (size_t i = 0; i < count_filenames; i++) {
 		freeTokenList(tokenLists[i]);
 	}
 	free(tokenLists);

@@ -20,9 +20,6 @@ static bool ns_parse_structs(struct Namespace* res, struct TokenList* copy);
 // @returns false on error
 static bool ns_parse_enums(struct Namespace* res, struct TokenList* copy);
 
-// @returns false on error
-bool ns_parse_passthrough_includes(struct Namespace* p_namespace, struct TokenList* p_list);
-
 struct Namespace* makeNamespace(struct TokenList* tokens, char* name) {
 
 	struct Namespace* res = make(Namespace);
@@ -42,6 +39,8 @@ struct Namespace* makeNamespace(struct TokenList* tokens, char* name) {
 	res->capacity_methods = INITIAL_CAPACITY;
 	res->capacity_structs = INITIAL_CAPACITY;
 	res->capacity_enums = INITIAL_CAPACITY;
+
+	struct TokenList* copy = list_copy(tokens);
 
 	res->methods = malloc(sizeof(struct Method*) * res->capacity_methods);
 	if (!res->methods) {
@@ -69,12 +68,6 @@ struct Namespace* makeNamespace(struct TokenList* tokens, char* name) {
 
 	asprintf(&(res->name), "%s", name);
 
-	struct TokenList* copy = list_copy(tokens);
-
-	if (!ns_parse_passthrough_includes(res, copy)) {
-		goto error_res_token_path;
-	}
-
 	if (!ns_parse_enums(res, copy)) {
 		goto error_res_parse_enums;
 	}
@@ -93,20 +86,14 @@ struct Namespace* makeNamespace(struct TokenList* tokens, char* name) {
 	return res;
 
 error_res_parse_structs:
-	for (int i = 0; i < res->count_includes; i++) {
-		free(res->includes[i]);
-	}
-	free(res->includes);
 error_res_parse_enums:
-	for (int i = 0; i < res->count_enums; i++) {
+	for (size_t i = 0; i < res->count_enums; i++) {
 		free(res->enums[i]->name);
 		free(res->enums[i]);
 	}
-error_res_token_path:
 	free(res->token_path);
 error_res_src_path:
 	free(res->src_path);
-error_res_name:
 	free(res->name);
 error_res_enums:
 	free(res->enums);
@@ -150,43 +137,6 @@ static bool ns_parse_enums(struct Namespace* res, struct TokenList* copy) {
 	}
 
 	return true;
-}
-
-bool ns_parse_passthrough_includes(struct Namespace* res, struct TokenList* copy) {
-
-	if (list_size(copy) == 0) { return true; }
-
-	struct Token* next = list_head(copy);
-
-	//speculate that it won't be more than 100
-	uint8_t includes_cap = 100;
-	res->includes = malloc(sizeof(void*) * includes_cap);
-	if (!res->includes) {
-		return false;
-	}
-	res->count_includes = 0;
-
-	while (next->kind == INCLUDE_DECL) {
-		char* string = malloc(strlen(next->value_ptr) + 1);
-		if (!string) {
-			goto error;
-		}
-		strcpy(string, next->value_ptr);
-
-		res->includes[res->count_includes++] = string;
-		list_consume(copy, 1);
-
-		next = list_head(copy);
-	}
-
-	return true;
-
-error:
-	for (int i = 0; i < res->count_includes; i++) {
-		free(res->includes[i]);
-	}
-	free(res->includes);
-	return false;
 }
 
 static bool ns_parse_methods(struct Namespace* res, struct TokenList* copy) {

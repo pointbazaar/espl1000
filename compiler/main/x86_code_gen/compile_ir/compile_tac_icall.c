@@ -14,6 +14,9 @@
 
 void compile_tac_icall_x86(struct RAT* rat, struct TAC* tac, struct IBuffer* ibu, struct Ctx* ctx, char* current_function_name) {
 
+	(void)current_function_name;
+	(void)ctx;
+
 	const int reg_dest = rat_get_register(rat, tac_dest(tac));
 	char* c = "TAC_ICALL";
 

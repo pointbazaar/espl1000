@@ -1,0 +1,11 @@
+
+fn main () -> int {
+
+	local uint64 x;
+
+	x = 0666;
+
+	x -= 0600;
+
+	return x;
+}

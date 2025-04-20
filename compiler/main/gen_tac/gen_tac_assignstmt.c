@@ -94,7 +94,6 @@ static bool case_indices(struct TACBuffer* buffer, struct AssignStmt* a, struct 
 	assert(a->lvalue->var);
 
 	const uint32_t local_index = lvst_index_of(lvst, a->lvalue->var->simple_var->name);
-	struct LVSTLine* line = lvst_get(lvst, a->lvalue->var->simple_var->name);
 	const bool x86 = flags_x86(ctx_flags(ctx));
 	const uint8_t addr_width = (x86) ? 8 : 2;
 	const uint8_t local_width = lvst_sizeof_var(lvst, a->lvalue->var->simple_var->name, x86);
@@ -136,8 +135,6 @@ static bool case_member(struct TACBuffer* buf, struct AssignStmt* a, struct Ctx*
 
 	//find out the address of the variable
 	tac_variable_addr(buf, a->lvalue->var, ctx, NULL);
-
-	struct Type* tvar = infer_type_variable(ctx_tables(ctx), a->lvalue->var);
 
 	uint32_t taddr = tacbuffer_last_dest(buf);
 

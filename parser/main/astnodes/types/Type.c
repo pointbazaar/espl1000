@@ -100,7 +100,6 @@ struct Type* makeType2(struct TokenList* tokens) {
 			break;
 	}
 
-error:
 	//nothing matched
 	free(res);
 	freeTokenListShallow(copy);

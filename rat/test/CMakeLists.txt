@@ -5,5 +5,3 @@ add_library("sd-rat-test"
 
 target_link_libraries("sd-rat-test" sd-util sd-rat)
 target_include_directories("sd-rat-test" PUBLIC "../..")
-
-target_compile_options("sd-rat-test" PUBLIC ${COMMON_OPTS})

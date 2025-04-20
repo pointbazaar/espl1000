@@ -59,8 +59,6 @@ void ibu_write_instr(enum IKEY key, int32_t x1, int32_t x2, int32_t x3, char* st
 static bool write_middle(enum IKEY key, int64_t x1, int64_t x2, char* str, char* s, int32_t x3) {
 
 	const uint8_t nbytes = x3;
-	char* width_strs[] = {
-	    "byte", "word", "dword", "qword"};
 
 	char* width_str = NULL;
 	switch (x3) {
@@ -115,7 +113,7 @@ static bool write_middle(enum IKEY key, int64_t x1, int64_t x2, char* str, char*
 		//k, rd
 		case OUT:
 		case STS:
-			sprintf(s, "%d, r%d", x1, x2);
+			sprintf(s, "%ld, r%ld", x1, x2);
 			break;
 
 		//rd
@@ -137,22 +135,22 @@ static bool write_middle(enum IKEY key, int64_t x1, int64_t x2, char* str, char*
 			//sprintf(s, "r%d", x1); break;
 
 		//special using X,Y,Z
-		case LDX: sprintf(s, "r%d, X", x1); break;
-		case LDXpostInc: sprintf(s, "r%d, X+", x1); break;
-		case LDY: sprintf(s, "r%d, Y", x1); break;
-		case LDYpostInc: sprintf(s, "r%d, Y+", x1); break;
-		case LDZ: sprintf(s, "r%d, Z", x1); break;
-		case LDZpostInc: sprintf(s, "r%d, Z+", x1); break;
+		case LDX: sprintf(s, "r%ld, X", x1); break;
+		case LDXpostInc: sprintf(s, "r%ld, X+", x1); break;
+		case LDY: sprintf(s, "r%ld, Y", x1); break;
+		case LDYpostInc: sprintf(s, "r%ld, Y+", x1); break;
+		case LDZ: sprintf(s, "r%ld, Z", x1); break;
+		case LDZpostInc: sprintf(s, "r%ld, Z+", x1); break;
 
-		case LDDY: sprintf(s, "r%d, Y+%d", x1, x2); break;
-		case LDDZ: sprintf(s, "r%d, Z+%d", x1, x2); break;
+		case LDDY: sprintf(s, "r%ld, Y+%ld", x1, x2); break;
+		case LDDZ: sprintf(s, "r%ld, Z+%ld", x1, x2); break;
 
-		case STX: sprintf(s, "X, r%d", x1); break;
-		case STXPLUS: sprintf(s, "X+, r%d", x1); break;
-		case STY: sprintf(s, "Y, r%d", x1); break;
-		case STZ: sprintf(s, "Z, r%d", x1); break;
+		case STX: sprintf(s, "X, r%ld", x1); break;
+		case STXPLUS: sprintf(s, "X+, r%ld", x1); break;
+		case STY: sprintf(s, "Y, r%ld", x1); break;
+		case STZ: sprintf(s, "Z, r%ld", x1); break;
 
-		case STDY: sprintf(s, "Y+%d, r%d", x1, x2); break;
+		case STDY: sprintf(s, "Y+%ld, r%ld", x1, x2); break;
 
 		//ops with 1 label
 		case RJMP:

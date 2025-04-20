@@ -262,13 +262,13 @@ void list_print(struct TokenList* list) {
 
 void list_dump_to_file(struct TokenList* list, int fd) {
 
-	for (int k = 0; k < list_size(list) && (k < 10); k++) {
+	for (int k = 0; k < list_size(list); k++) {
 		struct Token* tk = list_get(list, k);
 
 		dprintf(fd, "%d", tk->kind);
 
 		if (tk->value_ptr) {
-			dprintf(fd, "%s", tk->value_ptr);
+			dprintf(fd, " %s", tk->value_ptr);
 		}
 
 		dprintf(fd, "\n");

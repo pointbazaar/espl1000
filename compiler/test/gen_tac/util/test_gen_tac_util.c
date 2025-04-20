@@ -61,7 +61,6 @@ vmcu_system_t* prepare_vmcu_system_from_code_snippet(char* code_snippet) {
 		fprintf(stderr, "[Error] could not prepare vmcu_system_t. Exiting.\n");
 	}
 
-exit_vmcu_report:
 	vmcu_report_dtor(report);
 exit_vmcu_model:
 	vmcu_model_dtor(model);

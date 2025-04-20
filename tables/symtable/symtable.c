@@ -47,7 +47,7 @@ void st_free(struct ST* st) {
 	data_dtor(st->data);
 	enum_table_dtor(st->enum_table);
 
-	for (int i = 0; i < st->inferred_types_count; i++) {
+	for (size_t i = 0; i < st->inferred_types_count; i++) {
 		free_type(st->inferred_types[i]);
 	}
 

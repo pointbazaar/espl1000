@@ -91,7 +91,7 @@ static size_t liveness_max_temp_block(struct BasicBlock* block) {
 
 		const int32_t opt_max_temp = tac_max_temp(t);
 
-		if (opt_max_temp > max_temp) {
+		if (opt_max_temp > (int32_t)max_temp) {
 			max_temp = opt_max_temp;
 		}
 	}
@@ -138,26 +138,12 @@ static bool** map_ctor(size_t nstmts, size_t ntemps) {
 	return res;
 }
 
-static void map_dtor(bool** map, size_t nstmts, size_t ntemps) {
+static void map_dtor(bool** map, size_t nstmts) {
 
 	for (size_t i = 0; i < nstmts; i++) {
 		free(map[i]);
 	}
 	free(map);
-}
-
-static struct BasicBlock* get_basic_block_from_index(struct BasicBlock** graph, size_t nblocks, size_t index) {
-
-	for (size_t i = 0; i < nblocks; i++) {
-		struct BasicBlock* block = graph[i];
-		if (index < tacbuffer_count(block->buffer)) {
-			return block;
-		} else {
-			index -= tacbuffer_count(block->buffer);
-		}
-	}
-
-	return NULL;
 }
 
 static struct TAC* get_stmt_from_index(struct BasicBlock** graph, size_t nblocks, uint32_t index) {
@@ -195,7 +181,7 @@ static ssize_t get_stmt_index_from_tac(struct BasicBlock** graph, size_t nblocks
 }
 
 // @returns   true if there was a change
-static bool liveness_iteration_stmt(struct Liveness* l, struct BasicBlock** graph, size_t nblocks, size_t n) {
+static bool liveness_iteration_stmt(struct Liveness* l, size_t n) {
 
 	bool change = false;
 
@@ -231,12 +217,12 @@ static bool liveness_iteration_stmt(struct Liveness* l, struct BasicBlock** grap
 }
 
 // @returns   true if there was a change
-static bool liveness_iteration(struct Liveness* l, struct BasicBlock** graph, size_t nblocks) {
+static bool liveness_iteration(struct Liveness* l) {
 
 	bool change = false;
 	for (size_t n = 0; n < l->nstmts; n++) {
 
-		change |= liveness_iteration_stmt(l, graph, nblocks, n);
+		change |= liveness_iteration_stmt(l, n);
 	}
 
 	return change;
@@ -273,8 +259,6 @@ static void liveness_calc_succ(struct Liveness* l, struct BasicBlock** graph, si
 	size_t prev_count = 0;
 	for (size_t i = 0; i < nblocks; i++) {
 		struct BasicBlock* block = graph[i];
-		struct TACBuffer* buf = block->buffer;
-		const size_t count = tacbuffer_count(buf);
 
 		liveness_calc_succ_block(l, graph, nblocks, block, &prev_count);
 	}
@@ -319,13 +303,12 @@ struct Liveness* liveness_calc_tacbuffer(struct TACBuffer* buf) {
 void liveness_dtor(struct Liveness* live) {
 
 	const size_t nstmts = live->nstmts;
-	const size_t ntemps = live->ntemps;
 
-	map_dtor(live->map_defines, nstmts, ntemps);
-	map_dtor(live->map_use, nstmts, ntemps);
-	map_dtor(live->map_in, nstmts, ntemps);
-	map_dtor(live->map_out, nstmts, ntemps);
-	map_dtor(live->map_succ, nstmts, nstmts);
+	map_dtor(live->map_defines, nstmts);
+	map_dtor(live->map_use, nstmts);
+	map_dtor(live->map_in, nstmts);
+	map_dtor(live->map_out, nstmts);
+	map_dtor(live->map_succ, nstmts);
 
 	free(live);
 }
@@ -363,7 +346,7 @@ struct Liveness* liveness_calc(struct BasicBlock** graph, size_t nblocks) {
 
 	// calculate in,out,...
 	while (true) {
-		bool change = liveness_iteration(res, graph, nblocks);
+		bool change = liveness_iteration(res);
 
 		if (!change) {
 			break;

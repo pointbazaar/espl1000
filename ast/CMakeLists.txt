@@ -10,8 +10,6 @@ add_library("sd-ast" STATIC
 
 target_link_libraries("sd-ast" sd-util)
 
-target_compile_options("sd-ast" PUBLIC ${COMMON_OPTS})
-
 target_include_directories("sd-ast" PUBLIC "..")
 
 add_subdirectory(test)

@@ -13,7 +13,7 @@
 
 #include "allocate_registers_x86.h"
 
-static bool allocate_registers_single_tac(struct TAC* t, struct RAT* rat, struct ST* st, struct Liveness* live);
+static bool allocate_registers_single_tac(struct TAC* t, struct RAT* rat, struct Liveness* live);
 
 bool allocate_registers_basicblocks(struct BasicBlock** graph, size_t nblocks, struct RAT* rat, struct ST* st, struct Liveness* live) {
 
@@ -29,12 +29,14 @@ bool allocate_registers_basicblocks(struct BasicBlock** graph, size_t nblocks, s
 // @returns false on error
 bool allocate_registers(struct TACBuffer* b, struct RAT* rat, struct ST* st, struct Liveness* live) {
 
+	(void)st;
+
 	assert(live != NULL);
 
 	for (size_t i = 0; i < tacbuffer_count(b); i++) {
 		struct TAC* t = tacbuffer_get(b, i);
 
-		if (!allocate_registers_single_tac(t, rat, st, live)) {
+		if (!allocate_registers_single_tac(t, rat, live)) {
 			return false;
 		}
 	}
@@ -83,10 +85,7 @@ static int32_t rat_ensure_register_x86(struct RAT* rat, uint32_t tmp, struct Liv
 	return reg;
 }
 
-static bool allocate_registers_single_tac(struct TAC* t, struct RAT* rat, struct ST* st, struct Liveness* live) {
-
-	struct LVST* lvst = st->lvst;
-	struct SST* sst = st->sst;
+static bool allocate_registers_single_tac(struct TAC* t, struct RAT* rat, struct Liveness* live) {
 
 	if (tac_needs_register(t)) {
 		return rat_ensure_register_x86(rat, tac_dest(t), live) >= 0;

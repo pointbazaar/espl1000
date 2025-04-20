@@ -100,7 +100,6 @@ static bool allocate_registers(struct TACBuffer* b, struct RAT* rat, struct ST* 
 
 static bool allocate_registers_single_tac(struct TAC* t, struct RAT* rat, struct ST* st) {
 
-	struct LVST* lvst = st->lvst;
 	struct SST* sst = st->sst;
 
 	int32_t dest = -1; // init later

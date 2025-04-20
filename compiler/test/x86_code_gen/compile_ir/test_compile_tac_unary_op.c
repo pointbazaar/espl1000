@@ -34,7 +34,7 @@ void test_x86_compile_tac_unary_op_case_minus() {
 		uint64_t rax = 1;
 		sd_uc_reg_read(system, UC_X86_REG_RAX, &rax);
 
-		assert(rax == -start);
+		assert((int)rax == -start);
 
 		sd_uc_close(system);
 	}

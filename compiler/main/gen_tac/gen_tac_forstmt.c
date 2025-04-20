@@ -40,7 +40,6 @@ bool tac_forstmt(struct TACBuffer* buffer, struct ForStmt* f, struct Ctx* ctx) {
 	uint32_t lend = make_label();
 
 	struct LVST* lvst = ctx_tables(ctx)->lvst;
-	struct LVSTLine* line = lvst_get(lvst, f->index_name);
 	const bool x86 = flags_x86(ctx_flags(ctx));
 	const uint8_t addr_width = (x86) ? 8 : 2;
 	const uint8_t local_width = lvst_sizeof_var(lvst, f->index_name, x86);

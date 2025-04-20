@@ -1,4 +1,3 @@
-#include <string.h>
 //this example should showcase
 //the various typechecking errors
 //that smalldragon can detect.

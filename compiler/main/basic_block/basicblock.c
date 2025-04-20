@@ -78,7 +78,7 @@ void create_edges_basic_block(struct TACBuffer* buffer, uint32_t count, struct B
 	if (tac_is_unconditional_jump(last))
 		return;
 
-	if (tacbuffer_indexof(buffer, last) >= (tacbuffer_count(buffer) - 1))
+	if (tacbuffer_indexof(buffer, last) >= (ssize_t)(tacbuffer_count(buffer) - 1))
 		return;
 
 	struct TAC* next = tacbuffer_get(buffer, tacbuffer_indexof(buffer, last) + 1);
@@ -97,7 +97,7 @@ static struct BasicBlock* find_block_from_label_index(struct BasicBlock** blocks
 		if (kind != TAC_LABEL_INDEXED && kind != TAC_LABEL_FUNCTION)
 			continue;
 
-		if (tac_label_index(tacbuffer_get(candidate->buffer, 0)) == label_index)
+		if (tac_label_index(tacbuffer_get(candidate->buffer, 0)) == (int32_t)label_index)
 			return candidate;
 	}
 	return NULL;

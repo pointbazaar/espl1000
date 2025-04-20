@@ -39,7 +39,7 @@ void test_x86_compile_tac_binary_op_add_8bit() {
 		uint64_t rax = 0;
 		sd_uc_reg_read(system, UC_X86_REG_RAX, &rax);
 
-		assert(rax == expected);
+		assert((int)rax == expected);
 
 		sd_uc_close(system);
 	}
@@ -71,7 +71,7 @@ void test_x86_compile_tac_binary_op_sub_8bit() {
 		uint64_t rax = 0;
 		sd_uc_reg_read(system, UC_X86_REG_RAX, &rax);
 
-		assert(rax == expected);
+		assert((int)rax == expected);
 
 		sd_uc_close(system);
 	}
@@ -102,7 +102,7 @@ void test_x86_compile_tac_binary_op_and_8bit() {
 		uint64_t rax = 0;
 		sd_uc_reg_read(system, UC_X86_REG_RAX, &rax);
 
-		assert(rax == expected);
+		assert((int)rax == expected);
 
 		sd_uc_close(system);
 	}
@@ -133,7 +133,7 @@ void test_x86_compile_tac_binary_op_or_8bit() {
 		uint64_t rax = 0;
 		sd_uc_reg_read(system, UC_X86_REG_RAX, &rax);
 
-		assert(rax == expected);
+		assert((int)rax == expected);
 
 		sd_uc_close(system);
 	}

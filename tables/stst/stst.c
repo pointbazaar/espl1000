@@ -49,7 +49,7 @@ struct STST* stst_ctor() {
 
 void stst_fill(struct STST* stst, struct Namespace* ns) {
 
-	for (int i = 0; i < ns->count_structs; i++) {
+	for (size_t i = 0; i < ns->count_structs; i++) {
 
 		struct StructDecl* mystruct = ns->structs[i];
 
@@ -61,7 +61,7 @@ void stst_fill(struct STST* stst, struct Namespace* ns) {
 
 struct STSTLine* stst_get(struct STST* stst, char* name) {
 
-	for (int i = 0; i < stst->count; i++) {
+	for (size_t i = 0; i < stst->count; i++) {
 
 		struct STSTLine* line = stst->lines[i];
 
@@ -131,7 +131,7 @@ void stst_free(struct STST* stst) {
 
 	struct STSTLine* prev = NULL;
 
-	for (int i = 0; i < stst->count; i++) {
+	for (size_t i = 0; i < stst->count; i++) {
 		struct STSTLine* line = stst->lines[i];
 
 		if (line != prev) {

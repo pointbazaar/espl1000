@@ -33,12 +33,10 @@ const uint16_t TCCR1B = 0x05;
 const uint16_t TIFR1 = 0x36;
 
 static void test_timer0();
-static void test_timer1();
 
 void test_avr_code_gen_timer() {
 
 	test_timer0();
-	//test_timer1();
 }
 
 // Testing AVR Codegen relating to the internal timers.
@@ -93,54 +91,6 @@ static void test_timer0() {
 		assert(read(TCNT0) == i + 5);
 		vmcu_system_step_n(system, 1);
 	}
-
-	vmcu_system_dtor(system);
-}
-
-static void test_timer1() {
-
-	status_test_codegen("Timer1 Test");
-
-	// Initialize the Timer and wait for overflow
-
-	struct TACBuffer* b = tacbuffer_ctor();
-
-	append(makeTACConst(1, 0x0));
-	append(makeTACConst(2, TCCR0A));
-	append(makeTACStore(2, 1, 2));
-
-	//important to write the high byte before the low byte,
-	//see ATMega328P Datasheet
-	append(makeTACConst(1, 0xc2));
-	append(makeTACConst(2, TCNT1H));
-	append(makeTACStore(2, 1, 1));
-
-	append(makeTACConst(1, 0xf7));
-	append(makeTACConst(2, TCNT1L));
-	append(makeTACStore(2, 1, 1));
-
-	append(makeTACConst(1, 0x05));
-	append(makeTACConst(2, TCCR1B));
-	append(makeTACStore(2, 1, 1));
-
-	//timer should start working now
-
-	vmcu_system_t* system = prepare_vmcu_system_from_tacbuffer(b);
-
-	for (int i = 0; i < 100; i++) {
-		vmcu_system_step_n(system, 1);
-
-		const uint8_t tifr1 = vmcu_system_read_data(system, TIFR1);
-		const uint8_t tcnt1l = vmcu_system_read_data(system, TCNT1L);
-		const uint8_t tcnt1h = vmcu_system_read_data(system, TCNT1H);
-
-		const uint16_t tcnt1 = (tcnt1h << 8) | tcnt1l;
-
-		printf("TIFR1=0x%x, TCNT1=0x%x\n", tifr1, tcnt1);
-	}
-
-	//TODO: assert something
-	//assert(vmcu_system_read_gpr(system, 0) == fixed_value);
 
 	vmcu_system_dtor(system);
 }

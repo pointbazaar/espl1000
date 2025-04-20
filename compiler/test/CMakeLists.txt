@@ -88,8 +88,6 @@ add_executable("sd-tests"
 	gen_tac/test_gen_tac_structdecl.c
 )
 
-target_compile_options("sd-tests" PUBLIC ${COMMON_OPTS})
-
 target_link_libraries("sd-tests" ${CMAKE_SOURCE_DIR}/dependencies/libvmcu-Virtual-MCU-Library/build-release/libvmcu.a "-lm")
 
 add_library(unicorn SHARED IMPORTED)

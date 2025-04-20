@@ -72,7 +72,7 @@ struct Token* makeTokenStringConst(char* value) {
 	// extra '"' at start and end
 	const size_t len = strlen(value) - 1;
 	int j = 0;
-	for (int i = 1; i < len; i++) {
+	for (size_t i = 1; i < len; i++) {
 		char c = value[i];
 
 		// unescape '\n'
@@ -166,7 +166,6 @@ char* tokenstr[255] = {
     [KEYWORD_CONTINUE] = "continue",
     [FOR] = "for",
     [KEYWORD_IN] = "in",
-    [INCLUDE_DECL] = "include",
 
     [OPKEY_ARITHMETIC_PLUS] = "+",
     [OPKEY_ARITHMETIC_MINUS] = "-",

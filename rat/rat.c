@@ -77,7 +77,7 @@ static void rat_dump_regname(struct RAT* rat, FILE* fout, size_t i) {
 			fprintf(fout, "r%02ld", i);
 			break;
 		case RAT_ARCH_X86:
-			rat_print_regname_x86(rat, fout, i);
+			rat_print_regname_x86(fout, i);
 			break;
 		default: return;
 	}
@@ -265,7 +265,17 @@ bool rat_is_wide(struct RAT* rat, uint32_t tmp_index) {
 
 	int reg = rat_get_register(rat, tmp_index);
 
-	return reg + 1 < rat_capacity(rat) && rat->status[reg + 1] == REG_OCCUPIED && (rat_occupant(rat, reg + 1) == tmp_index);
+	if (reg + 1 >= rat_capacity(rat)) {
+		return false;
+	}
+
+	if (rat->status[reg + 1] != REG_OCCUPIED) {
+		return false;
+	}
+
+	const int32_t occupant = rat_occupant(rat, reg + 1);
+
+	return (uint32_t)occupant == tmp_index;
 }
 
 bool rat_free(struct RAT* rat, uint8_t reg) {
@@ -337,6 +347,8 @@ enum SD_REGISTER rat_scratch_reg(struct RAT* rat) {
 		case RAT_ARCH_AVR: return r16;
 		case RAT_ARCH_X86: return rat_scratch_reg_x86();
 	}
+
+	return SD_REGISTER_END;
 }
 
 enum SD_REGISTER rat_return_reg(struct RAT* rat) {
@@ -347,6 +359,8 @@ enum SD_REGISTER rat_return_reg(struct RAT* rat) {
 		case RAT_ARCH_X86:
 			return rat_return_reg_x86();
 	}
+
+	return SD_REGISTER_END;
 }
 
 enum SD_REGISTER rat_base_ptr(struct RAT* rat) {
@@ -357,6 +371,7 @@ enum SD_REGISTER rat_base_ptr(struct RAT* rat) {
 		case RAT_ARCH_X86:
 			return rat_base_ptr_x86();
 	}
+	return 0;
 }
 
 enum SD_REGISTER rat_stack_ptr(struct RAT* rat) {
@@ -368,11 +383,19 @@ enum SD_REGISTER rat_stack_ptr(struct RAT* rat) {
 		case RAT_ARCH_X86:
 			return rat_stack_ptr_x86();
 	}
+
+	return SD_REGISTER_END;
 }
 
 uint16_t rat_capacity(struct RAT* rat) {
 
-	return SD_REGISTER_END;
+	switch (rat->arch) {
+		case RAT_ARCH_X86:
+			return SD_REG_END_X86;
+		case RAT_ARCH_AVR:
+			return SD_REGISTER_END;
+	}
+	return 0;
 }
 
 static bool is_callee_saved[] = {

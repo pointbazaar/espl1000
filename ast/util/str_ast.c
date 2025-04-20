@@ -303,7 +303,7 @@ char* str_type(struct Type* t) {
 
 char* str_type_param(struct TypeParam* t) {
 
-	char* res = malloc(sizeof(char) * 4);
+	char* res = malloc(sizeof(char) * 6);
 	if (!res) {
 		return NULL;
 	}
@@ -385,8 +385,6 @@ char* str_struct_member(struct StructMember* s) {
 	if (!s1) {
 		return NULL;
 	}
-
-	const int l = strlen(s1);
 
 	char* res;
 
@@ -638,6 +636,7 @@ char* str_term(struct Term* t) {
 		case TERM_KIND_VAR: return str_variable(t->ptr.var_term);
 		case TERM_KIND_STRINGCONST: return str_string_const(t->ptr.stringconst_term);
 		case TERM_KIND_CONSTVALUE: return str_const_value(t->ptr.constvalue_term);
+		case TERM_KIND_ENUM_VALUE: return strdup(t->ptr.enum_value_term);
 	}
 
 	error("str_term");

@@ -55,7 +55,6 @@ bool tac_term(struct TACBuffer* buffer, struct Term* t, struct Ctx* ctx) {
 
 bool tac_term_addr(struct TACBuffer* buffer, struct Term* t, struct Ctx* ctx) {
 
-	struct TAC* last = tacbuffer_get_last(buffer);
 	uint8_t width;
 
 	switch (t->kind) {

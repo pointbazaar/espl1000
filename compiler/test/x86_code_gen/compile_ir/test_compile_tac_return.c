@@ -40,8 +40,12 @@ static void test_fixed_value(uint32_t value, bool debug) {
 
 	err = sd_uc_emu_start(system, 0, debug);
 
+	assert(err == UC_ERR_OK);
+
 	uint64_t reg;
 	err = sd_uc_reg_read(system, UC_X86_REG_RAX, &reg);
+
+	assert(err == UC_ERR_OK);
 
 	assert(reg == value);
 

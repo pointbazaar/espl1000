@@ -163,9 +163,6 @@ add_executable("sd"
 	cli/main.c
 )
 
-target_compile_options("sd-base"  PUBLIC ${COMMON_OPTS})
-target_compile_options("sd"       PUBLIC ${COMMON_OPTS})
-
 target_link_libraries("sd-base" lexer-lib)
 #tables dependency
 target_link_libraries("sd-base" sd-tables)

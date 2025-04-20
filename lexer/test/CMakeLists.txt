@@ -9,12 +9,9 @@ add_library(sd-lexer-test
 	testcases/tests_const.c
 	testcases/tests_comments.c
 	testcases/tests_other.c
-	testcases/tests_include_decl.c
 )
 
 target_link_libraries(sd-lexer-test lexer-lib)
-
-target_compile_options(sd-lexer-test  PUBLIC ${COMMON_OPTS})
 
 target_include_directories(sd-lexer-test PUBLIC "../..")
 

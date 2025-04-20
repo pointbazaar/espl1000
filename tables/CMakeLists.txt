@@ -20,8 +20,6 @@ add_library("sd-tables" STATIC
         symtable/symtable.c
 )
 
-target_compile_options("sd-tables" PUBLIC ${COMMON_OPTS})
-
 target_include_directories("sd-tables" PUBLIC "..")
 
 add_subdirectory(test)

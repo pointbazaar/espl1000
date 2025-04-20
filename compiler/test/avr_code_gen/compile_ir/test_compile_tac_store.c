@@ -46,6 +46,8 @@ void test_compile_tac_store_case_8bit_value_8bit_addr_c7() {
 
 	const uint8_t stored = vmcu_system_read_data(system, addr);
 
+	assert(stored == fixed_value);
+
 	assert_redzone(system, addr, 1, redzone);
 
 	vmcu_system_dtor(system);

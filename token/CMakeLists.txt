@@ -5,8 +5,6 @@ add_library(sd-token STATIC
 
 target_link_libraries(sd-token sd-util)
 
-target_compile_options(sd-token PUBLIC ${COMMON_OPTS})
-
 target_include_directories(sd-token PUBLIC ".")
 
 add_subdirectory(test)

@@ -200,7 +200,7 @@ char* rat_regname_x86_width(size_t i, uint8_t nbytes) {
 	return NULL;
 }
 
-void rat_print_regname_x86(struct RAT* rat, FILE* fout, size_t i) {
+void rat_print_regname_x86(FILE* fout, size_t i) {
 
 	assert(i > SD_REG_START_X86);
 	assert(i < SD_REG_END_X86);

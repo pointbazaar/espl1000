@@ -19,7 +19,7 @@ static int rat_main(struct Flags* flags) {
 		arch = RAT_ARCH_X86;
 	}
 
-	struct RAT* rat = rat_ctor(RAT_ARCH_X86, 0);
+	struct RAT* rat = rat_ctor(arch, 0);
 
 	rat_print(rat, stdout);
 

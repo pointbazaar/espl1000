@@ -16,8 +16,6 @@
 
 struct TokenList* lexer_main(struct LexerFlags* myargs) {
 
-	int status = 0;
-
 	if (myargs->filename == NULL) {
 		fprintf(stderr, "[Lexer] expected a filename of the file to tokenize\n");
 		return NULL;
