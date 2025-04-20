@@ -44,6 +44,10 @@ struct Namespace* makeNamespace(struct TokenList* tokens, char* name) {
 
 	struct TokenList* copy = list_copy(tokens);
 
+	if (!copy) {
+		return NULL;
+	}
+
 	res->methods = malloc(sizeof(struct Method*) * res->capacity_methods);
 	if (!res->methods) {
 		goto error;
