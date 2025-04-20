@@ -1,0 +1,27 @@
+
+fn main () -> int {
+
+	[uint8] p1 = calloc(4);
+	[uint8] p2 = calloc(4);
+
+	if p1 == 0 {
+		return 1;
+	}
+	if p2 == 0 {
+		return 1;
+	}
+
+	p1[0] = 1;
+	p1[1] = 2;
+	p1[2] = 3;
+
+	memcpy(p2, p1, 3);
+
+	println_uint64(p2[0]);
+	println_uint64(p2[1]);
+	println_uint64(p2[2]);
+
+	println_uint64(p2[3]); // 0
+
+	return 0;
+}

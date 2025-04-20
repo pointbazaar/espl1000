@@ -25,6 +25,24 @@ fn malloc(uint64 nbytes) -> [#] {
 	return ptr + 16;
 }
 
+fn calloc(uint64 nbytes) -> [#] {
+
+	[#] res = malloc(nbytes);
+
+	if res == 0 {
+		return res;
+	}
+
+	[uint8] buf = res;
+	uint64 i = 0;
+	while i < nbytes {
+		buf[i] = 0;
+		i++;
+	}
+
+	return res;
+}
+
 // @returns 0 on success
 fn free(*# ptr) -> int {
 
@@ -98,5 +116,19 @@ fn realloc(*# ptr, uint64 nbytes) -> *# {
 	free(ptr);
 
 	return dst;
+}
+
+fn memcpy([#] dest, [#] src, uint64 len) -> uint64 {
+
+	*uint8 d = dest;
+	*uint8 s = src;
+
+	uint64 i = 0;
+	while i < len {
+		dest[i] = src[i];
+		i++;
+	}
+
+	return 0;
 }
 

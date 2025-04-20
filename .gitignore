@@ -17,6 +17,9 @@ cmake-build-debug/
 # register allocation table dump
 *.rat
 
+# LVST table dump
+*.lvst
+
 tags
 
 # build folder
