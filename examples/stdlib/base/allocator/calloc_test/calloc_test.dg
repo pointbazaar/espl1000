@@ -1,0 +1,19 @@
+
+fn main () -> int {
+
+	[uint64] p = calloc(100);
+
+	if p == 0 {
+		return 1;
+	}
+
+	println_uint64(p[10]);
+
+	p[10] = 831212;
+
+	println_uint64(p[10]);
+
+	free(p);
+
+	return 0;
+}
