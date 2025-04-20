@@ -1,3 +1,4 @@
+#define _GNU_SOURCE
 
 //AST Includes
 #include "ast/ast.h"
