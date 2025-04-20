@@ -134,14 +134,14 @@ struct LVSTLine* lvst_get(struct LVST* lvst, const char* name) {
 	}
 
 	fprintf(stderr, "[LVST][Error] %s not found in LVST\n", name);
-	lvst_print(lvst);
+	lvst_print(lvst, stderr);
 	return NULL;
 }
 
 struct LVSTLine* lvst_at(struct LVST* lvst, uint32_t index) {
 	if (index >= lvst->count) {
 		printf("[LVST][Error] index %d not found in LVST\n", index);
-		lvst_print(lvst);
+		lvst_print(lvst, stderr);
 		return NULL;
 	}
 	return lvst->lines[index];
@@ -180,7 +180,7 @@ int32_t lvst_index_of(struct LVST* lvst, const char* name) {
 	}
 
 	printf("[LVST][Error] %s not found in LVST\n", name);
-	lvst_print(lvst);
+	lvst_print(lvst, stderr);
 	return -1;
 }
 
@@ -195,22 +195,35 @@ bool lvst_contains(struct LVST* lvst, const char* name) {
 	return false;
 }
 
-void lvst_print(struct LVST* lvst) {
+void lvst_print_filename(struct LVST* lvst, char* filename) {
+
+	FILE* file = fopen(filename, "w");
+
+	if (!file) {
+		fprintf(stderr, "could not open %s\n", filename);
+		return;
+	}
+
+	lvst_print(lvst, file);
+	fclose(file);
+}
+
+void lvst_print(struct LVST* lvst, FILE* fout) {
 
 	char* fmt = " |% -24s|%-6s| %-24s |\n";
 	char* linebig = "------------------------";
 	char* line5 = "-----";
 
-	printf("Local Variable Symbol Table [LVST]\n");
-	printf(fmt, "name", "is_arg", "Type");
-	printf(fmt, linebig, line5, linebig);
+	fprintf(fout, "Local Variable Symbol Table [LVST]\n");
+	fprintf(fout, fmt, "name", "is_arg", "Type");
+	fprintf(fout, fmt, linebig, line5, linebig);
 	for (size_t i = 0; i < lvst->count; i++) {
 		struct LVSTLine* line = lvst->lines[i];
 
-		printf(fmt,
-		       line->name,
-		       (line->is_arg) ? "yes" : "no",
-		       str_type(line->type));
+		fprintf(fout, fmt,
+		        line->name,
+		        (line->is_arg) ? "yes" : "no",
+		        str_type(line->type));
 	}
 }
 
@@ -305,6 +318,13 @@ static uint32_t lvst_sizeof_pointer_type(bool x86) {
 	return 2;
 }
 
+static uint32_t lvst_sizeof_anytype(bool x86) {
+	if (x86) {
+		return 8;
+	}
+	return 2;
+}
+
 // returns the size in number of bytes
 uint32_t lvst_sizeof_type(struct Type* type, bool x86) {
 
@@ -323,6 +343,12 @@ uint32_t lvst_sizeof_type(struct Type* type, bool x86) {
 
 	if (type->pointer_type != NULL)
 		res = lvst_sizeof_pointer_type(x86);
+
+	if (type->is_anytype) {
+		res = lvst_sizeof_anytype(x86);
+	}
+
+	assert(res > 0);
 
 	return res;
 }

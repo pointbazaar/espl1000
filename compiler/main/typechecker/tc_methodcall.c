@@ -118,10 +118,19 @@ static bool tc_methodcall_arg(
     struct Expr* actual_expr,
     struct TCCtx* tcctx) {
 
-	struct Type* actual_type = infer_type_expr(tcctx->st, actual_expr);
+	tcctx->current_line_num = m->super.line_num;
 
 	assert(expect_type != NULL);
-	assert(actual_type != NULL);
+
+	struct Type* actual_type = infer_type_expr(tcctx->st, actual_expr);
+
+	if (!actual_type) {
+		char* snippet = str_expr(actual_expr);
+		char* msg = "could not find type of actual argument";
+		error_snippet_and_msg(tcctx, snippet, msg, TC_ERR_ARG_TYPE_MISMATCH);
+		free(snippet);
+		return false;
+	}
 
 	//TODO: we can get rid of the integer special cases maybe
 	//thansk to tc_type_contains

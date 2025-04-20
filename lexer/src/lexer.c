@@ -12,6 +12,10 @@
 
 uint32_t line_no = 1;
 
+static bool is_delim(char c) {
+	return !isalnum(c) && c != '_';
+}
+
 static int h2out_nostr(const char* buffer, char* str, int token, struct TokenList* list) {
 	if (strncmp(buffer, str, strlen(str)) == 0) {
 		out_nostr(list, token);
@@ -28,6 +32,27 @@ static int h2out_char(const char* buffer, char c, int token, struct TokenList* l
 	return 0;
 }
 
+static int h2out_keyword(const char* buffer, char* str, int token, struct TokenList* list) {
+
+	size_t l = strlen(str);
+
+	// if the next char after keyword is not a delimeter,
+	// it is not a keyword, but likely an identifier
+
+	if (!is_delim(buffer[l])) {
+		return 0;
+	}
+
+	if (strncmp(buffer, str, l) == 0) {
+		out_nostr(list, token);
+		return l;
+	}
+	return 0;
+}
+
+#define H2OUT_KEYWORD(buf, str, token, fileout) \
+	if ((n = h2out_keyword(buf, str, token, fileout)) > 0) { return n; }
+
 #define H2OUT_NOSTR(buf, str, token, fileout) \
 	if ((n = h2out_nostr(buf, str, token, fileout)) > 0) { return n; }
 
@@ -39,7 +64,7 @@ static ssize_t h2_find_delim(const char* buf, size_t length) {
 	size_t i = 0;
 	for (; i < length; i++) {
 		char c = buf[i];
-		if (!isalnum(c) && c != '_') {
+		if (is_delim(c)) {
 			return i;
 		}
 	}
@@ -344,7 +369,7 @@ static int handler2(const char* buf, struct TokenList* o, size_t nchars_remain) 
 	H2OUT_NOSTR(buf, "else", ELSE, o);
 	H2OUT_NOSTR(buf, "while", WHILE, o);
 	H2OUT_NOSTR(buf, "for", FOR, o);
-	H2OUT_NOSTR(buf, "in", KEYWORD_IN, o);
+	H2OUT_KEYWORD(buf, "in", KEYWORD_IN, o);
 	H2OUT_NOSTR(buf, "break", KEYWORD_BREAK, o);
 	H2OUT_NOSTR(buf, "continue", KEYWORD_CONTINUE, o);
 	H2OUT_NOSTR(buf, "enum", KEYWORD_ENUM, o);

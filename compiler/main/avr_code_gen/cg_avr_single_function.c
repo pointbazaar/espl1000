@@ -29,7 +29,7 @@ bool compile_and_write_avr_single_function(struct Method* m, struct Ctx* ctx, st
 
 	//print the LVST for debug
 	if (flags_debug(ctx_flags(ctx)))
-		lvst_print(st->lvst);
+		lvst_print(st->lvst, stderr);
 
 	if (!tac_method(buffer, m, ctx)) {
 		status = false;

@@ -46,6 +46,7 @@ void test_tables_lvst_sizeof_type_primitive() {
 	type.type_param = NULL;
 	type.array_type = NULL;
 	type.pointer_type = NULL;
+	type.is_anytype = false;
 
 	pt.int_type = INT;
 	assert(lvst_sizeof_type(&type, false) == 1);
@@ -172,6 +173,7 @@ void test_tables_lvst_stack_frame_size_avr() {
 	type.type_param = NULL;
 	type.array_type = NULL;
 	type.pointer_type = NULL;
+	type.is_anytype = false;
 
 	pt.int_type = INT;
 
@@ -231,6 +233,7 @@ void test_tables_lvst_stack_frame_size_x86() {
 	type.type_param = NULL;
 	type.array_type = NULL;
 	type.pointer_type = NULL;
+	type.is_anytype = false;
 
 	pt.int_type = INT;
 
@@ -316,6 +319,7 @@ void test_tables_lvst_stack_frame_offset_x86_int8() {
 	type.type_param = NULL;
 	type.array_type = NULL;
 	type.pointer_type = NULL;
+	type.is_anytype = false;
 
 	pt.int_type = INT8;
 
@@ -353,6 +357,7 @@ void test_tables_lvst_stack_frame_offset_avr_int64() {
 	type.type_param = NULL;
 	type.array_type = NULL;
 	type.pointer_type = NULL;
+	type.is_anytype = false;
 
 	pt.int_type = INT64;
 

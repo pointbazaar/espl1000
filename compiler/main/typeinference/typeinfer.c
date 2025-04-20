@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <assert.h>
 
 #include "ast/ast.h"
 #include "ast/util/str_ast.h"
@@ -12,6 +13,8 @@ static void print_error(char* msg) {
 }
 
 struct Type* unwrap_indices(struct Type* t, uint32_t count) {
+
+	assert(t);
 
 	uint32_t index_count = count;
 

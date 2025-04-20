@@ -76,7 +76,7 @@ bool compile_and_write_x86(struct AST* ast, struct Ctx* ctx) {
 			success = compile_and_write_x86_single_function(m, ctx, ibu);
 
 			if (!success) {
-				goto exit;
+				goto exit_ibu;
 			}
 		}
 	}
@@ -97,9 +97,8 @@ bool compile_and_write_x86(struct AST* ast, struct Ctx* ctx) {
 
 	ibu_write(ibu, fout);
 
-exit:
 	fclose(fout);
-
+exit_ibu:
 	ibu_dtor(ibu);
 
 	return success;
