@@ -29,19 +29,15 @@ bool tc_ifstmt(struct IfStmt* i, struct TCCtx* tcctx, bool must_return) {
 	if (!is_bool_type(type)) {
 
 		char* s1 = str_expr(i->condition);
-
-		char* msg;
-		asprintf(&msg, "if %s {", s1);
-
-		free(s1);
-
-		error_snippet(tcctx, msg, TC_ERR_CONDITION_REQUIRES_BOOL);
-
 		char* s2 = str_type(type);
 
-		fprintf(stderr, "actual type: %s\n\n", s2);
+		char* msg;
+		asprintf(&msg, "if %s {  --- actual type: %s", s1, s2);
 
+		free(s1);
 		free(s2);
+
+		error_snippet(tcctx, msg, TC_ERR_CONDITION_REQUIRES_BOOL);
 
 		free(msg);
 
