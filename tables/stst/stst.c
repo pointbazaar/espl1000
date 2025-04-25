@@ -6,12 +6,15 @@
 #include <assert.h>
 
 #include "ast/ast.h"
+#include "ast/util/copy_ast.h"
 
 #include "token/TokenKeys.h"
+#include "parser/main/astnodes/types/Type.h"
 
 #include "stst.h"
 #include "stst_print.h"
 #include "tables/lvst/lvst.h"
+#include "tables/symtable/symtable.h"
 
 #define STST_INITIAL_CAPACITY 10;
 
@@ -49,13 +52,15 @@ struct STST* stst_ctor() {
 	return stst;
 }
 
-void stst_fill(struct STST* stst, struct Namespace* ns) {
+void stst_fill(struct ST* st, struct Namespace* ns) {
+
+	struct STST* stst = st->stst;
 
 	for (size_t i = 0; i < ns->count_structs; i++) {
 
 		struct StructDecl* mystruct = ns->structs[i];
 
-		struct STSTLine* line = stst_line_ctor(mystruct, ns->name);
+		struct STSTLine* line = stst_line_ctor(st, mystruct, ns->name);
 
 		stst_add(stst, line);
 	}
@@ -95,6 +100,40 @@ struct StructMember* stst_get_member(struct STST* stst, char* struct_name, char*
 
 	stst_print(stst);
 	return NULL;
+}
+
+struct Type* stst_member_type(struct STST* stst, const char* struct_name, const char* member_name) {
+
+	struct StructMember* member = stst_get_member(stst, (char*)struct_name, (char*)member_name);
+
+	if (!member) {
+		return NULL;
+	}
+
+	return member->type;
+}
+
+bool stst_has_member(struct STST* stst, const char* struct_name, const char* member_name) {
+
+	assert(struct_name);
+	assert(member_name);
+
+	struct STSTLine* line = stst_get(stst, (char*)struct_name);
+
+	if (!line) {
+		return false;
+	}
+
+	assert(line->decl);
+
+	for (int j = 0; j < line->decl->count_members; j++) {
+
+		struct StructMember* member = line->decl->members[j];
+
+		if (strcmp(member->name, member_name) == 0) { return true; }
+	}
+
+	return false;
 }
 
 int32_t stst_member_offset(struct STST* stst, char* struct_name, char* member_name, bool x86) {
@@ -150,12 +189,22 @@ void stst_free(struct STST* stst) {
 	free(stst);
 }
 
-struct STSTLine* stst_line_ctor(struct StructDecl* s, char* _namespace) {
+struct STSTLine* stst_line_ctor(struct ST* st, struct StructDecl* s, char* _namespace) {
 
 	struct STSTLine* line = make(STSTLine);
 
 	line->decl = s;
 	line->is_private = has_annotation(s->super.annotations, ANNOT_PRIVATE);
+
+	struct SimpleType* copy = copy_simple_type(s->type);
+
+	assert(copy);
+
+	line->type = makeType_4(copy);
+
+	assert(line->type);
+
+	st_register_inferred_type(st, line->type);
 
 	asprintf(&(line->_namespace), "%s", _namespace);
 	asprintf(&(line->name), "%s", s->type->struct_type->type_name);

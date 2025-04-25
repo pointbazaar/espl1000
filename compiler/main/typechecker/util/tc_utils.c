@@ -7,6 +7,35 @@
 //Typechecker Includes
 #include "tc_utils.h"
 
+// @returns NULL if not found
+char* tc_get_underlying_struct_name(struct Type* t) {
+
+	if (!t) {
+		return NULL;
+	}
+
+	if (!t->basic_type && !t->pointer_type) {
+		return NULL;
+	}
+
+	if (t->basic_type) {
+
+		if (!t->basic_type->simple_type) {
+			return NULL;
+		}
+		if (!t->basic_type->simple_type->struct_type) {
+			return NULL;
+		}
+		return t->basic_type->simple_type->struct_type->type_name;
+	}
+
+	if (t->pointer_type) {
+		return tc_get_underlying_struct_name(t->pointer_type->element_type);
+	}
+
+	return NULL;
+}
+
 bool is_primitive_type(struct Type* type) {
 
 	if (type->basic_type == NULL) { return false; }

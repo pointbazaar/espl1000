@@ -41,6 +41,7 @@ bool tc_term(struct Term* term, struct TCCtx* tcctx);
 
 bool tc_var(struct Variable* v, struct TCCtx* tcCtx);
 bool tc_simplevar(struct SimpleVar* v, struct TCCtx* tcctx);
+bool tc_simplevar_in_struct(struct Type* containing_type, struct SimpleVar* v, struct TCCtx* tcctx);
 
 bool tc_range(struct Range* r, struct TCCtx* tcctx);
 

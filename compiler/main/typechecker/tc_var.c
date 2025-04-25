@@ -1,6 +1,9 @@
+#define _GNU_SOURCE
+
 //AST Includes
 #include <stdio.h>
 #include <stdlib.h>
+#include <assert.h>
 
 #include "ast/ast.h"
 #include "ast/util/str_ast.h"
@@ -16,6 +19,51 @@
 #include "typechecker/util/tc_errors.h"
 #include "typechecker/util/tc_utils.h"
 
+static bool tc_var_in_struct(struct Type* containing_type, struct Variable* member, struct TCCtx* tcctx) {
+
+	char* struct_name = tc_get_underlying_struct_name(containing_type);
+
+	assert(struct_name);
+
+	char* member_name = member->simple_var->name;
+
+	struct STST* stst = tcctx->st->stst;
+
+	// check that access is be a member that actually exists on that structure
+	if (!stst_has_member(stst, struct_name, member_name)) {
+		char* snippet = NULL;
+		asprintf(&snippet, "could not find member '%s' on struct '%s'", member_name, struct_name);
+		error_snippet(tcctx, snippet, TC_ERR_VAR_NOT_FOUND);
+
+		free(snippet);
+		return false;
+	}
+
+	if (!tc_simplevar_in_struct(containing_type, member->simple_var, tcctx)) {
+		return false;
+	}
+
+	if (member->member_access == NULL) {
+		return true;
+	}
+
+	//struct STSTLine* line = stst_get(stst, struct_name);
+
+	//TODO: apply all indices and then get that type
+
+	struct MemberAccess ma = {
+	    .structType = containing_type,
+	    .member = member,
+	};
+
+	struct Type* type_after_indices = infer_in_context_once(tcctx->st, &ma);
+
+	// continue checking recursively
+	return tc_var_in_struct(type_after_indices, member->member_access, tcctx);
+
+	//return true;
+}
+
 bool tc_var(struct Variable* v, struct TCCtx* tcctx) {
 
 	struct SimpleVar* sv = v->simple_var;
@@ -24,76 +72,11 @@ bool tc_var(struct Variable* v, struct TCCtx* tcctx) {
 
 	struct Variable* member_access = v->member_access;
 
-	if (member_access != NULL) {
-		//TODO: check that access is be a member that actually exists on that structure
-
-		//tc_var(member_access, tcctx);
-	}
-	return true;
-}
-
-bool tc_simplevar(struct SimpleVar* sv, struct TCCtx* tcctx) {
-
-	//does it even exist in the symbol table?
-	char* name = sv->name;
-
-	bool in_lvst = lvst_contains(tcctx->st->lvst, name);
-	bool in_sst = sst_contains(tcctx->st->sst, name);
-
-	if (!in_lvst && !in_sst) {
-
-		char* snippet = str_simple_var(sv);
-
-		error_snippet(tcctx, snippet, TC_ERR_VAR_NOT_FOUND);
-
-		free(snippet);
-
-		return false;
+	if (member_access == NULL) {
+		return true;
 	}
 
-	if (!in_lvst && sv->count_indices > 0) {
-		error(tcctx, "cannot use indices for something thats not a local var/arg", TC_ERR_CANNOT_INDEX_INTO);
-		return false;
-	}
+	struct LVSTLine* line = lvst_get(tcctx->st->lvst, sv->name);
 
-	//check that each index is of an integer type
-	for (uint32_t i = 0; i < sv->count_indices; i++) {
-
-		struct Expr* indexExpr = sv->indices[i];
-		struct Type* type = infer_type_expr(tcctx->st, indexExpr);
-
-		if (!is_integer_type(type)) {
-
-			char* snippet = str_simple_var(sv);
-
-			error_snippet(tcctx, snippet, TC_ERR_INDEX_NOT_INTEGER_TYPE);
-
-			free(snippet);
-
-			return false;
-		}
-
-		if (!tc_expr(indexExpr, tcctx)) { return false; }
-	}
-
-	if (sv->count_indices == 0) { return true; }
-
-	//check that the correct number of indices was used
-	//(meaning not too many)
-	struct LVSTLine* line = lvst_get(tcctx->st->lvst, name);
-
-	uint32_t max_indices = max_indices_allowed(line->type);
-
-	if (sv->count_indices > max_indices) {
-
-		char* snippet = str_simple_var(sv);
-
-		error_snippet(tcctx, snippet, TC_ERR_TOO_MANY_INDICES);
-
-		free(snippet);
-
-		return false;
-	}
-
-	return true;
+	return tc_var_in_struct(line->type, member_access, tcctx);
 }

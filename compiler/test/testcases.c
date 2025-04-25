@@ -285,6 +285,7 @@ void (*tests_typechecker[])() = {
     test_typecheck_too_many_indices,
     test_typecheck_local_var_not_a_subroutine,
     test_typecheck_var_not_found,
+    test_typecheck_index_not_found,
     test_typecheck_no_return_stmt,
 
     //one test to trigger all typechecker errors, in sequence,
