@@ -57,6 +57,18 @@ struct Type* makeType_3(struct ArrayType* typeNode) {
 	return res;
 }
 
+struct Type* makeType_4(struct SimpleType* typeNode) {
+
+	struct Type* res = make(Type);
+
+	res->super.line_num = typeNode->super.line_num;
+	res->super.annotations = 0;
+
+	res->basic_type = makeBasicTypeSimple(typeNode);
+
+	return res;
+}
+
 struct Type* makeType2(struct TokenList* tokens) {
 
 	// each type has at least 1 token

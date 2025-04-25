@@ -1,0 +1,6 @@
+fn main()~>int {
+
+	local [uint8] arr;
+
+	return arr[index];
+}

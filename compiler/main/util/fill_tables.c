@@ -26,7 +26,7 @@ bool fill_tables(struct AST* ast, struct Ctx* ctx) {
 		struct Namespace* ns = ast->namespaces[i];
 
 		sst_fill(ctx_tables(ctx), ctx_tables(ctx)->sst, ns);
-		stst_fill(ctx_tables(ctx)->stst, ns);
+		stst_fill(ctx_tables(ctx), ns);
 
 		if (!enum_table_fill(ctx_tables(ctx)->enum_table, ns, debug)) {
 			return false;

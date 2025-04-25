@@ -1,0 +1,43 @@
+// testing the common use-case of a container struct
+// for an array of structs
+
+struct Container {
+
+	uint64 count;
+	uint64 capacity;
+
+	[*Line] lines;
+}
+
+struct Line {
+	uint64 a;
+	uint64 b;
+	uint64 c;
+}
+
+fn main () -> int {
+
+	*Container c = malloc(100);
+
+	if c == 0 {
+		return 1;
+	}
+
+	c.count = 1;
+	c.capacity = 3;
+	c.lines = calloc(c.capacity * 8);
+
+	if c.lines == 0 {
+		return 2;
+	}
+
+	*Line line = calloc(16);
+	line.a = 403;
+	line.b = 73;
+
+	c.lines[c.count] = line;
+
+	*Line line2 = c.lines[c.count];
+
+	return line2.b;
+}

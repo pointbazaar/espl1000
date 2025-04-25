@@ -113,6 +113,7 @@ add_library("sd-base"
 	typechecker/tc_deref.c
 	typechecker/tc_term.c
 	typechecker/tc_var.c
+	typechecker/tc_simplevar.c
 	typechecker/util/tc_utils.c
 	typechecker/tc_range.c
 	typechecker/tc_method.c

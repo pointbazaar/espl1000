@@ -5,6 +5,8 @@
 
 #include "ast/ast_declare.h"
 
+char* tc_get_underlying_struct_name(struct Type* t);
+
 bool is_primitive_type(struct Type* type);
 
 bool is_integer_type(struct Type* type);

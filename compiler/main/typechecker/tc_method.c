@@ -1,3 +1,4 @@
+#define _GNU_SOURCE
 
 #include <analyzer/lv/lv_analyzer.h>
 
