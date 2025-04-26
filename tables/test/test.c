@@ -27,26 +27,18 @@ void test_tables_lvst_sizeof_type_primitive() {
 
 	test_status_lvst("lvst_sizeof_type (primitive)");
 
-	struct Type type;
-	struct BasicType bt;
-	struct SimpleType st;
-	struct PrimitiveType pt;
+	struct Type type = {0};
+	struct BasicType bt = {0};
+	struct SimpleType st = {0};
+	struct PrimitiveType pt = {0};
 
 	pt.is_int_type = true;
-	pt.is_char_type = false;
-	pt.is_bool_type = false;
 
-	st.struct_type = NULL;
 	st.primitive_type = &pt;
 
-	bt.subr_type = NULL;
 	bt.simple_type = &st;
 
 	type.basic_type = &bt;
-	type.type_param = NULL;
-	type.array_type = NULL;
-	type.pointer_type = NULL;
-	type.is_anytype = false;
 
 	pt.int_type = INT;
 	assert(lvst_sizeof_type(&type, false) == 1);
@@ -73,42 +65,31 @@ void test_tables_lvst_sizeof_type_other() {
 
 	test_status_lvst("lvst_sizeof_type (other)");
 
-	struct Type type;
-	struct BasicType bt;
-	struct SimpleType st;
-	struct PrimitiveType pt;
-	struct StructType stt;
-	struct SubrType subrt;
-	struct ArrayType at;
+	struct Type type = {0};
+	struct BasicType bt = {0};
+	struct SimpleType st = {0};
+	struct PrimitiveType pt = {0};
+	struct StructType stt = {0};
+	struct SubrType subrt = {0};
+	struct ArrayType at = {0};
 
 	pt.is_int_type = true;
-	pt.is_char_type = false;
-	pt.is_bool_type = false;
 
-	st.struct_type = NULL;
 	st.primitive_type = &pt;
 
-	bt.subr_type = NULL;
 	bt.simple_type = &st;
 
 	type.basic_type = &bt;
-	type.type_param = NULL;
-	type.array_type = NULL;
-	type.pointer_type = NULL;
 
 	st.struct_type = &stt;
-	st.primitive_type = NULL;
 
 	assert(lvst_sizeof_type(&type, false) == 2);
 	assert(lvst_sizeof_type(&type, true) == 8);
 
-	bt.simple_type = NULL;
 	bt.subr_type = &subrt;
 	assert(lvst_sizeof_type(&type, false) == 2);
 	assert(lvst_sizeof_type(&type, true) == 8);
 
-	type.basic_type = NULL;
-	type.type_param = NULL;
 	type.array_type = &at;
 	assert(lvst_sizeof_type(&type, false) == 2);
 	assert(lvst_sizeof_type(&type, true) == 8);
@@ -118,32 +99,22 @@ void test_tables_lvst_sizeof_pointer_type() {
 
 	test_status_lvst((char*)__func__);
 
-	struct PrimitiveType pt;
+	struct PrimitiveType pt = {0};
 	pt.is_int_type = true;
-	pt.is_char_type = false;
-	pt.is_bool_type = false;
 
-	struct SimpleType st;
-	st.struct_type = NULL;
+	struct SimpleType st = {0};
 	st.primitive_type = &pt;
 
-	struct BasicType bt;
-	bt.subr_type = NULL;
+	struct BasicType bt = {0};
 	bt.simple_type = &st;
 
-	struct Type t1;
+	struct Type t1 = {0};
 	t1.basic_type = &bt;
-	t1.type_param = NULL;
-	t1.array_type = NULL;
-	t1.pointer_type = NULL;
 
-	struct PointerType ptt;
+	struct PointerType ptt = {0};
 	ptt.element_type = &t1;
 
-	struct Type type;
-	type.basic_type = NULL;
-	type.type_param = NULL;
-	type.array_type = NULL;
+	struct Type type = {0};
 	type.pointer_type = &ptt;
 
 	assert(lvst_sizeof_type(&type, false) == 2);
@@ -154,26 +125,18 @@ void test_tables_lvst_stack_frame_size_avr() {
 
 	test_status_lvst("lvst_stack_frame_size (avr)");
 
-	struct Type type;
-	struct BasicType bt;
-	struct SimpleType st;
-	struct PrimitiveType pt;
+	struct Type type = {0};
+	struct BasicType bt = {0};
+	struct SimpleType st = {0};
+	struct PrimitiveType pt = {0};
 
 	pt.is_int_type = true;
-	pt.is_char_type = false;
-	pt.is_bool_type = false;
 
-	st.struct_type = NULL;
 	st.primitive_type = &pt;
 
-	bt.subr_type = NULL;
 	bt.simple_type = &st;
 
 	type.basic_type = &bt;
-	type.type_param = NULL;
-	type.array_type = NULL;
-	type.pointer_type = NULL;
-	type.is_anytype = false;
 
 	pt.int_type = INT;
 
@@ -214,26 +177,18 @@ void test_tables_lvst_stack_frame_size_x86() {
 
 	test_status_lvst("lvst_stack_frame_size (x86)");
 
-	struct Type type;
-	struct BasicType bt;
-	struct SimpleType st;
-	struct PrimitiveType pt;
+	struct Type type = {0};
+	struct BasicType bt = {0};
+	struct SimpleType st = {0};
+	struct PrimitiveType pt = {0};
 
 	pt.is_int_type = true;
-	pt.is_char_type = false;
-	pt.is_bool_type = false;
 
-	st.struct_type = NULL;
 	st.primitive_type = &pt;
 
-	bt.subr_type = NULL;
 	bt.simple_type = &st;
 
 	type.basic_type = &bt;
-	type.type_param = NULL;
-	type.array_type = NULL;
-	type.pointer_type = NULL;
-	type.is_anytype = false;
 
 	pt.int_type = INT;
 
@@ -259,25 +214,18 @@ void test_tables_lvst_stack_frame_offset_avr_int8() {
 
 	test_status_lvst("lvst_stack_frame_offset avr (int8)");
 
-	struct Type type;
-	struct BasicType bt;
-	struct SimpleType st;
-	struct PrimitiveType pt;
+	struct Type type = {0};
+	struct BasicType bt = {0};
+	struct SimpleType st = {0};
+	struct PrimitiveType pt = {0};
 
 	pt.is_int_type = true;
-	pt.is_char_type = false;
-	pt.is_bool_type = false;
 
-	st.struct_type = NULL;
 	st.primitive_type = &pt;
 
-	bt.subr_type = NULL;
 	bt.simple_type = &st;
 
 	type.basic_type = &bt;
-	type.type_param = NULL;
-	type.array_type = NULL;
-	type.pointer_type = NULL;
 
 	pt.int_type = INT8;
 
@@ -300,26 +248,18 @@ void test_tables_lvst_stack_frame_offset_x86_int8() {
 
 	test_status_lvst("lvst_stack_frame_offset x86 (int8)");
 
-	struct Type type;
-	struct BasicType bt;
-	struct SimpleType st;
-	struct PrimitiveType pt;
+	struct Type type = {0};
+	struct BasicType bt = {0};
+	struct SimpleType st = {0};
+	struct PrimitiveType pt = {0};
 
 	pt.is_int_type = true;
-	pt.is_char_type = false;
-	pt.is_bool_type = false;
 
-	st.struct_type = NULL;
 	st.primitive_type = &pt;
 
-	bt.subr_type = NULL;
 	bt.simple_type = &st;
 
 	type.basic_type = &bt;
-	type.type_param = NULL;
-	type.array_type = NULL;
-	type.pointer_type = NULL;
-	type.is_anytype = false;
 
 	pt.int_type = INT8;
 
@@ -338,26 +278,18 @@ void test_tables_lvst_stack_frame_offset_avr_int64() {
 
 	test_status_lvst("lvst_stack_frame_offset avr (int64)");
 
-	struct Type type;
-	struct BasicType bt;
-	struct SimpleType st;
-	struct PrimitiveType pt;
+	struct Type type = {0};
+	struct BasicType bt = {0};
+	struct SimpleType st = {0};
+	struct PrimitiveType pt = {0};
 
 	pt.is_int_type = true;
-	pt.is_char_type = false;
-	pt.is_bool_type = false;
 
-	st.struct_type = NULL;
 	st.primitive_type = &pt;
 
-	bt.subr_type = NULL;
 	bt.simple_type = &st;
 
 	type.basic_type = &bt;
-	type.type_param = NULL;
-	type.array_type = NULL;
-	type.pointer_type = NULL;
-	type.is_anytype = false;
 
 	pt.int_type = INT64;
 
@@ -384,25 +316,18 @@ void test_tables_lvst_stack_frame_offset_x86_int64() {
 
 	test_status_lvst("lvst_stack_frame_offset x86 (int64)");
 
-	struct Type type;
-	struct BasicType bt;
-	struct SimpleType st;
-	struct PrimitiveType pt;
+	struct Type type = {0};
+	struct BasicType bt = {0};
+	struct SimpleType st = {0};
+	struct PrimitiveType pt = {0};
 
 	pt.is_int_type = true;
-	pt.is_char_type = false;
-	pt.is_bool_type = false;
 
-	st.struct_type = NULL;
 	st.primitive_type = &pt;
 
-	bt.subr_type = NULL;
 	bt.simple_type = &st;
 
 	type.basic_type = &bt;
-	type.type_param = NULL;
-	type.array_type = NULL;
-	type.pointer_type = NULL;
 
 	pt.int_type = INT64;
 
@@ -426,25 +351,18 @@ void test_tables_lvst_arg_index() {
 
 	test_status_lvst("lvst_arg_index");
 
-	struct Type type;
-	struct BasicType bt;
-	struct SimpleType st;
-	struct PrimitiveType pt;
+	struct Type type = {0};
+	struct BasicType bt = {0};
+	struct SimpleType st = {0};
+	struct PrimitiveType pt = {0};
 
 	pt.is_int_type = true;
-	pt.is_char_type = false;
-	pt.is_bool_type = false;
 
-	st.struct_type = NULL;
 	st.primitive_type = &pt;
 
-	bt.subr_type = NULL;
 	bt.simple_type = &st;
 
 	type.basic_type = &bt;
-	type.type_param = NULL;
-	type.array_type = NULL;
-	type.pointer_type = NULL;
 
 	pt.int_type = INT64;
 
