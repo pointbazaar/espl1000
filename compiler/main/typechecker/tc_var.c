@@ -23,7 +23,10 @@ static bool tc_var_in_struct(struct Type* containing_type, struct Variable* memb
 
 	char* struct_name = tc_get_underlying_struct_name(containing_type);
 
-	assert(struct_name);
+	if (!struct_name) {
+		error_snippet(tcctx, "member access on non-struct type", TC_ERR_VAR_NOT_FOUND);
+		return false;
+	}
 
 	char* member_name = member->simple_var->name;
 

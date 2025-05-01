@@ -1,13 +1,11 @@
 #define _GNU_SOURCE
 
-#include <analyzer/lv/lv_analyzer.h>
+#include <stdlib.h>
 
-//AST Includes
-#include "ast/ast.h"
+#include "analyzer/lv/lv_analyzer.h"
 
 //Table Includes
 #include "tables/lvst/lvst.h"
-#include "tables/sst/sst.h"
 #include "tables/symtable/symtable.h"
 
 //Typechecker Includes
@@ -40,6 +38,7 @@ bool tc_method(struct Method* m, struct TCCtx* tcctx) {
 		}
 
 		lvst_print_filename(tcctx->st->lvst, lvst_filename);
+		free(lvst_filename);
 	}
 
 	return tc_ok;

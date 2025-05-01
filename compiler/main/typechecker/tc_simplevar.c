@@ -94,13 +94,13 @@ static bool tc_simplevar_indices(struct Type* containing_type, struct SimpleVar*
 
 bool tc_simplevar_in_struct(struct Type* containing_type, struct SimpleVar* sv, struct TCCtx* tcctx) {
 	if (!containing_type || !sv || !tcctx) {
-		return NULL;
+		return false;
 	}
 
 	char* struct_name = tc_get_underlying_struct_name(containing_type);
 
 	if (!struct_name) {
-		return NULL;
+		return false;
 	}
 
 	if (!stst_has_member(tcctx->st->stst, struct_name, sv->name)) {
@@ -141,11 +141,12 @@ bool tc_simplevar(struct SimpleVar* sv, struct TCCtx* tcctx) {
 		return false;
 	}
 
-	if (in_sst) {
-		return true;
+	if (in_lvst) {
+		struct LVSTLine* line = lvst_get(tcctx->st->lvst, name);
+
+		return tc_simplevar_indices(line->type, sv, tcctx);
 	}
 
-	struct LVSTLine* line = lvst_get(tcctx->st->lvst, name);
-
-	return tc_simplevar_indices(line->type, sv, tcctx);
+	// only in sst
+	return true;
 }
