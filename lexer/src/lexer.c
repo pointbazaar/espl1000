@@ -360,19 +360,19 @@ static int handler2(const char* buf, struct TokenList* o, size_t nchars_remain) 
 	H2OUT_NOSTR(buf, "true", BCONST_TRUE, o);
 	H2OUT_NOSTR(buf, "false", BCONST_FALSE, o);
 
-	H2OUT_NOSTR(buf, "fn", FN, o);
-	H2OUT_NOSTR(buf, "struct", STRUCT, o);
-
-	H2OUT_NOSTR(buf, "return", RETURN, o);
-	H2OUT_NOSTR(buf, "local", KEYWORD_LOCAL, o);
-	H2OUT_NOSTR(buf, "if", IF, o);
-	H2OUT_NOSTR(buf, "else", ELSE, o);
-	H2OUT_NOSTR(buf, "while", WHILE, o);
-	H2OUT_NOSTR(buf, "for", FOR, o);
+	// keywords
+	H2OUT_KEYWORD(buf, "fn", FN, o);
+	H2OUT_KEYWORD(buf, "struct", STRUCT, o);
+	H2OUT_KEYWORD(buf, "return", RETURN, o);
+	H2OUT_KEYWORD(buf, "local", KEYWORD_LOCAL, o);
+	H2OUT_KEYWORD(buf, "if", IF, o);
+	H2OUT_KEYWORD(buf, "else", ELSE, o);
+	H2OUT_KEYWORD(buf, "while", WHILE, o);
+	H2OUT_KEYWORD(buf, "for", FOR, o);
 	H2OUT_KEYWORD(buf, "in", KEYWORD_IN, o);
-	H2OUT_NOSTR(buf, "break", KEYWORD_BREAK, o);
-	H2OUT_NOSTR(buf, "continue", KEYWORD_CONTINUE, o);
-	H2OUT_NOSTR(buf, "enum", KEYWORD_ENUM, o);
+	H2OUT_KEYWORD(buf, "break", KEYWORD_BREAK, o);
+	H2OUT_KEYWORD(buf, "continue", KEYWORD_CONTINUE, o);
+	H2OUT_KEYWORD(buf, "enum", KEYWORD_ENUM, o);
 
 	if (strncmp(buf, "0x", 2) == 0) {
 		return handler2_hexconst(buf, o, nchars_remain);

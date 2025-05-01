@@ -18,6 +18,7 @@ struct STSTLine {
 	// Type of the struct, for convenience
 	// and interoperability with functions working on types.
 	// This should always be struct type
+	// The memory for this is owned by the parent 'struct ST'
 	struct Type* type;
 
 	bool is_private;
