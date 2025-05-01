@@ -121,7 +121,7 @@ jobs:
       - image: library/archlinux:latest
     steps:
       - checkout
-      - run: pacman -Sy
+      - run: pacman -Syu --noconfirm --verbose
       - run: pacman -S --noconfirm make clang git
       - run:
           name: "check-format"
