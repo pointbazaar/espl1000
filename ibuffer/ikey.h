@@ -173,7 +173,6 @@ enum IKEY {
 	// START --- X86 Instructions --
 	X86_MOV_CONST = 404, // mov rdest, value_const
 	X86_MOV_REGS = 405, // mov rdest, rsrc
-	X86_MOV_STORE = 407, // mov [rdest], rsrc
 	X86_MOV_LOAD_WIDTH = 408, // e.g. mov dword rdest, [rsrc]
 	X86_MOV_STORE_WIDTH = 410, // e.g. movzx qword [rdest], rsrc
 	X86_MOV_CONST_SYMBOL = 411, // e.g. mov rax, my_function
