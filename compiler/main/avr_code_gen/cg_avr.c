@@ -12,7 +12,7 @@
 
 #include "util/ctx.h"
 
-#include "ibuffer/ibuffer.h"
+#include "ibuffer/ibuffer_avr.h"
 
 #include "cg_avr.h"
 #include "tac/tacbuffer.h"

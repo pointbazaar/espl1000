@@ -20,7 +20,7 @@
 #include "tac/tacbuffer.h"
 #include "basic_block/basicblock.h"
 #include "util/fill_tables.h"
-#include "ibuffer/ibuffer.h"
+#include "ibuffer/ibuffer_x86.h"
 #include "tables/symtable/symtable.h"
 
 #include "cli/flags/flags.h"

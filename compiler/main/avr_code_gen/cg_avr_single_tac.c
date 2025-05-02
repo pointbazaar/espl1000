@@ -7,7 +7,7 @@
 #include "tac/tac.h"
 #include "avr_code_gen/compile_ir/compile_tac.h"
 
-#include "ibuffer/ibuffer.h"
+#include "ibuffer/ibuffer_avr.h"
 
 #include "cli/flags/flags.h"
 

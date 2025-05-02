@@ -10,7 +10,7 @@
 #include "basic_block/basicblock.h"
 #include "rat/rat.h"
 
-#include "ibuffer/ibuffer.h"
+#include "ibuffer/ibuffer_avr.h"
 
 #include "cg_avr_single_tac.h"
 #include "cg_avr_basic_block.h"
