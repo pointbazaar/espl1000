@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include <stdbool.h>
 
-#include "ibuffer/ibuffer.h"
+#include "ibuffer/ibuffer_avr.h"
 
 struct RAT;
 struct TAC;

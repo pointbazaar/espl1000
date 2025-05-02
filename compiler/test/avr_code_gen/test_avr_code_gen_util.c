@@ -15,7 +15,7 @@
 
 #include "cli/flags/flags.h"
 
-#include "ibuffer/ibuffer.h"
+#include "ibuffer/ibuffer_avr.h"
 
 //compile a struct TACBuffer* to .asm
 //call avra to create .hex

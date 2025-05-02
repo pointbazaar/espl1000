@@ -5,7 +5,6 @@
 #include <assert.h>
 #include <stdbool.h>
 
-#include "ibuffer.h"
 #include "ibuffer_write.h"
 
 #define INSTR_COMMENT_LEN 50

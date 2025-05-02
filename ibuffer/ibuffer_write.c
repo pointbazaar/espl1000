@@ -4,7 +4,7 @@
 #include <string.h>
 #include <assert.h>
 
-#include "ibuffer.h"
+#include "ibuffer_avr.h"
 #include "ibuffer_write.h"
 
 #include "../rat/rat.h"

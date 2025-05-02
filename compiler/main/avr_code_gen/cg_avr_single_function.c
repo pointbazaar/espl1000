@@ -10,7 +10,7 @@
 #include "util/ctx.h"
 #include "ast/ast.h"
 
-#include "ibuffer/ibuffer.h"
+#include "ibuffer/ibuffer_avr.h"
 
 #include "tables/symtable/symtable.h"
 #include "cg_avr_single_function.h"
