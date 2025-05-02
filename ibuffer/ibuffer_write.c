@@ -56,8 +56,7 @@ void ibu_write_instr(enum IKEY key, int32_t x1, int32_t x2, int32_t x3, char* st
 	free(s);
 }
 
-static bool write_middle(enum IKEY key, int64_t x1, int64_t x2, char* str, char* s, int32_t x3) {
-
+static bool write_middle_x86(enum IKEY key, int64_t x1, int64_t x2, char* str, char* s, int32_t x3) {
 	const uint8_t nbytes = x3;
 
 	char* width_str = NULL;
@@ -68,6 +67,100 @@ static bool write_middle(enum IKEY key, int64_t x1, int64_t x2, char* str, char*
 		case 8: width_str = "qword"; break;
 	}
 
+	switch (key) {
+
+		case X86_MOV_LOAD:
+			sprintf(s, "%s, qword [%s]", rat_regname_x86(x1), rat_regname_x86(x2));
+			break;
+		case X86_MOV_STORE:
+			sprintf(s, "[%s], %s", rat_regname_x86(x1), rat_regname_x86(x2));
+			break;
+		case X86_MOV_LOAD_WIDTH:
+			assert(width_str != NULL);
+			sprintf(s, "%s, %s [%s]", rat_regname_x86_width(x1, nbytes), width_str, rat_regname_x86(x2));
+			break;
+		case X86_MOVZX_LOAD_WIDTH:
+			sprintf(s, "%s, %s [%s]", rat_regname_x86(x1), width_str, rat_regname_x86(x2));
+			break;
+		case X86_MOVZX_REGS_WIDTH:
+			sprintf(s, "%s, %s", rat_regname_x86(x1), rat_regname_x86_width(x2, nbytes));
+			break;
+		case X86_MOV_STORE_WIDTH:
+			assert(width_str != NULL);
+			sprintf(s, "%s [%s], %s", width_str, rat_regname_x86(x1), rat_regname_x86_width(x2, nbytes));
+			break;
+		case X86_MOV_CONST_SYMBOL:
+			sprintf(s, "%s, %s", rat_regname_x86(x1), str);
+			break;
+		case X86_PUSH:
+		case X86_POP:
+		case X86_INC:
+		case X86_DEC:
+		case X86_NEG:
+		case X86_NOT:
+		case X86_DIV:
+			sprintf(s, "%s", rat_regname_x86(x1));
+			break;
+		case X86_SETE:
+			sprintf(s, "%s", rat_regname_x86_width(x1, 1));
+			break;
+		case X86_MOV_CONST:
+		case X86_SHL:
+		case X86_SHR:
+		case X86_SAL:
+		case X86_SAR:
+		case X86_ROL:
+		case X86_ROR:
+			sprintf(s, "%s, %ld", rat_regname_x86(x1), x2);
+			break;
+		case X86_ADD:
+		case X86_MUL:
+		case X86_IMUL:
+		case X86_SUB:
+		case X86_CMP:
+		case X86_TEST:
+		case X86_AND:
+		case X86_OR:
+		case X86_XOR:
+		case X86_MOV_REGS:
+		case X86_CMOVE:
+			sprintf(s, "%s, %s", rat_regname_x86(x1), rat_regname_x86(x2));
+			break;
+		case X86_CMP_CONST:
+			sprintf(s, "%s, %ld", rat_regname_x86(x1), x2);
+			break;
+		case X86_JMP:
+		case X86_JE:
+		case X86_JNE:
+		case X86_JG:
+		case X86_JGE:
+		case X86_JL:
+		case X86_JLE:
+		case X86_JS:
+		case X86_JZ:
+		case X86_CALL:
+			sprintf(s, "%s", str);
+			break;
+		case X86_ICALL:
+			sprintf(s, "%s", rat_regname_x86(x1));
+			break;
+		case X86_INT:
+			sprintf(s, "%ld", x1);
+			break;
+		case X86_RET:
+		case X86_NOP:
+		case X86_SYSCALL:
+			// nothing to do
+			break;
+
+		default:
+			return false;
+	}
+	return true;
+}
+
+static bool write_middle_avr(enum IKEY key, int64_t x1, int64_t x2, char* str, char* s, int32_t x3) {
+	(void)x3;
 	switch (key) {
 
 		//r1, r2
@@ -171,97 +264,23 @@ static bool write_middle(enum IKEY key, int64_t x1, int64_t x2, char* str, char*
 		case AVR_NOP:
 			break;
 
-		// --- START X86
-		case X86_MOV_LOAD:
-			sprintf(s, "%s, qword [%s]", rat_regname_x86(x1), rat_regname_x86(x2));
-			break;
-		case X86_MOV_STORE:
-			sprintf(s, "[%s], %s", rat_regname_x86(x1), rat_regname_x86(x2));
-			break;
-		case X86_MOV_LOAD_WIDTH:
-			assert(width_str != NULL);
-			sprintf(s, "%s, %s [%s]", rat_regname_x86_width(x1, nbytes), width_str, rat_regname_x86(x2));
-			break;
-		case X86_MOVZX_LOAD_WIDTH:
-			sprintf(s, "%s, %s [%s]", rat_regname_x86(x1), width_str, rat_regname_x86(x2));
-			break;
-		case X86_MOVZX_REGS_WIDTH:
-			sprintf(s, "%s, %s", rat_regname_x86(x1), rat_regname_x86_width(x2, nbytes));
-			break;
-		case X86_MOV_STORE_WIDTH:
-			assert(width_str != NULL);
-			sprintf(s, "%s [%s], %s", width_str, rat_regname_x86(x1), rat_regname_x86_width(x2, nbytes));
-			break;
-		case X86_MOV_CONST_SYMBOL:
-			sprintf(s, "%s, %s", rat_regname_x86(x1), str);
-			break;
-		case X86_PUSH:
-		case X86_POP:
-		case X86_INC:
-		case X86_DEC:
-		case X86_NEG:
-		case X86_NOT:
-		case X86_DIV:
-			sprintf(s, "%s", rat_regname_x86(x1));
-			break;
-		case X86_SETE:
-			sprintf(s, "%s", rat_regname_x86_width(x1, 1));
-			break;
-		case X86_MOV_CONST:
-		case X86_SHL:
-		case X86_SHR:
-		case X86_SAL:
-		case X86_SAR:
-		case X86_ROL:
-		case X86_ROR:
-			sprintf(s, "%s, %ld", rat_regname_x86(x1), x2);
-			break;
-		case X86_ADD:
-		case X86_MUL:
-		case X86_IMUL:
-		case X86_SUB:
-		case X86_CMP:
-		case X86_TEST:
-		case X86_AND:
-		case X86_OR:
-		case X86_XOR:
-		case X86_MOV_REGS:
-		case X86_CMOVE:
-			sprintf(s, "%s, %s", rat_regname_x86(x1), rat_regname_x86(x2));
-			break;
-		case X86_CMP_CONST:
-			sprintf(s, "%s, %ld", rat_regname_x86(x1), x2);
-			break;
-		case X86_JMP:
-		case X86_JE:
-		case X86_JNE:
-		case X86_JG:
-		case X86_JGE:
-		case X86_JL:
-		case X86_JLE:
-		case X86_JS:
-		case X86_JZ:
-		case X86_CALL:
-			sprintf(s, "%s", str);
-			break;
-		case X86_ICALL:
-			sprintf(s, "%s", rat_regname_x86(x1));
-			break;
-		case X86_INT:
-			sprintf(s, "%ld", x1);
-			break;
-		case X86_RET:
-		case X86_NOP:
-		case X86_SYSCALL:
-			// nothing to do
-			break;
-			// --- END X86
-
 		default:
-			fprintf(stderr, "instr %d not implemented in ibu_write_instr\n", key);
 			return false;
 	}
 	return true;
+}
+
+static bool write_middle(enum IKEY key, int64_t x1, int64_t x2, char* str, char* s, int32_t x3) {
+
+	if (write_middle_avr(key, x1, x2, str, s, x3)) {
+		return true;
+	}
+	if (write_middle_x86(key, x1, x2, str, s, x3)) {
+		return true;
+	}
+
+	fprintf(stderr, "instr %d not implemented in ibu_write_instr\n", key);
+	return false;
 }
 
 static void strcat_reg(char* s, uint8_t reg) {
