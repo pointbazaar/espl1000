@@ -71,23 +71,23 @@ static bool write_middle(enum IKEY key, int64_t x1, int64_t x2, char* str, char*
 	switch (key) {
 
 		//r1, r2
-		case ADD:
-		case ADC:
-		case SUB:
-		case AND:
-		case OR:
-		case EOR:
-		case MUL:
-		case MULS:
-		case MULSU:
-		case FMUL:
-		case FMULS:
-		case FMULSU:
-		case CPSE:
-		case CP:
-		case CPC:
-		case MOV:
-		case SBC:
+		case AVR_ADD:
+		case AVR_ADC:
+		case AVR_SUB:
+		case AVR_AND:
+		case AVR_OR:
+		case AVR_EOR:
+		case AVR_MUL:
+		case AVR_MULS:
+		case AVR_MULSU:
+		case AVR_FMUL:
+		case AVR_FMULS:
+		case AVR_FMULSU:
+		case AVR_CPSE:
+		case AVR_CP:
+		case AVR_CPC:
+		case AVR_MOV:
+		case AVR_SBC:
 			strcat_reg(s, x1);
 			strcat(s, ", ");
 			strcat_reg(s, x2);
@@ -95,15 +95,15 @@ static bool write_middle(enum IKEY key, int64_t x1, int64_t x2, char* str, char*
 			//sprintf(s, "r%d, r%d", x1, x2); break;
 
 		//rd, k
-		case ADIW:
-		case SUBI:
-		case ANDI:
-		case ORI:
-		case CPI:
-		case LDI:
-		case LDS:
-		case IN:
-		case SBCI:
+		case AVR_ADIW:
+		case AVR_SUBI:
+		case AVR_ANDI:
+		case AVR_ORI:
+		case AVR_CPI:
+		case AVR_LDI:
+		case AVR_LDS:
+		case AVR_IN:
+		case AVR_SBCI:
 			strcat_reg(s, x1);
 			strcat(s, ", ");
 			strcat_num(s, x2);
@@ -111,64 +111,64 @@ static bool write_middle(enum IKEY key, int64_t x1, int64_t x2, char* str, char*
 			//sprintf(s, "r%d, %d", x1, x2); break;
 
 		//k, rd
-		case OUT:
-		case STS:
+		case AVR_OUT:
+		case AVR_STS:
 			sprintf(s, "%ld, r%ld", x1, x2);
 			break;
 
 		//rd
-		case COM:
-		case NEG:
-		case INC:
-		case DEC:
-		case TST:
-		case CLR:
-		case SER:
-		case PUSH:
-		case POP:
-		case LSL:
-		case LSR:
-		case ROL:
-		case ROR:
+		case AVR_COM:
+		case AVR_NEG:
+		case AVR_INC:
+		case AVR_DEC:
+		case AVR_TST:
+		case AVR_CLR:
+		case AVR_SER:
+		case AVR_PUSH:
+		case AVR_POP:
+		case AVR_LSL:
+		case AVR_LSR:
+		case AVR_ROL:
+		case AVR_ROR:
 			strcat_reg(s, x1);
 			break;
 			//sprintf(s, "r%d", x1); break;
 
 		//special using X,Y,Z
-		case LDX: sprintf(s, "r%ld, X", x1); break;
-		case LDXpostInc: sprintf(s, "r%ld, X+", x1); break;
-		case LDY: sprintf(s, "r%ld, Y", x1); break;
-		case LDYpostInc: sprintf(s, "r%ld, Y+", x1); break;
-		case LDZ: sprintf(s, "r%ld, Z", x1); break;
-		case LDZpostInc: sprintf(s, "r%ld, Z+", x1); break;
+		case AVR_LDX: sprintf(s, "r%ld, X", x1); break;
+		case AVR_LDXpostInc: sprintf(s, "r%ld, X+", x1); break;
+		case AVR_LDY: sprintf(s, "r%ld, Y", x1); break;
+		case AVR_LDYpostInc: sprintf(s, "r%ld, Y+", x1); break;
+		case AVR_LDZ: sprintf(s, "r%ld, Z", x1); break;
+		case AVR_LDZpostInc: sprintf(s, "r%ld, Z+", x1); break;
 
-		case LDDY: sprintf(s, "r%ld, Y+%ld", x1, x2); break;
-		case LDDZ: sprintf(s, "r%ld, Z+%ld", x1, x2); break;
+		case AVR_LDDY: sprintf(s, "r%ld, Y+%ld", x1, x2); break;
+		case AVR_LDDZ: sprintf(s, "r%ld, Z+%ld", x1, x2); break;
 
-		case STX: sprintf(s, "X, r%ld", x1); break;
-		case STXPLUS: sprintf(s, "X+, r%ld", x1); break;
-		case STY: sprintf(s, "Y, r%ld", x1); break;
-		case STZ: sprintf(s, "Z, r%ld", x1); break;
+		case AVR_STX: sprintf(s, "X, r%ld", x1); break;
+		case AVR_STXPLUS: sprintf(s, "X+, r%ld", x1); break;
+		case AVR_STY: sprintf(s, "Y, r%ld", x1); break;
+		case AVR_STZ: sprintf(s, "Z, r%ld", x1); break;
 
-		case STDY: sprintf(s, "Y+%ld, r%ld", x1, x2); break;
+		case AVR_STDY: sprintf(s, "Y+%ld, r%ld", x1, x2); break;
 
 		//ops with 1 label
-		case RJMP:
-		case JMP:
-		case CALL:
-		case BREQ:
-		case BRNE:
-		case BRLO:
-		case BRLT:
-		case BRGE:
-		case BRPL:
+		case AVR_RJMP:
+		case AVR_JMP:
+		case AVR_CALL:
+		case AVR_BREQ:
+		case AVR_BRNE:
+		case AVR_BRLO:
+		case AVR_BRLT:
+		case AVR_BRGE:
+		case AVR_BRPL:
 			sprintf(s, "%s", str);
 			break;
 
 		//ops without any operands
-		case RET:
-		case RETI:
-		case NOP:
+		case AVR_RET:
+		case AVR_RETI:
+		case AVR_NOP:
 			break;
 
 		// --- START X86
