@@ -155,7 +155,6 @@ char* MNEM[] = {
     // --- START X86 Instructions
     [X86_MOV_CONST] = "mov",
     [X86_MOV_REGS] = "mov",
-    [X86_MOV_LOAD] = "mov",
     [X86_MOV_STORE] = "mov",
     [X86_MOV_LOAD_WIDTH] = "mov",
     [X86_MOVZX_LOAD_WIDTH] = "movzx",
