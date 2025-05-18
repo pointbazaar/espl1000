@@ -62,12 +62,12 @@ static void case_arithmetic_add(int RAT_SCRATCH_REG, int rdest, int rsrc, bool d
 	if (src_wide)
 		reg2 = rsrc + 1;
 	else
-		ldi(reg2, 0, c);
+		avr_ldi(reg2, 0, c);
 
-	add(rdest, rsrc, c);
+	avr_add(rdest, rsrc, c);
 
 	if (dest_wide)
-		adc(rdest + 1, reg2, c);
+		avr_adc(rdest + 1, reg2, c);
 }
 
 static void case_arithmetic_sub(int RAT_SCRATCH_REG, int rdest, int rsrc, bool dest_wide, bool src_wide, struct IBuffer* ibu) {
@@ -76,15 +76,15 @@ static void case_arithmetic_sub(int RAT_SCRATCH_REG, int rdest, int rsrc, bool d
 
 	if (dest_wide) {
 		if (src_wide) {
-			sub(rdest, rsrc, c);
-			sbc(rdest + 1, rsrc + 1, c);
+			avr_sub(rdest, rsrc, c);
+			avr_sbc(rdest + 1, rsrc + 1, c);
 		} else {
-			ldi(RAT_SCRATCH_REG, 0, c);
-			sub(rdest, rsrc, c);
-			sbc(rdest + 1, RAT_SCRATCH_REG, c);
+			avr_ldi(RAT_SCRATCH_REG, 0, c);
+			avr_sub(rdest, rsrc, c);
+			avr_sbc(rdest + 1, RAT_SCRATCH_REG, c);
 		}
 	} else {
-		sub(rdest, rsrc, c);
+		avr_sub(rdest, rsrc, c);
 	}
 }
 
@@ -92,15 +92,15 @@ static void case_arithmetic_xor(int RAT_SCRATCH_REG, int rdest, int rsrc, bool d
 
 	char* c = "TAC_BINARY_OP ^";
 
-	eor(rdest, rsrc, c);
+	avr_eor(rdest, rsrc, c);
 
 	if (dest_wide) {
 
 		if (src_wide) {
-			eor(rdest + 1, rsrc + 1, c);
+			avr_eor(rdest + 1, rsrc + 1, c);
 		} else {
-			ldi(RAT_SCRATCH_REG, 0, c);
-			eor(rdest + 1, RAT_SCRATCH_REG, c);
+			avr_ldi(RAT_SCRATCH_REG, 0, c);
+			avr_eor(rdest + 1, RAT_SCRATCH_REG, c);
 		}
 	}
 }
@@ -123,28 +123,28 @@ static void case_shift(struct RAT* rat, struct TAC* tac, struct IBuffer* ibu) {
 		c = "TAC_BINARY_OP >>";
 	}
 
-	label(tmp_label);
+	avr_label(tmp_label);
 
 	if (tac_op(tac) == TAC_OP_SHIFT_LEFT) {
 
 		if (dest_wide) {
-			lsl(rdest + 1, c);
-			rol(rdest, c);
+			avr_lsl(rdest + 1, c);
+			avr_rol(rdest, c);
 		} else {
-			lsl(rdest, c);
+			avr_lsl(rdest, c);
 		}
 	} else if (tac_op(tac) == TAC_OP_SHIFT_RIGHT) {
 
 		if (dest_wide) {
-			lsr(rdest + 1, c);
-			ror(rdest, c);
+			avr_lsr(rdest + 1, c);
+			avr_ror(rdest, c);
 		} else {
-			lsr(rdest, c);
+			avr_lsr(rdest, c);
 		}
 	}
 
-	dec(rsrc, c);
-	brne(tmp_label, c);
+	avr_dec(rsrc, c);
+	avr_brne(tmp_label, c);
 }
 
 static void case_arithmetic(struct RAT* rat, struct TAC* tac, struct IBuffer* ibu) {
@@ -170,22 +170,22 @@ static void case_arithmetic(struct RAT* rat, struct TAC* tac, struct IBuffer* ib
 			break;
 
 		case TAC_OP_MUL:
-			mul(rdest, rsrc, "");
+			avr_mul(rdest, rsrc, "");
 			//TODO: figure out the case with wide temporaries
 			// after MUL, result is stored in r1:r0 (r0 is the low byte)
-			mov(rdest, r0, "move multiplication result");
+			avr_mov(rdest, r0, "move multiplication result");
 			break;
 
 		case TAC_OP_AND:
-			and(rdest, rsrc, "");
+			avr_and(rdest, rsrc, "");
 			if (dest_wide && src_wide)
-				and(rdest + 1, rsrc + 1, "");
+				avr_and(rdest + 1, rsrc + 1, "");
 			break;
 
 		case TAC_OP_OR:
-			or (rdest, rsrc, "");
+			avr_or(rdest, rsrc, "");
 			if (dest_wide && src_wide)
-				or (rdest + 1, rsrc + 1, "");
+				avr_or(rdest + 1, rsrc + 1, "");
 			break;
 
 		case TAC_OP_XOR:
@@ -241,20 +241,20 @@ static void case_cmp_lt(int RAT_SCRATCH_REG, struct IBuffer* ibu, int rdest, int
 	sprintf(Ltrue, "Ltrue%d", label_counter);
 	sprintf(Lend, "Lend%d", label_counter++);
 
-	cp(rdest, rsrc, c);
+	avr_cp(rdest, rsrc, c);
 	if (wide)
-		cpc(rdest + 1, rsrc + 1, c);
+		avr_cpc(rdest + 1, rsrc + 1, c);
 
-	brlt(Ltrue, c);
+	avr_brlt(Ltrue, c);
 
-	clr(rdest, c);
-	rjmp(Lend, c);
-	label(Ltrue);
+	avr_clr(rdest, c);
+	avr_rjmp(Lend, c);
+	avr_label(Ltrue);
 
-	ldi(RAT_SCRATCH_REG, 1, c);
-	mov(rdest, RAT_SCRATCH_REG, c);
+	avr_ldi(RAT_SCRATCH_REG, 1, c);
+	avr_mov(rdest, RAT_SCRATCH_REG, c);
 
-	label(Lend);
+	avr_label(Lend);
 }
 
 static void case_cmp_ge_8bit(int RAT_SCRATCH_REG, struct IBuffer* ibu, int rdest, int rsrc) {
@@ -270,15 +270,15 @@ static void case_cmp_ge_8bit(int RAT_SCRATCH_REG, struct IBuffer* ibu, int rdest
 	char Ltrue[20];
 	sprintf(Ltrue, "Ltrue%d", label_counter++);
 
-	ldi(RAT_SCRATCH_REG, 1, c);
+	avr_ldi(RAT_SCRATCH_REG, 1, c);
 
-	cp(rdest, rsrc, c);
+	avr_cp(rdest, rsrc, c);
 
-	brge(Ltrue, c);
-	ldi(RAT_SCRATCH_REG, 0, c);
+	avr_brge(Ltrue, c);
+	avr_ldi(RAT_SCRATCH_REG, 0, c);
 
-	label(Ltrue);
-	mov(rdest, RAT_SCRATCH_REG, c);
+	avr_label(Ltrue);
+	avr_mov(rdest, RAT_SCRATCH_REG, c);
 }
 
 static void case_cmp_ge_16bit(int RAT_SCRATCH_REG, struct IBuffer* ibu, int rdest, int rsrc) {
@@ -288,22 +288,22 @@ static void case_cmp_ge_16bit(int RAT_SCRATCH_REG, struct IBuffer* ibu, int rdes
 	sprintf(Ltrue, "Ltrue%d", label_counter++);
 	sprintf(Lfalse, "Lfalse%d", label_counter++);
 
-	ldi(RAT_SCRATCH_REG, 1, c);
+	avr_ldi(RAT_SCRATCH_REG, 1, c);
 
 	// compare the upper bytes
-	cp(rdest + 1, rsrc + 1, c);
-	brlo(Lfalse, c);
-	cp(rsrc + 1, rdest + 1, c);
-	brlo(Ltrue, c);
+	avr_cp(rdest + 1, rsrc + 1, c);
+	avr_brlo(Lfalse, c);
+	avr_cp(rsrc + 1, rdest + 1, c);
+	avr_brlo(Ltrue, c);
 
-	cp(rdest, rsrc, c);
-	brge(Ltrue, c);
+	avr_cp(rdest, rsrc, c);
+	avr_brge(Ltrue, c);
 
-	label(Lfalse);
-	ldi(RAT_SCRATCH_REG, 0, c);
+	avr_label(Lfalse);
+	avr_ldi(RAT_SCRATCH_REG, 0, c);
 
-	label(Ltrue);
-	mov(rdest, RAT_SCRATCH_REG, c);
+	avr_label(Ltrue);
+	avr_mov(rdest, RAT_SCRATCH_REG, c);
 }
 
 static void case_cmp_ge(int RAT_SCRATCH_REG, struct IBuffer* ibu, int rdest, int rsrc, bool wide) {
@@ -320,17 +320,17 @@ static void case_cmp_neq_8bit(struct IBuffer* ibu, int rdest, int rsrc) {
 	//if they were equal, rdest will be 0, meaning false
 	//otherwise it will be nonzero, meaning true
 
-	sub(rdest, rsrc, c);
+	avr_sub(rdest, rsrc, c);
 }
 
 static void case_cmp_neq_16bit(int RAT_SCRATCH_REG, struct IBuffer* ibu, int rdest, int rsrc) {
 
-	ldi(RAT_SCRATCH_REG, 0, c);
-	cpse(rdest, rsrc, c);
-	ldi(RAT_SCRATCH_REG, 1, c);
-	cpse(rdest + 1, rsrc + 1, c);
-	ldi(RAT_SCRATCH_REG, 1, c);
-	mov(rdest, RAT_SCRATCH_REG, c);
+	avr_ldi(RAT_SCRATCH_REG, 0, c);
+	avr_cpse(rdest, rsrc, c);
+	avr_ldi(RAT_SCRATCH_REG, 1, c);
+	avr_cpse(rdest + 1, rsrc + 1, c);
+	avr_ldi(RAT_SCRATCH_REG, 1, c);
+	avr_mov(rdest, RAT_SCRATCH_REG, c);
 }
 
 static void case_cmp_neq(int RAT_SCRATCH_REG, struct IBuffer* ibu, int rdest, int rsrc, bool wide) {
@@ -346,14 +346,14 @@ static void case_cmp_eq(int RAT_SCRATCH_REG, struct IBuffer* ibu, int rdest, int
 	//we use the scratch register
 
 	//4 instructions
-	ldi(RAT_SCRATCH_REG, 1, c);
-	cpse(rdest, rsrc, c);
-	clr(RAT_SCRATCH_REG, c);
+	avr_ldi(RAT_SCRATCH_REG, 1, c);
+	avr_cpse(rdest, rsrc, c);
+	avr_clr(RAT_SCRATCH_REG, c);
 
 	if (wide) {
-		cpse(rdest + 1, rsrc + 1, c);
-		clr(RAT_SCRATCH_REG, c);
+		avr_cpse(rdest + 1, rsrc + 1, c);
+		avr_clr(RAT_SCRATCH_REG, c);
 	}
 
-	mov(rdest, RAT_SCRATCH_REG, c);
+	avr_mov(rdest, RAT_SCRATCH_REG, c);
 }

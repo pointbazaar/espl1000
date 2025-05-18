@@ -18,12 +18,12 @@ void compile_tac_load(struct RAT* rat, struct TAC* tac, struct IBuffer* ibu) {
 
 	const int reg_src = rat_get_register(rat, tac_arg1(tac));
 
-	mov(XL, reg_src, c);
+	avr_mov(XL, reg_src, c);
 
 	if (rat_is_wide(rat, tac_arg1(tac)))
-		mov(XH, reg_src + 1, c);
+		avr_mov(XH, reg_src + 1, c);
 	else
-		ldi(XH, 0, c);
+		avr_ldi(XH, 0, c);
 
 	const uint8_t width = tac_load_store_width(tac);
 
@@ -33,13 +33,13 @@ void compile_tac_load(struct RAT* rat, struct TAC* tac, struct IBuffer* ibu) {
 	if (width == 2) {
 
 		// what if we want to load a 16 bit value?
-		ldXpostInc(reg_dest, c);
-		ldX(reg_dest + 1, c);
+		avr_ldXpostInc(reg_dest, c);
+		avr_ldX(reg_dest + 1, c);
 	} else {
-		ldX(reg_dest, c);
+		avr_ldX(reg_dest, c);
 
 		if (rat_is_wide(rat, tac_dest(tac))) {
-			clr(reg_dest + 1, c);
+			avr_clr(reg_dest + 1, c);
 		}
 	}
 }

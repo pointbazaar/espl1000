@@ -20,7 +20,7 @@ void compile_tac_return(struct RAT* rat, struct TAC* tac, struct Ctx* ctx, struc
 	//destroy the stackframe
 	for (size_t k = 0; k < lvst_stack_frame_size_avr(ctx_tables(ctx)->lvst); k++) {
 
-		pop(0, "destroy frame");
+		avr_pop(0, "destroy frame");
 		//pop r0 ; destroy frame
 	}
 
@@ -28,11 +28,11 @@ void compile_tac_return(struct RAT* rat, struct TAC* tac, struct Ctx* ctx, struc
 
 	int reg = rat_get_register(rat, tac_dest(tac));
 
-	mov(0, reg, c);
+	avr_mov(0, reg, c);
 
 	if (rat_is_wide(rat, tac_dest(tac))) {
-		mov(1, reg + 1, c);
+		avr_mov(1, reg + 1, c);
 	}
 
-	ret(c);
+	avr_ret(c);
 }

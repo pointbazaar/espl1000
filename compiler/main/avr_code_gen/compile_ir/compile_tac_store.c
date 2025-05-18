@@ -22,27 +22,27 @@ void compile_tac_store(struct RAT* rat, struct TAC* tac, struct IBuffer* ibu) {
 	assert(store_width <= 2);
 
 	//set X
-	mov(XL, reg_dest, c);
+	avr_mov(XL, reg_dest, c);
 
 	if (dest_wide)
-		mov(XH, reg_dest + 1, c);
+		avr_mov(XH, reg_dest + 1, c);
 	else
-		ldi(XH, 0, c);
+		avr_ldi(XH, 0, c);
 
 	if (src_wide) {
 		//st X+, reg_src
 		//st X, reg_src+1
-		stXplus(reg_src, c);
-		stX(reg_src + 1, c);
+		avr_stXplus(reg_src, c);
+		avr_stX(reg_src + 1, c);
 	} else {
 		if (store_width == 2) {
 			// clear the upper byte at the target address
-			ldi(rat_scratch_reg(rat), 0, c);
-			stXplus(reg_src, c);
-			stX(rat_scratch_reg(rat), c);
+			avr_ldi(rat_scratch_reg(rat), 0, c);
+			avr_stXplus(reg_src, c);
+			avr_stX(rat_scratch_reg(rat), c);
 		} else {
 			//st X, reg_src
-			stX(reg_src, c);
+			avr_stX(reg_src, c);
 		}
 	}
 }

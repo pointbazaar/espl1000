@@ -21,32 +21,32 @@ void compile_tac_unary_op(struct RAT* rat, struct TAC* tac, struct IBuffer* ibu)
 
 		case TAC_OP_UNARY_NOT:
 		case TAC_OP_UNARY_BITWISE_NEG:
-			mov(reg_dest, reg_src, c);
-			com(reg_dest, c);
+			avr_mov(reg_dest, reg_src, c);
+			avr_com(reg_dest, c);
 
 			if (wide) {
-				mov(reg_dest + 1, reg_src + 1, c);
-				com(reg_dest + 1, c);
+				avr_mov(reg_dest + 1, reg_src + 1, c);
+				avr_com(reg_dest + 1, c);
 			}
 			break;
 
 		case TAC_OP_UNARY_MINUS:
 
 			if (wide) {
-				mov(reg_dest, reg_src, c);
-				mov(reg_dest + 1, reg_src + 1, c);
+				avr_mov(reg_dest, reg_src, c);
+				avr_mov(reg_dest + 1, reg_src + 1, c);
 
-				com(reg_dest, c);
-				com(reg_dest + 1, c);
+				avr_com(reg_dest, c);
+				avr_com(reg_dest + 1, c);
 
-				ldi(RAT_SCRATCH_REG, 0, c);
-				inc(reg_dest, c);
-				adc(reg_dest + 1, RAT_SCRATCH_REG, c);
+				avr_ldi(RAT_SCRATCH_REG, 0, c);
+				avr_inc(reg_dest, c);
+				avr_adc(reg_dest + 1, RAT_SCRATCH_REG, c);
 				return;
 			}
 
-			mov(reg_dest, reg_src, c);
-			neg(reg_dest, c);
+			avr_mov(reg_dest, reg_src, c);
+			avr_neg(reg_dest, c);
 			break;
 		default:
 			break;

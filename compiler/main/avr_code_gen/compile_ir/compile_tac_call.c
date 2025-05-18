@@ -24,14 +24,14 @@ void compile_tac_call(struct RAT* rat, struct TAC* tac, struct IBuffer* ibu, str
 		function_name = sst_at(ctx_tables(ctx)->sst, tac_arg1(tac))->name;
 	}
 
-	call(function_name, "TAC_CALL");
+	avr_call(function_name, "TAC_CALL");
 
 	if (reg_dest != 0) {
-		mov(reg_dest, 0, "TAC_CALL");
+		avr_mov(reg_dest, 0, "TAC_CALL");
 
 		if (wide_dest) {
 			// TODO: check if function return type is wide
-			mov(reg_dest + 1, 1, "TAC_CALL");
+			avr_mov(reg_dest + 1, 1, "TAC_CALL");
 		}
 	}
 
@@ -47,11 +47,11 @@ void compile_tac_call(struct RAT* rat, struct TAC* tac, struct IBuffer* ibu, str
 	uint32_t size = sst_args_size_avr(sst, name);
 
 	for (uint32_t i = 0; i < size; i++) {
-		pop(RAT_SCRATCH_REG, "remove call params");
+		avr_pop(RAT_SCRATCH_REG, "remove call params");
 	}
 
 	// load possibly corrupted frame pointer
 	//load base pointer Y
-	in(YL, SPL, "restore frame pointer Y after call");
-	in(YH, SPH, "restore frame pointer Y after call");
+	avr_in(YL, SPL, "restore frame pointer Y after call");
+	avr_in(YH, SPH, "restore frame pointer Y after call");
 }
