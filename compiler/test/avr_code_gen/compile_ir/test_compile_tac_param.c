@@ -68,7 +68,7 @@ void test_compile_tac_param_case_16bit() {
 	struct TACBuffer* b = tacbuffer_ctor();
 
 	tacbuffer_append(b, makeTACSetupSP());
-	tacbuffer_append(b, makeTACConst16(0, fixed_value));
+	tacbuffer_append(b, makeTACConst(0, fixed_value));
 	tacbuffer_append(b, makeTACParam(0, true, 0, false));
 	tacbuffer_append(b, makeTACReturn(0));
 

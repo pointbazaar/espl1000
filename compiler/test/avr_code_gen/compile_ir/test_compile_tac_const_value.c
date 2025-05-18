@@ -51,7 +51,7 @@ void test_compile_tac_const_value_test_16bit() {
 
 		struct TACBuffer* b = tacbuffer_ctor();
 
-		tacbuffer_append(b, makeTACConst16(1, fixed_value));
+		tacbuffer_append(b, makeTACConst(1, fixed_value));
 
 		vmcu_system_t* system = prepare_vmcu_system_from_tacbuffer(b);
 

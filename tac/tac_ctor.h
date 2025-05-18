@@ -34,7 +34,6 @@ struct TAC* makeTACLoadLocalAddr(uint32_t tmp, uint32_t local_index, uint8_t add
 struct TAC* makeTACLoadFunctionPtr(uint32_t tmp, uint32_t sst_index);
 
 struct TAC* makeTACConst(uint32_t tmp, int value);
-struct TAC* makeTACConst16(uint32_t tmp, int value);
 struct TAC* makeTACConstData(uint32_t tmp, uint32_t value_offset_data_table);
 
 struct TAC* makeTACBinOp(uint32_t dest, enum TAC_OP op, uint32_t src);
