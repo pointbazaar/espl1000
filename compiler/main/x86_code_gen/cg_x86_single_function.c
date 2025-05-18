@@ -15,8 +15,6 @@
 #include "ast/ast.h"
 #include "ast/ast_declare.h"
 
-#include "ibuffer/ibuffer_avr.h"
-
 #include "tables/symtable/symtable.h"
 #include "cg_x86_single_function.h"
 #include "allocate_registers_x86.h"
