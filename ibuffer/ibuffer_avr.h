@@ -18,8 +18,8 @@
 #define SPH 0x3e
 
 #define RAMEND 0x085f
-#define low(X) (X & 0xff)
-#define high(X) (X >> 8)
+#define low(X) (((X) & 0xff))
+#define high(X) (((X) >> 8))
 
 struct Instr;
 
