@@ -128,15 +128,6 @@ struct TAC* makeTACConst(uint32_t tmp, int value) {
 	return t;
 }
 
-struct TAC* makeTACConst16(uint32_t tmp, int value) {
-
-	struct TAC* t = makeTAC();
-	t->kind = TAC_CONST_VALUE;
-	t->dest = tmp;
-	t->const_value = value;
-	return t;
-}
-
 struct TAC* makeTACConstData(uint32_t tmp, uint32_t value_offset_data_table) {
 	struct TAC* t = makeTAC();
 	t->kind = TAC_CONST_DATA;
