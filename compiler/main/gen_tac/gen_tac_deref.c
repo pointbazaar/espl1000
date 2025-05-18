@@ -16,7 +16,7 @@ bool tac_deref(struct TACBuffer* buffer, struct Deref* d, struct Ctx* ctx) {
 
 	const uint32_t width = tac_load_store_width(last);
 
-	tacbuffer_append(buffer, makeTACLoad(dest, tacbuffer_last_dest(buffer), width));
+	tacbuffer_append(buffer, makeTACLoad(d->super.line_num, dest, tacbuffer_last_dest(buffer), width));
 
 	return true;
 }

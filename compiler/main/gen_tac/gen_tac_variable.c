@@ -31,7 +31,7 @@ void tac_variable(struct TACBuffer* buf, struct Variable* v, struct Ctx* ctx) {
 		}
 	}
 
-	tacbuffer_append(buf, makeTACLoad(make_temp(), tlast, last_type_width));
+	tacbuffer_append(buf, makeTACLoad(v->super.line_num, make_temp(), tlast, last_type_width));
 }
 
 void tac_variable_addr(struct TACBuffer* buffer, struct Variable* v, struct Ctx* ctx, uint8_t* last_type_width) {

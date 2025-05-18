@@ -21,9 +21,9 @@ void test_compile_tac_goto() {
 
 	struct TACBuffer* b = tacbuffer_ctor();
 
-	tacbuffer_append(b, makeTACLabel(43));
-	tacbuffer_append(b, makeTACGoto(43));
-	tacbuffer_append(b, makeTACReturn(0));
+	tacbuffer_append(b, makeTACLabel(0, 43));
+	tacbuffer_append(b, makeTACGoto(0, 43));
+	tacbuffer_append(b, makeTACReturn(0, 0));
 
 	vmcu_system_t* system = prepare_vmcu_system_from_tacbuffer(b);
 

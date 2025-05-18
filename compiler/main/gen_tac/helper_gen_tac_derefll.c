@@ -36,10 +36,10 @@ void tac_derefll_single(struct TACBuffer* buffer, struct DerefLL* dll, struct Ty
 
 			if (lvst_contains(lvst, name)) {
 				const uint32_t local_index = lvst_index_of(lvst, name);
-				tacbuffer_append(buffer, makeTACLoadLocalAddr(make_temp(), local_index, width));
+				tacbuffer_append(buffer, makeTACLoadLocalAddr(0, make_temp(), local_index, width));
 			} else if (sst_contains(sst, name)) {
 				const uint32_t index = sst_index_of(sst, name);
-				tacbuffer_append(buffer, makeTACLoadFunctionPtr(make_temp(), index));
+				tacbuffer_append(buffer, makeTACLoadFunctionPtr(0, make_temp(), index));
 			} else {
 				fprintf(stderr, "%s: %s not found in LVST or SST\n", __func__, dll->initial->name);
 				assert(false);
@@ -52,7 +52,7 @@ void tac_derefll_single(struct TACBuffer* buffer, struct DerefLL* dll, struct Ty
 			tac_expr(buffer, dll->index_expr, ctx);
 			uint32_t texpr = tacbuffer_last_dest(buffer);
 
-			tacbuffer_append(buffer, makeTACBinOp(tbase, TAC_OP_ADD, texpr));
+			tacbuffer_append(buffer, makeTACBinOp(0, tbase, TAC_OP_ADD, texpr));
 		} break;
 
 		case DEREFLL_MEMBER: {
@@ -77,14 +77,14 @@ void tac_derefll_single(struct TACBuffer* buffer, struct DerefLL* dll, struct Ty
 			if (offset != 0) {
 				const uint32_t tbase = tacbuffer_last_dest(buffer);
 				const uint32_t tinc = make_temp();
-				tacbuffer_append(buffer, makeTACConst(tinc, offset));
-				tacbuffer_append(buffer, makeTACBinOp(tbase, TAC_OP_ADD, tinc));
+				tacbuffer_append(buffer, makeTACConst(0, tinc, offset));
+				tacbuffer_append(buffer, makeTACBinOp(0, tbase, TAC_OP_ADD, tinc));
 			}
 		} break;
 
 		case DEREFLL_DEREF:
 			// TODO: the width has to be specific to what is being dereferenced
-			tacbuffer_append(buffer, makeTACLoad(make_temp(), tacbuffer_last_dest(buffer), width));
+			tacbuffer_append(buffer, makeTACLoad(0, make_temp(), tacbuffer_last_dest(buffer), width));
 			break;
 	}
 }

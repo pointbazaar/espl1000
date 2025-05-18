@@ -18,10 +18,10 @@ void test_x86_compile_tac_goto() {
 
 	struct TACBuffer* b = tacbuffer_ctor();
 
-	tacbuffer_append(b, makeTACSetupStackframe(0));
-	tacbuffer_append(b, makeTACLabel(43));
-	tacbuffer_append(b, makeTACGoto(43));
-	tacbuffer_append(b, makeTACReturn(0));
+	tacbuffer_append(b, makeTACSetupStackframe(0, 0));
+	tacbuffer_append(b, makeTACLabel(0, 43));
+	tacbuffer_append(b, makeTACGoto(0, 43));
+	tacbuffer_append(b, makeTACReturn(0, 0));
 
 	struct sd_uc_engine* system = sd_uc_engine_from_tacbuffer_v2(b, false);
 

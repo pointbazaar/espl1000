@@ -97,12 +97,23 @@ char* tacbuffer_tostring(struct TACBuffer* buffer, bool graphviz, struct SST* ss
 
 	for (size_t k = 0; k < buffer->count; k++) {
 
+		struct TAC* t = buffer->buffer[k];
+
 		// print indices for easy debugging
 		char num_str[50];
-		sprintf(num_str, "%03ld:   ", k);
+		sprintf(num_str, "%-3ld ", k);
 		strcat(res, num_str);
 
-		char* s = tac_tostring(buffer->buffer[k], sst, lvst);
+		char line_num_str[50];
+		const uint32_t line_num = tac_line_num(t);
+		if (line_num > 0) {
+			sprintf(line_num_str, "L%-3d  ", line_num);
+		} else {
+			strcpy(line_num_str, "      ");
+		}
+		strcat(res, line_num_str);
+
+		char* s = tac_tostring(t, sst, lvst);
 		strcat(res, s);
 
 		strcat(res, (graphviz) ? "\\l" : "\n");

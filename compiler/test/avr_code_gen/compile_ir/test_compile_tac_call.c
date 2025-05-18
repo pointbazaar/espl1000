@@ -23,13 +23,12 @@ void test_compile_tac_call_case_recurses() {
 
 	struct TACBuffer* b = tacbuffer_ctor();
 
-	tacbuffer_append(b, makeTACLabelFunction(0));
-	tacbuffer_append(b, makeTACConst(0, value));
+	tacbuffer_append(b, makeTACLabelFunction(0, 0));
+	tacbuffer_append(b, makeTACConst(0, 0, value));
 
-	//tacbuffer_append(b, makeTACCall(1, "main"));
-	tacbuffer_append(b, makeTACCall(1, 0));
+	tacbuffer_append(b, makeTACCall(0, 1, 0));
 
-	tacbuffer_append(b, makeTACReturn(0));
+	tacbuffer_append(b, makeTACReturn(0, 0));
 
 	vmcu_system_t* system = prepare_vmcu_system_from_tacbuffer(b);
 
@@ -53,10 +52,10 @@ void test_compile_tac_call_case_returns_value_8bit() {
 	struct TACBuffer* b = tacbuffer_ctor();
 
 	//main
-	tacbuffer_append(b, makeTACLabelFunction(0));
-	tacbuffer_append(b, makeTACConst(0, value));
+	tacbuffer_append(b, makeTACLabelFunction(0, 0));
+	tacbuffer_append(b, makeTACConst(0, 0, value));
 
-	tacbuffer_append(b, makeTACReturn(0));
+	tacbuffer_append(b, makeTACReturn(0, 0));
 
 	vmcu_system_t* system = prepare_vmcu_system_from_tacbuffer(b);
 
@@ -76,10 +75,10 @@ void test_compile_tac_call_case_returns_value_16bit() {
 	struct TACBuffer* b = tacbuffer_ctor();
 
 	//main
-	tacbuffer_append(b, makeTACLabelFunction(0));
-	tacbuffer_append(b, makeTACConst(0, value));
+	tacbuffer_append(b, makeTACLabelFunction(0, 0));
+	tacbuffer_append(b, makeTACConst(0, 0, value));
 
-	tacbuffer_append(b, makeTACReturn(0));
+	tacbuffer_append(b, makeTACReturn(0, 0));
 
 	vmcu_system_t* system = prepare_vmcu_system_from_tacbuffer(b);
 

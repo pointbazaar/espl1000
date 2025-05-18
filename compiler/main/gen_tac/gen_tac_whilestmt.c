@@ -69,15 +69,15 @@ static bool case_loop(struct TACBuffer* buffer, struct WhileStmt* w, struct Ctx*
 
 	ctx_enter_loop(ctx, l0, lend);
 
-	tacbuffer_append(buffer, makeTACLabel(l0));
+	tacbuffer_append(buffer, makeTACLabel(w->super.line_num, l0));
 
 	if (!tac_stmtblock(buffer, w->block, ctx)) {
 		return false;
 	}
 
-	tacbuffer_append(buffer, makeTACGoto(l0));
+	tacbuffer_append(buffer, makeTACGoto(w->super.line_num, l0));
 
-	tacbuffer_append(buffer, makeTACLabel(lend));
+	tacbuffer_append(buffer, makeTACLabel(w->super.line_num, lend));
 
 	return ctx_exit_loop(ctx);
 }
@@ -98,26 +98,26 @@ static bool case_default(struct TACBuffer* buffer, struct WhileStmt* w, struct C
 
 	ctx_enter_loop(ctx, l0, lend);
 
-	tacbuffer_append(buffer, makeTACLabel(l0));
+	tacbuffer_append(buffer, makeTACLabel(w->super.line_num, l0));
 
 	if (!tac_expr(buffer, w->condition, ctx)) {
 		return false;
 	}
 
-	struct TAC* t = makeTACIfGoto(tacbuffer_last_dest(buffer), l1);
+	struct TAC* t = makeTACIfGoto(w->super.line_num, tacbuffer_last_dest(buffer), l1);
 	tacbuffer_append(buffer, t);
 
-	tacbuffer_append(buffer, makeTACGoto(lend));
+	tacbuffer_append(buffer, makeTACGoto(w->super.line_num, lend));
 
-	tacbuffer_append(buffer, makeTACLabel(l1));
+	tacbuffer_append(buffer, makeTACLabel(w->super.line_num, l1));
 
 	if (!tac_stmtblock(buffer, w->block, ctx)) {
 		return false;
 	}
 
-	tacbuffer_append(buffer, makeTACGoto(l0));
+	tacbuffer_append(buffer, makeTACGoto(w->super.line_num, l0));
 
-	tacbuffer_append(buffer, makeTACLabel(lend));
+	tacbuffer_append(buffer, makeTACLabel(w->super.line_num, lend));
 
 	return ctx_exit_loop(ctx);
 }

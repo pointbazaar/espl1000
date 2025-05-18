@@ -23,16 +23,16 @@ static void test_call_no_args(uint32_t value, bool debug) {
 
 	const size_t stackframe_size = 0;
 	const size_t stackframe_size_bytes = stackframe_size * 8;
-	tacbuffer_append(b, makeTACLabelFunction(0));
-	tacbuffer_append(b, makeTACSetupStackframe(stackframe_size_bytes));
+	tacbuffer_append(b, makeTACLabelFunction(0, 0));
+	tacbuffer_append(b, makeTACSetupStackframe(0, stackframe_size_bytes));
 
-	tacbuffer_append(b, makeTACCall(0, 1));
-	tacbuffer_append(b, makeTACReturn(0));
+	tacbuffer_append(b, makeTACCall(0, 0, 1));
+	tacbuffer_append(b, makeTACReturn(0, 0));
 
-	tacbuffer_append(b2, makeTACLabelFunction(1));
-	tacbuffer_append(b2, makeTACSetupStackframe(stackframe_size_bytes));
-	tacbuffer_append(b2, makeTACConst(2, value));
-	tacbuffer_append(b2, makeTACReturn(2));
+	tacbuffer_append(b2, makeTACLabelFunction(0, 1));
+	tacbuffer_append(b2, makeTACSetupStackframe(0, stackframe_size_bytes));
+	tacbuffer_append(b2, makeTACConst(0, 2, value));
+	tacbuffer_append(b2, makeTACReturn(0, 2));
 
 	struct sd_uc_engine* system = sd_uc_engine_from_tacbuffer_v4(b, b2, debug, true, stackframe_size, 0);
 

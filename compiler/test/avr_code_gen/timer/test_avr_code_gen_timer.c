@@ -50,17 +50,17 @@ static void test_timer0() {
 	struct TACBuffer* b = tacbuffer_ctor();
 
 	//general timer0 setup
-	append(makeTACConst(1, 0x0));
+	append(makeTACConst(0, 1, 0x0));
 
-	append(makeTACConst(2, TCCR0A));
-	append(makeTACStore(2, 1, 1));
+	append(makeTACConst(0, 2, TCCR0A));
+	append(makeTACStore(0, 2, 1, 1));
 
 	//clock prescaler select, no prescaler,
 	//so timer0 should increment with full clock speed
-	append(makeTACConst(1, 0b00000001));
+	append(makeTACConst(0, 1, 0b00000001));
 
-	append(makeTACConst(2, TCCR0B));
-	append(makeTACStore(2, 1, 1));
+	append(makeTACConst(0, 2, TCCR0B));
+	append(makeTACStore(0, 2, 1, 1));
 
 	//timer should start working now
 

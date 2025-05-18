@@ -23,9 +23,9 @@ void test_compile_tac_copy_case_8bit() {
 
 		struct TACBuffer* b = tacbuffer_ctor();
 
-		tacbuffer_append(b, makeTACConst(0, fixed_value));
-		tacbuffer_append(b, makeTACCopy(1, 0));
-		tacbuffer_append(b, makeTACReturn(1));
+		tacbuffer_append(b, makeTACConst(0, 0, fixed_value));
+		tacbuffer_append(b, makeTACCopy(0, 1, 0));
+		tacbuffer_append(b, makeTACReturn(0, 1));
 
 		vmcu_system_t* system = prepare_vmcu_system_from_tacbuffer(b);
 
@@ -45,9 +45,9 @@ void test_compile_tac_copy_case_16bit() {
 
 		struct TACBuffer* b = tacbuffer_ctor();
 
-		tacbuffer_append(b, makeTACConst(0, fixed_value));
-		tacbuffer_append(b, makeTACCopy(1, 0));
-		tacbuffer_append(b, makeTACReturn(1));
+		tacbuffer_append(b, makeTACConst(0, 0, fixed_value));
+		tacbuffer_append(b, makeTACCopy(0, 1, 0));
+		tacbuffer_append(b, makeTACReturn(0, 1));
 
 		vmcu_system_t* system = prepare_vmcu_system_from_tacbuffer(b);
 

@@ -26,7 +26,7 @@ void test_compile_tac_nop() {
 	int n = 8;
 
 	for (int i = 0; i < n; i++) {
-		tacbuffer_append(b, makeTACNop());
+		tacbuffer_append(b, makeTACNop(0));
 	}
 
 	vmcu_system_t* system = prepare_vmcu_system_from_tacbuffer(b);

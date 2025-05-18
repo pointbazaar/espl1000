@@ -23,7 +23,7 @@ void test_x86_compile_tac_nop() {
 	int n = 8;
 
 	for (int i = 0; i < n; i++) {
-		tacbuffer_append(b, makeTACNop());
+		tacbuffer_append(b, makeTACNop(0));
 	}
 
 	struct sd_uc_engine* system = sd_uc_engine_from_tacbuffer_v2(b, false);
