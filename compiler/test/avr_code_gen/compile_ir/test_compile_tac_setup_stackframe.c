@@ -24,8 +24,8 @@ void test_compile_tac_setup_stackframe() {
 
 		struct TACBuffer* buffer = tacbuffer_ctor();
 
-		tacbuffer_append(buffer, makeTACSetupSP());
-		tacbuffer_append(buffer, makeTACSetupStackframe(size));
+		tacbuffer_append(buffer, makeTACSetupSP(0));
+		tacbuffer_append(buffer, makeTACSetupStackframe(0, size));
 
 		vmcu_system_t* system = prepare_vmcu_system_from_tacbuffer(buffer);
 

@@ -31,29 +31,29 @@ static void common(int a1, enum TAC_OP op, int a2, bool expect_true) {
 
 	const uint8_t width = 1;
 
-	tacbuffer_append(b, makeTACConst(1, a1));
-	tacbuffer_append(b, makeTACConst(2, a2));
-	tacbuffer_append(b, makeTACIfCMPGoto(1, op, 2, ltrue));
-	tacbuffer_append(b, makeTACGoto(lfalse));
-	tacbuffer_append(b, makeTACGoto(lend));
+	tacbuffer_append(b, makeTACConst(0, 1, a1));
+	tacbuffer_append(b, makeTACConst(0, 2, a2));
+	tacbuffer_append(b, makeTACIfCMPGoto(0, 1, op, 2, ltrue));
+	tacbuffer_append(b, makeTACGoto(0, lfalse));
+	tacbuffer_append(b, makeTACGoto(0, lend));
 
-	tacbuffer_append(b, makeTACLabel(ltrue));
-	tacbuffer_append(b, makeTACConst(0, valuetrue));
+	tacbuffer_append(b, makeTACLabel(0, ltrue));
+	tacbuffer_append(b, makeTACConst(0, 0, valuetrue));
 
-	tacbuffer_append(b, makeTACConst(3, address));
-	tacbuffer_append(b, makeTACStore(3, 0, width));
+	tacbuffer_append(b, makeTACConst(0, 3, address));
+	tacbuffer_append(b, makeTACStore(0, 3, 0, width));
 
-	tacbuffer_append(b, makeTACGoto(lend));
+	tacbuffer_append(b, makeTACGoto(0, lend));
 
-	tacbuffer_append(b, makeTACLabel(lfalse));
-	tacbuffer_append(b, makeTACConst(0, valuefalse));
+	tacbuffer_append(b, makeTACLabel(0, lfalse));
+	tacbuffer_append(b, makeTACConst(0, 0, valuefalse));
 
-	tacbuffer_append(b, makeTACConst(3, address + 1));
-	tacbuffer_append(b, makeTACStore(3, 0, width));
-	tacbuffer_append(b, makeTACGoto(lend));
+	tacbuffer_append(b, makeTACConst(0, 3, address + 1));
+	tacbuffer_append(b, makeTACStore(0, 3, 0, width));
+	tacbuffer_append(b, makeTACGoto(0, lend));
 
-	tacbuffer_append(b, makeTACLabel(lend));
-	tacbuffer_append(b, makeTACGoto(lend));
+	tacbuffer_append(b, makeTACLabel(0, lend));
+	tacbuffer_append(b, makeTACGoto(0, lend));
 
 	vmcu_system_t* system = prepare_vmcu_system_from_tacbuffer(b);
 

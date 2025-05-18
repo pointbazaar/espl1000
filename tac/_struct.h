@@ -21,6 +21,11 @@ struct TAC {
 	// this is the PRIVATE struct definition, it should
 	// only be included in implementation files in tac/
 
+	// Approximate source line number
+	// of the AST node from which it was generated.
+	// Value of 0 means this invalid / unpopulated.
+	uint32_t line_no;
+
 	//three address code
 	uint32_t label_index;
 

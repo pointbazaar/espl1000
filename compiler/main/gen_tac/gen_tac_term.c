@@ -25,7 +25,7 @@ static bool tac_term_enum_value(struct TACBuffer* buffer, struct Term* t, struct
 		return false;
 	}
 
-	tacbuffer_append(buffer, makeTACConst(make_temp(), value));
+	tacbuffer_append(buffer, makeTACConst(t->super.line_num, make_temp(), value));
 
 	return true;
 }

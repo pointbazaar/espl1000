@@ -31,20 +31,20 @@ static bool tac_ifstmt_1_block(struct TACBuffer* buffer, struct IfStmt* s, struc
 		return false;
 	}
 
-	struct TAC* t_if_goto_end = makeTACIfGoto(tacbuffer_last_dest(buffer), ltrue);
+	struct TAC* t_if_goto_end = makeTACIfGoto(s->super.line_num, tacbuffer_last_dest(buffer), ltrue);
 	tacbuffer_append(buffer, t_if_goto_end);
 
-	tacbuffer_append(buffer, makeTACGoto(lend));
+	tacbuffer_append(buffer, makeTACGoto(s->super.line_num, lend));
 
-	tacbuffer_append(buffer, makeTACLabel(ltrue));
+	tacbuffer_append(buffer, makeTACLabel(s->super.line_num, ltrue));
 
 	if (!tac_stmtblock(buffer, s->block, ctx)) {
 		return false;
 	}
 
-	tacbuffer_append(buffer, makeTACGoto(lend));
+	tacbuffer_append(buffer, makeTACGoto(s->super.line_num, lend));
 
-	tacbuffer_append(buffer, makeTACLabel(lend));
+	tacbuffer_append(buffer, makeTACLabel(s->super.line_num, lend));
 
 	return true;
 }
@@ -68,28 +68,28 @@ static bool tac_ifstmt_2_block(struct TACBuffer* buffer, struct IfStmt* s, struc
 		return false;
 	}
 
-	struct TAC* t = makeTACIfGoto(tacbuffer_last_dest(buffer), l1);
+	struct TAC* t = makeTACIfGoto(s->super.line_num, tacbuffer_last_dest(buffer), l1);
 	tacbuffer_append(buffer, t);
 
-	tacbuffer_append(buffer, makeTACGoto(l2));
+	tacbuffer_append(buffer, makeTACGoto(s->super.line_num, l2));
 
-	tacbuffer_append(buffer, makeTACLabel(l1));
+	tacbuffer_append(buffer, makeTACLabel(s->super.line_num, l1));
 
 	if (!tac_stmtblock(buffer, s->block, ctx)) {
 		return false;
 	}
 
-	tacbuffer_append(buffer, makeTACGoto(lend));
+	tacbuffer_append(buffer, makeTACGoto(s->super.line_num, lend));
 
-	tacbuffer_append(buffer, makeTACLabel(l2));
+	tacbuffer_append(buffer, makeTACLabel(s->super.line_num, l2));
 
 	if (!tac_stmtblock(buffer, s->else_block, ctx)) {
 		return false;
 	}
 
-	tacbuffer_append(buffer, makeTACGoto(lend));
+	tacbuffer_append(buffer, makeTACGoto(s->super.line_num, lend));
 
-	tacbuffer_append(buffer, makeTACLabel(lend));
+	tacbuffer_append(buffer, makeTACLabel(s->super.line_num, lend));
 
 	return true;
 }

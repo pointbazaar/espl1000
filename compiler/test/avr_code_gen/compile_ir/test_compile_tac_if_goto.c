@@ -28,19 +28,19 @@ void test_compile_tac_if_goto_case_true_8bit() {
 
 	struct TACBuffer* b = tacbuffer_ctor();
 
-	tacbuffer_append(b, makeTACConst(1, 1));
-	tacbuffer_append(b, makeTACIfGoto(1, l1));
-	tacbuffer_append(b, makeTACGoto(lend));
+	tacbuffer_append(b, makeTACConst(0, 1, 1));
+	tacbuffer_append(b, makeTACIfGoto(0, 1, l1));
+	tacbuffer_append(b, makeTACGoto(0, lend));
 
-	tacbuffer_append(b, makeTACLabel(l1));
-	tacbuffer_append(b, makeTACConst(0, value));
+	tacbuffer_append(b, makeTACLabel(0, l1));
+	tacbuffer_append(b, makeTACConst(0, 0, value));
 
-	tacbuffer_append(b, makeTACConst(2, address1));
-	tacbuffer_append(b, makeTACStore(2, 0, 1));
-	tacbuffer_append(b, makeTACGoto(lend));
+	tacbuffer_append(b, makeTACConst(0, 2, address1));
+	tacbuffer_append(b, makeTACStore(0, 2, 0, 1));
+	tacbuffer_append(b, makeTACGoto(0, lend));
 
-	tacbuffer_append(b, makeTACLabel(lend));
-	tacbuffer_append(b, makeTACGoto(lend));
+	tacbuffer_append(b, makeTACLabel(0, lend));
+	tacbuffer_append(b, makeTACGoto(0, lend));
 
 	vmcu_system_t* system = prepare_vmcu_system_from_tacbuffer(b);
 
@@ -64,19 +64,19 @@ void test_compile_tac_if_goto_case_true_16bit() {
 
 	struct TACBuffer* b = tacbuffer_ctor();
 
-	tacbuffer_append(b, makeTACConst(1, 0x0101));
-	tacbuffer_append(b, makeTACIfGoto(1, l1));
-	tacbuffer_append(b, makeTACGoto(lend));
+	tacbuffer_append(b, makeTACConst(0, 1, 0x0101));
+	tacbuffer_append(b, makeTACIfGoto(0, 1, l1));
+	tacbuffer_append(b, makeTACGoto(0, lend));
 
-	tacbuffer_append(b, makeTACLabel(l1));
-	tacbuffer_append(b, makeTACConst(0, value));
+	tacbuffer_append(b, makeTACLabel(0, l1));
+	tacbuffer_append(b, makeTACConst(0, 0, value));
 
-	tacbuffer_append(b, makeTACConst(2, address1));
-	tacbuffer_append(b, makeTACStore(2, 0, 1));
-	tacbuffer_append(b, makeTACGoto(lend));
+	tacbuffer_append(b, makeTACConst(0, 2, address1));
+	tacbuffer_append(b, makeTACStore(0, 2, 0, 1));
+	tacbuffer_append(b, makeTACGoto(0, lend));
 
-	tacbuffer_append(b, makeTACLabel(lend));
-	tacbuffer_append(b, makeTACGoto(lend));
+	tacbuffer_append(b, makeTACLabel(0, lend));
+	tacbuffer_append(b, makeTACGoto(0, lend));
 
 	vmcu_system_t* system = prepare_vmcu_system_from_tacbuffer(b);
 
@@ -100,18 +100,18 @@ void test_compile_tac_if_goto_case_false_8bit() {
 
 	struct TACBuffer* b = tacbuffer_ctor();
 
-	tacbuffer_append(b, makeTACConst(1, 0));
-	tacbuffer_append(b, makeTACIfGoto(1, l1));
-	tacbuffer_append(b, makeTACGoto(lend));
+	tacbuffer_append(b, makeTACConst(0, 1, 0));
+	tacbuffer_append(b, makeTACIfGoto(0, 1, l1));
+	tacbuffer_append(b, makeTACGoto(0, lend));
 
-	tacbuffer_append(b, makeTACLabel(l1));
-	tacbuffer_append(b, makeTACConst(0, value));
+	tacbuffer_append(b, makeTACLabel(0, l1));
+	tacbuffer_append(b, makeTACConst(0, 0, value));
 
-	tacbuffer_append(b, makeTACConst(2, address1));
-	tacbuffer_append(b, makeTACStore(2, 0, 1));
+	tacbuffer_append(b, makeTACConst(0, 2, address1));
+	tacbuffer_append(b, makeTACStore(0, 2, 0, 1));
 
-	tacbuffer_append(b, makeTACLabel(lend));
-	tacbuffer_append(b, makeTACGoto(lend));
+	tacbuffer_append(b, makeTACLabel(0, lend));
+	tacbuffer_append(b, makeTACGoto(0, lend));
 
 	vmcu_system_t* system = prepare_vmcu_system_from_tacbuffer(b);
 
@@ -135,18 +135,18 @@ void test_compile_tac_if_goto_case_false_16bit() {
 
 	struct TACBuffer* b = tacbuffer_ctor();
 
-	tacbuffer_append(b, makeTACConst(1, 0x0000));
-	tacbuffer_append(b, makeTACIfGoto(1, l1));
-	tacbuffer_append(b, makeTACGoto(lend));
+	tacbuffer_append(b, makeTACConst(0, 1, 0x0000));
+	tacbuffer_append(b, makeTACIfGoto(0, 1, l1));
+	tacbuffer_append(b, makeTACGoto(0, lend));
 
-	tacbuffer_append(b, makeTACLabel(l1));
-	tacbuffer_append(b, makeTACConst(0, value));
+	tacbuffer_append(b, makeTACLabel(0, l1));
+	tacbuffer_append(b, makeTACConst(0, 0, value));
 
-	tacbuffer_append(b, makeTACConst(2, address1));
-	tacbuffer_append(b, makeTACStore(2, 0, 1));
+	tacbuffer_append(b, makeTACConst(0, 2, address1));
+	tacbuffer_append(b, makeTACStore(0, 2, 0, 1));
 
-	tacbuffer_append(b, makeTACLabel(lend));
-	tacbuffer_append(b, makeTACGoto(lend));
+	tacbuffer_append(b, makeTACLabel(0, lend));
+	tacbuffer_append(b, makeTACGoto(0, lend));
 
 	vmcu_system_t* system = prepare_vmcu_system_from_tacbuffer(b);
 
@@ -176,27 +176,27 @@ void test_compile_tac_if_goto_case_mixed() {
 
 	struct TACBuffer* b = tacbuffer_ctor();
 
-	tacbuffer_append(b, makeTACConst(0, value));
+	tacbuffer_append(b, makeTACConst(0, 0, value));
 
-	tacbuffer_append(b, makeTACConst(1, 1));
-	tacbuffer_append(b, makeTACIfGoto(1, l1)); //should branch
-	tacbuffer_append(b, makeTACGoto(lend));
+	tacbuffer_append(b, makeTACConst(0, 1, 1));
+	tacbuffer_append(b, makeTACIfGoto(0, 1, l1)); //should branch
+	tacbuffer_append(b, makeTACGoto(0, lend));
 
-	tacbuffer_append(b, makeTACLabel(l1));
-	tacbuffer_append(b, makeTACConst(0, value));
+	tacbuffer_append(b, makeTACLabel(0, l1));
+	tacbuffer_append(b, makeTACConst(0, 0, value));
 
-	tacbuffer_append(b, makeTACConst(3, address1));
-	tacbuffer_append(b, makeTACStore(3, 0, 1));
-	tacbuffer_append(b, makeTACConst(2, 0));
-	tacbuffer_append(b, makeTACIfGoto(2, lend)); //should not branch
-	tacbuffer_append(b, makeTACConst(0, value));
+	tacbuffer_append(b, makeTACConst(0, 3, address1));
+	tacbuffer_append(b, makeTACStore(0, 3, 0, 1));
+	tacbuffer_append(b, makeTACConst(0, 2, 0));
+	tacbuffer_append(b, makeTACIfGoto(0, 2, lend)); //should not branch
+	tacbuffer_append(b, makeTACConst(0, 0, value));
 
-	tacbuffer_append(b, makeTACConst(3, address2));
-	tacbuffer_append(b, makeTACStore(3, 0, 1));
-	tacbuffer_append(b, makeTACGoto(lend));
+	tacbuffer_append(b, makeTACConst(0, 3, address2));
+	tacbuffer_append(b, makeTACStore(0, 3, 0, 1));
+	tacbuffer_append(b, makeTACGoto(0, lend));
 
-	tacbuffer_append(b, makeTACLabel(lend));
-	tacbuffer_append(b, makeTACGoto(lend));
+	tacbuffer_append(b, makeTACLabel(0, lend));
+	tacbuffer_append(b, makeTACGoto(0, lend));
 
 	vmcu_system_t* system = prepare_vmcu_system_from_tacbuffer(b);
 

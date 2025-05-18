@@ -195,3 +195,7 @@ char* tac_tostring(struct TAC* t, struct SST* sst, struct LVST* lvst) {
 	strcat(res, buf);
 	return res;
 }
+
+uint32_t tac_line_num(struct TAC* tac) {
+	return tac->line_no;
+}

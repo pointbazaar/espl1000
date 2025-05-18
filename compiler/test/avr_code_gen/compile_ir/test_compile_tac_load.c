@@ -18,10 +18,10 @@ static void common(const uint16_t addr, const uint16_t fixed_value, bool wide) {
 
 	struct TACBuffer* b = tacbuffer_ctor();
 
-	tacbuffer_append(b, makeTACConst(1, 0x1010));
-	tacbuffer_append(b, makeTACConst(2, addr));
-	tacbuffer_append(b, makeTACLoad(1, 2, (wide) ? 2 : 1));
-	tacbuffer_append(b, makeTACReturn(1));
+	tacbuffer_append(b, makeTACConst(0, 1, 0x1010));
+	tacbuffer_append(b, makeTACConst(0, 2, addr));
+	tacbuffer_append(b, makeTACLoad(0, 1, 2, (wide) ? 2 : 1));
+	tacbuffer_append(b, makeTACReturn(0, 1));
 
 	vmcu_system_t* system = prepare_vmcu_system_from_tacbuffer_with_redzone(b, addr, redzone);
 

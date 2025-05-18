@@ -25,11 +25,11 @@ static int32_t tac_call_prep_param(struct TACBuffer* buffer, struct Call* call, 
 	return tacbuffer_last_dest(buffer);
 }
 
-static bool emit_param_transfer(struct TACBuffer* buffer, uint32_t* param_temps, uint8_t* param_widths, bool is_syscall, size_t count) {
+static bool emit_param_transfer(struct TACBuffer* buffer, uint32_t* param_temps, uint8_t* param_widths, bool is_syscall, size_t count, uint32_t line_num) {
 
 	for (size_t i = 0; i < count; i++) {
 		const bool push16 = param_widths[i] == 2;
-		struct TAC* t = makeTACParam(param_temps[i], push16, i, is_syscall);
+		struct TAC* t = makeTACParam(line_num, param_temps[i], push16, i, is_syscall);
 
 		if (!t) {
 			return false;
@@ -78,7 +78,7 @@ static bool tac_call_prep_params_case_sst(struct TACBuffer* buffer, struct Call*
 		param_widths[i] = param_width;
 	}
 
-	status = emit_param_transfer(buffer, param_temps, param_widths, line->is_syscall, call->count_args);
+	status = emit_param_transfer(buffer, param_temps, param_widths, line->is_syscall, call->count_args, call->super.line_num);
 
 exit:
 	free(param_temps);
@@ -124,7 +124,7 @@ static bool tac_call_prep_params_case_lvst(struct TACBuffer* buffer, struct Call
 
 	// TODO: currently the information of syscall / no syscall
 	// is lost when passing it as function pointer.
-	status = emit_param_transfer(buffer, param_temps, param_widths, false, call->count_args);
+	status = emit_param_transfer(buffer, param_temps, param_widths, false, call->count_args, call->super.line_num);
 
 exit:
 	free(param_temps);
@@ -164,11 +164,11 @@ static bool tac_call_case_lvst(struct TACBuffer* buffer, struct Call* call, stru
 	const uint8_t addr_width = (x86) ? 8 : 2;
 	const uint8_t local_width = lvst_sizeof_var(lvst, fname, x86);
 
-	tacbuffer_append(buffer, makeTACLoadLocalAddr(make_temp(), lvst_index_of(lvst, fname), addr_width));
+	tacbuffer_append(buffer, makeTACLoadLocalAddr(call->super.line_num, make_temp(), lvst_index_of(lvst, fname), addr_width));
 
-	tacbuffer_append(buffer, makeTACLoad(make_temp(), tacbuffer_last_dest(buffer), local_width));
+	tacbuffer_append(buffer, makeTACLoad(call->super.line_num, make_temp(), tacbuffer_last_dest(buffer), local_width));
 
-	tacbuffer_append(buffer, makeTACICall(make_temp(), tacbuffer_last_dest(buffer)));
+	tacbuffer_append(buffer, makeTACICall(call->super.line_num, make_temp(), tacbuffer_last_dest(buffer)));
 
 	return true;
 }
@@ -198,7 +198,7 @@ static bool tac_call_case_sst(struct TACBuffer* buffer, struct Call* call, struc
 
 	uint32_t index = sst_index_of(sst, fname);
 
-	struct TAC* t2 = makeTACCall(make_temp(), index);
+	struct TAC* t2 = makeTACCall(call->super.line_num, make_temp(), index);
 
 	tacbuffer_append(buffer, t2);
 

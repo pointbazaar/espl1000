@@ -17,7 +17,7 @@ void test_liveness_def_map_tac_call() {
 
 	struct TACBuffer* buf = tacbuffer_ctor();
 
-	tacbuffer_append(buf, makeTACCall(1, 0));
+	tacbuffer_append(buf, makeTACCall(0, 1, 0));
 
 	struct Liveness* live = liveness_calc_tacbuffer(buf);
 
@@ -33,8 +33,8 @@ void test_liveness_def_map_tac_param() {
 
 	struct TACBuffer* buf = tacbuffer_ctor();
 
-	tacbuffer_append(buf, makeTACConst(1, 33));
-	tacbuffer_append(buf, makeTACParam(1, true, 0, false));
+	tacbuffer_append(buf, makeTACConst(0, 1, 33));
+	tacbuffer_append(buf, makeTACParam(0, 1, true, 0, false));
 
 	struct Liveness* live = liveness_calc_tacbuffer(buf);
 
@@ -50,8 +50,8 @@ void test_liveness_def_map_tac_return() {
 
 	struct TACBuffer* buf = tacbuffer_ctor();
 
-	tacbuffer_append(buf, makeTACConst(1, 33));
-	tacbuffer_append(buf, makeTACReturn(1));
+	tacbuffer_append(buf, makeTACConst(0, 1, 33));
+	tacbuffer_append(buf, makeTACReturn(0, 1));
 
 	struct Liveness* live = liveness_calc_tacbuffer(buf);
 
@@ -67,9 +67,9 @@ void test_liveness_def_map_tac_goto() {
 
 	struct TACBuffer* buf = tacbuffer_ctor();
 
-	tacbuffer_append(buf, makeTACConst(0, 33));
-	tacbuffer_append(buf, makeTACGoto(1));
-	tacbuffer_append(buf, makeTACLabel(1));
+	tacbuffer_append(buf, makeTACConst(0, 0, 33));
+	tacbuffer_append(buf, makeTACGoto(0, 1));
+	tacbuffer_append(buf, makeTACLabel(0, 1));
 
 	struct Liveness* live = liveness_calc_tacbuffer(buf);
 
@@ -85,9 +85,9 @@ void test_liveness_def_map_tac_if_goto() {
 
 	struct TACBuffer* buf = tacbuffer_ctor();
 
-	tacbuffer_append(buf, makeTACConst(0, 33));
-	tacbuffer_append(buf, makeTACIfGoto(0, 1));
-	tacbuffer_append(buf, makeTACLabel(1));
+	tacbuffer_append(buf, makeTACConst(0, 0, 33));
+	tacbuffer_append(buf, makeTACIfGoto(0, 0, 1));
+	tacbuffer_append(buf, makeTACLabel(0, 1));
 
 	struct Liveness* live = liveness_calc_tacbuffer(buf);
 
@@ -103,9 +103,9 @@ void test_liveness_def_map_tac_if_cmp_goto() {
 
 	struct TACBuffer* buf = tacbuffer_ctor();
 
-	tacbuffer_append(buf, makeTACConst(0, 33));
-	tacbuffer_append(buf, makeTACIfCMPGoto(0, TAC_OP_OR, 0, 1));
-	tacbuffer_append(buf, makeTACLabel(1));
+	tacbuffer_append(buf, makeTACConst(0, 0, 33));
+	tacbuffer_append(buf, makeTACIfCMPGoto(0, 0, TAC_OP_OR, 0, 1));
+	tacbuffer_append(buf, makeTACLabel(0, 1));
 
 	struct Liveness* live = liveness_calc_tacbuffer(buf);
 
@@ -121,7 +121,7 @@ void test_liveness_def_map_tac_load_local_addr() {
 
 	struct TACBuffer* buf = tacbuffer_ctor();
 
-	tacbuffer_append(buf, makeTACLoadLocalAddr(1, 0, 2));
+	tacbuffer_append(buf, makeTACLoadLocalAddr(0, 1, 0, 2));
 
 	struct Liveness* live = liveness_calc_tacbuffer(buf);
 
@@ -137,8 +137,8 @@ void test_liveness_def_map_tac_store_local() {
 
 	struct TACBuffer* buf = tacbuffer_ctor();
 
-	tacbuffer_append(buf, makeTACConst(1, 99));
-	tacbuffer_append(buf, makeTACStoreLocal(0, 1));
+	tacbuffer_append(buf, makeTACConst(0, 1, 99));
+	tacbuffer_append(buf, makeTACStoreLocal(0, 0, 1));
 
 	struct Liveness* live = liveness_calc_tacbuffer(buf);
 
@@ -155,8 +155,8 @@ void test_liveness_def_map_tac_load() {
 
 	struct TACBuffer* buf = tacbuffer_ctor();
 
-	tacbuffer_append(buf, makeTACConst(1, 0xaf));
-	tacbuffer_append(buf, makeTACLoad(2, 1, 2));
+	tacbuffer_append(buf, makeTACConst(0, 1, 0xaf));
+	tacbuffer_append(buf, makeTACLoad(0, 2, 1, 2));
 
 	struct Liveness* live = liveness_calc_tacbuffer(buf);
 
@@ -175,8 +175,8 @@ void test_liveness_def_map_tac_store() {
 
 	struct TACBuffer* buf = tacbuffer_ctor();
 
-	tacbuffer_append(buf, makeTACConst(1, 0xaf));
-	tacbuffer_append(buf, makeTACStore(0xaf, 1, 2));
+	tacbuffer_append(buf, makeTACConst(0, 1, 0xaf));
+	tacbuffer_append(buf, makeTACStore(0, 0xaf, 1, 2));
 
 	struct Liveness* live = liveness_calc_tacbuffer(buf);
 
@@ -193,9 +193,9 @@ void test_liveness_def_map_tac_binary_op() {
 
 	struct TACBuffer* buf = tacbuffer_ctor();
 
-	tacbuffer_append(buf, makeTACConst(1, 0xaf));
-	tacbuffer_append(buf, makeTACConst(2, 0xaf));
-	tacbuffer_append(buf, makeTACBinOp(2, TAC_OP_OR, 1));
+	tacbuffer_append(buf, makeTACConst(0, 1, 0xaf));
+	tacbuffer_append(buf, makeTACConst(0, 2, 0xaf));
+	tacbuffer_append(buf, makeTACBinOp(0, 2, TAC_OP_OR, 1));
 
 	struct Liveness* live = liveness_calc_tacbuffer(buf);
 
@@ -216,9 +216,9 @@ void test_liveness_def_map_tac_unary_op() {
 
 	struct TACBuffer* buf = tacbuffer_ctor();
 
-	tacbuffer_append(buf, makeTACConst(1, 8));
-	tacbuffer_append(buf, makeTACConst(2, 9));
-	tacbuffer_append(buf, makeTACUnaryOp(2, 1, TAC_OP_UNARY_NOT));
+	tacbuffer_append(buf, makeTACConst(0, 1, 8));
+	tacbuffer_append(buf, makeTACConst(0, 2, 9));
+	tacbuffer_append(buf, makeTACUnaryOp(0, 2, 1, TAC_OP_UNARY_NOT));
 
 	struct Liveness* live = liveness_calc_tacbuffer(buf);
 
@@ -239,8 +239,8 @@ void test_liveness_def_map_tac_copy() {
 
 	struct TACBuffer* buf = tacbuffer_ctor();
 
-	tacbuffer_append(buf, makeTACConst(1, 8));
-	tacbuffer_append(buf, makeTACCopy(2, 1));
+	tacbuffer_append(buf, makeTACConst(0, 1, 8));
+	tacbuffer_append(buf, makeTACCopy(0, 2, 1));
 
 	struct Liveness* live = liveness_calc_tacbuffer(buf);
 
@@ -259,7 +259,7 @@ void test_liveness_def_map_tac_const_value() {
 
 	struct TACBuffer* buf = tacbuffer_ctor();
 
-	tacbuffer_append(buf, makeTACConst(1, 8));
+	tacbuffer_append(buf, makeTACConst(0, 1, 8));
 
 	struct Liveness* live = liveness_calc_tacbuffer(buf);
 
@@ -275,8 +275,8 @@ void test_liveness_def_map_tac_nop() {
 
 	struct TACBuffer* buf = tacbuffer_ctor();
 
-	tacbuffer_append(buf, makeTACConst(1, 8));
-	tacbuffer_append(buf, makeTACNop());
+	tacbuffer_append(buf, makeTACConst(0, 1, 8));
+	tacbuffer_append(buf, makeTACNop(0));
 
 	struct Liveness* live = liveness_calc_tacbuffer(buf);
 

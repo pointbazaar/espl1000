@@ -48,7 +48,7 @@ bool tac_assignstmt(struct TACBuffer* buffer, struct AssignStmt* a, struct Ctx* 
 		}
 		const uint32_t taddr = tacbuffer_last_dest(buffer);
 
-		tacbuffer_append(buffer, makeTACStore(taddr, texpr, width));
+		tacbuffer_append(buffer, makeTACStore(a->super.line_num, taddr, texpr, width));
 		return true;
 	}
 
@@ -79,6 +79,7 @@ static bool case_default(struct TACBuffer* buffer, struct AssignStmt* a, struct 
 	const uint32_t local_index = lvst_index_of(ctx_tables(ctx)->lvst, a->lvalue->var->simple_var->name);
 
 	struct TAC* t = makeTACStoreLocal(
+	    a->super.line_num,
 	    local_index,
 	    tacbuffer_last_dest(buffer));
 
@@ -106,8 +107,8 @@ static bool case_indices(struct TACBuffer* buffer, struct AssignStmt* a, struct 
 
 	//load t1 = local index
 	uint32_t t1 = make_temp();
-	tacbuffer_append(buffer, makeTACLoadLocalAddr(make_temp(), local_index, addr_width));
-	tacbuffer_append(buffer, makeTACLoad(t1, tacbuffer_last_dest(buffer), local_width));
+	tacbuffer_append(buffer, makeTACLoadLocalAddr(a->super.line_num, make_temp(), local_index, addr_width));
+	tacbuffer_append(buffer, makeTACLoad(a->super.line_num, t1, tacbuffer_last_dest(buffer), local_width));
 
 	for (int i = 0; i < a->lvalue->var->simple_var->count_indices; i++) {
 		//calculate offset due to index
@@ -118,11 +119,11 @@ static bool case_indices(struct TACBuffer* buffer, struct AssignStmt* a, struct 
 		uint32_t toffset = tacbuffer_last_dest(buffer);
 
 		//add offset, t1 += toffset
-		tacbuffer_append(buffer, makeTACBinOp(t1, TAC_OP_ADD, toffset));
+		tacbuffer_append(buffer, makeTACBinOp(a->super.line_num, t1, TAC_OP_ADD, toffset));
 	}
 
 	//[t1] = texpr
-	tacbuffer_append(buffer, makeTACStore(t1, texpr, width));
+	tacbuffer_append(buffer, makeTACStore(a->super.line_num, t1, texpr, width));
 
 	return true;
 }
@@ -138,7 +139,7 @@ static bool case_member(struct TACBuffer* buf, struct AssignStmt* a, struct Ctx*
 
 	uint32_t taddr = tacbuffer_last_dest(buf);
 
-	tacbuffer_append(buf, makeTACStore(taddr, texpr, width));
+	tacbuffer_append(buf, makeTACStore(a->super.line_num, taddr, texpr, width));
 
 	return true;
 }

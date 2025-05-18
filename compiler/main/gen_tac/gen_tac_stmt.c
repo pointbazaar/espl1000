@@ -15,7 +15,7 @@ bool tac_stmt(struct TACBuffer* buffer, struct Stmt* stmt, struct Ctx* ctx) {
 		if (label_loop_end < 0) {
 			return false;
 		}
-		tacbuffer_append(buffer, makeTACGoto(label_loop_end));
+		tacbuffer_append(buffer, makeTACGoto(stmt->super.line_num, label_loop_end));
 		return true;
 	}
 	if (stmt->kind == STMT_KIND_CONTINUE) {
@@ -23,7 +23,7 @@ bool tac_stmt(struct TACBuffer* buffer, struct Stmt* stmt, struct Ctx* ctx) {
 		if (label_loop_start < 0) {
 			return false;
 		}
-		tacbuffer_append(buffer, makeTACGoto(label_loop_start));
+		tacbuffer_append(buffer, makeTACGoto(stmt->super.line_num, label_loop_start));
 		return true;
 	}
 

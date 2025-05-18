@@ -21,11 +21,11 @@ void test_x86_compile_tac_unary_op_case_minus() {
 
 		struct TACBuffer* b = tacbuffer_ctor();
 
-		tacbuffer_append(b, makeTACSetupStackframe(0));
+		tacbuffer_append(b, makeTACSetupStackframe(0, 0));
 
-		tacbuffer_append(b, makeTACConst(0, start));
-		tacbuffer_append(b, makeTACUnaryOp(1, 0, TAC_OP_UNARY_MINUS));
-		tacbuffer_append(b, makeTACReturn(1));
+		tacbuffer_append(b, makeTACConst(0, 0, start));
+		tacbuffer_append(b, makeTACUnaryOp(0, 1, 0, TAC_OP_UNARY_MINUS));
+		tacbuffer_append(b, makeTACReturn(0, 1));
 
 		struct sd_uc_engine* system = sd_uc_engine_from_tacbuffer_v2(b, debug);
 
@@ -49,11 +49,11 @@ void test_x86_compile_tac_unary_op_case_not() {
 
 	struct TACBuffer* b = tacbuffer_ctor();
 
-	tacbuffer_append(b, makeTACSetupStackframe(0));
+	tacbuffer_append(b, makeTACSetupStackframe(0, 0));
 
-	tacbuffer_append(b, makeTACConst(0, start));
-	tacbuffer_append(b, makeTACUnaryOp(1, 0, TAC_OP_UNARY_NOT));
-	tacbuffer_append(b, makeTACReturn(1));
+	tacbuffer_append(b, makeTACConst(0, 0, start));
+	tacbuffer_append(b, makeTACUnaryOp(0, 1, 0, TAC_OP_UNARY_NOT));
+	tacbuffer_append(b, makeTACReturn(0, 1));
 
 	struct sd_uc_engine* system = sd_uc_engine_from_tacbuffer_v2(b, debug);
 
@@ -79,11 +79,11 @@ void test_x86_compile_tac_unary_op_case_bitwise_neg() {
 	for (uint64_t start = 0; start < 3; start++) {
 		struct TACBuffer* b = tacbuffer_ctor();
 
-		tacbuffer_append(b, makeTACSetupStackframe(0));
+		tacbuffer_append(b, makeTACSetupStackframe(0, 0));
 
-		tacbuffer_append(b, makeTACConst(0, start));
-		tacbuffer_append(b, makeTACUnaryOp(1, 0, TAC_OP_UNARY_BITWISE_NEG));
-		tacbuffer_append(b, makeTACReturn(1));
+		tacbuffer_append(b, makeTACConst(0, 0, start));
+		tacbuffer_append(b, makeTACUnaryOp(0, 1, 0, TAC_OP_UNARY_BITWISE_NEG));
+		tacbuffer_append(b, makeTACReturn(0, 1));
 
 		struct sd_uc_engine* system = sd_uc_engine_from_tacbuffer_v2(b, debug);
 

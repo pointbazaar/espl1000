@@ -57,7 +57,7 @@ bool compile_and_write_avr(struct AST* ast, struct Ctx* ctx) {
 
 	struct RAT* rat = rat_ctor(RAT_ARCH_AVR, 10);
 
-	struct TAC* t = makeTACSetupSP();
+	struct TAC* t = makeTACSetupSP(0);
 
 	status = emit_asm_avr_single_tac(rat, t, ctx, ibu);
 

@@ -18,7 +18,7 @@ bool tac_const_data(struct TACBuffer* buffer, struct StringConst* str, struct Ct
 
 	tacbuffer_append(
 	    buffer,
-	    makeTACConstData(make_temp(), offset));
+	    makeTACConstData(str->super.line_num, make_temp(), offset));
 
 	return true;
 }

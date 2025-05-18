@@ -11,7 +11,7 @@ static uint32_t temp_count = 0; //temporaries for TAC
 
 static uint32_t current_label_index = TAC_NO_LABEL + 1;
 
-static struct TAC* makeTAC() {
+static struct TAC* makeTAC(uint32_t line_no_arg) {
 	struct TAC* res = malloc(sizeof(struct TAC));
 
 	if (!res) {
@@ -19,6 +19,7 @@ static struct TAC* makeTAC() {
 	}
 
 	*res = (struct TAC){
+	    .line_no = line_no_arg,
 	    .label_index = TAC_NO_LABEL,
 	    .kind = TAC_NOP,
 	    .const_value = 0,
@@ -42,37 +43,37 @@ uint32_t make_temp() {
 	temp_count++;
 	return res;
 }
-struct TAC* makeTACLabel(uint32_t label) {
-	struct TAC* t = makeTAC();
+struct TAC* makeTACLabel(uint32_t line_no, uint32_t label) {
+	struct TAC* t = makeTAC(line_no);
 	t->kind = TAC_LABEL_INDEXED;
 	t->label_index = label;
 	return t;
 }
 
-struct TAC* makeTACLabelFunction(uint32_t sst_index) {
-	struct TAC* t = makeTAC();
+struct TAC* makeTACLabelFunction(uint32_t line_no, uint32_t sst_index) {
+	struct TAC* t = makeTAC(line_no);
 	t->kind = TAC_LABEL_FUNCTION;
 	t->dest = sst_index;
 	return t;
 }
 
-struct TAC* makeTACGoto(uint32_t label) {
-	struct TAC* t = makeTAC();
+struct TAC* makeTACGoto(uint32_t line_no, uint32_t label) {
+	struct TAC* t = makeTAC(line_no);
 	t->kind = TAC_GOTO;
 	t->label_index = label;
 	return t;
 }
 
-struct TAC* makeTACIfGoto(uint32_t tmp_condition, uint32_t label_destination) {
-	struct TAC* t = makeTAC();
+struct TAC* makeTACIfGoto(uint32_t line_no, uint32_t tmp_condition, uint32_t label_destination) {
+	struct TAC* t = makeTAC(line_no);
 	t->kind = TAC_IF_GOTO;
 	t->arg1 = tmp_condition;
 	t->label_index = label_destination;
 	return t;
 }
 
-struct TAC* makeTACIfCMPGoto(uint32_t tmp1, enum TAC_OP op, uint32_t tmp2, uint32_t label_destination) {
-	struct TAC* t = makeTAC();
+struct TAC* makeTACIfCMPGoto(uint32_t line_no, uint32_t tmp1, enum TAC_OP op, uint32_t tmp2, uint32_t label_destination) {
+	struct TAC* t = makeTAC(line_no);
 	t->kind = TAC_IF_CMP_GOTO;
 	t->dest = tmp1;
 	t->arg1 = tmp2;
@@ -81,20 +82,20 @@ struct TAC* makeTACIfCMPGoto(uint32_t tmp1, enum TAC_OP op, uint32_t tmp2, uint3
 	return t;
 }
 
-struct TAC* makeTACCopy(uint32_t tdest, uint32_t tsrc) {
-	struct TAC* t = makeTAC();
+struct TAC* makeTACCopy(uint32_t line_no, uint32_t tdest, uint32_t tsrc) {
+	struct TAC* t = makeTAC(line_no);
 	t->kind = TAC_COPY;
 	t->dest = tdest;
 	t->arg1 = tsrc;
 	return t;
 }
 
-struct TAC* makeTACLoadLocalAddr(uint32_t tmp, uint32_t local_index, uint8_t addr_width) {
+struct TAC* makeTACLoadLocalAddr(uint32_t line_no, uint32_t tmp, uint32_t local_index, uint8_t addr_width) {
 
 	assert(addr_width >= 2);
 	assert(addr_width <= 8);
 
-	struct TAC* t = makeTAC();
+	struct TAC* t = makeTAC(line_no);
 	t->kind = TAC_LOAD_LOCAL_ADDR;
 	t->dest = tmp;
 	t->arg1 = local_index;
@@ -102,9 +103,9 @@ struct TAC* makeTACLoadLocalAddr(uint32_t tmp, uint32_t local_index, uint8_t add
 	return t;
 }
 
-struct TAC* makeTACLoadFunctionPtr(uint32_t tmp, uint32_t sst_index) {
+struct TAC* makeTACLoadFunctionPtr(uint32_t line_no, uint32_t tmp, uint32_t sst_index) {
 
-	struct TAC* t = makeTAC();
+	struct TAC* t = makeTAC(line_no);
 	t->kind = TAC_LOAD_FUNCTION_PTR;
 	t->dest = tmp;
 	t->arg1 = sst_index;
@@ -112,33 +113,33 @@ struct TAC* makeTACLoadFunctionPtr(uint32_t tmp, uint32_t sst_index) {
 	return t;
 }
 
-struct TAC* makeTACStoreLocal(uint32_t local_index, uint32_t tmp) {
-	struct TAC* t = makeTAC();
+struct TAC* makeTACStoreLocal(uint32_t line_no, uint32_t local_index, uint32_t tmp) {
+	struct TAC* t = makeTAC(line_no);
 	t->kind = TAC_STORE_LOCAL;
 	t->dest = local_index;
 	t->arg1 = tmp;
 	return t;
 }
 
-struct TAC* makeTACConst(uint32_t tmp, int value) {
-	struct TAC* t = makeTAC();
+struct TAC* makeTACConst(uint32_t line_no, uint32_t tmp, int value) {
+	struct TAC* t = makeTAC(line_no);
 	t->kind = TAC_CONST_VALUE;
 	t->dest = tmp;
 	t->const_value = value;
 	return t;
 }
 
-struct TAC* makeTACConstData(uint32_t tmp, uint32_t value_offset_data_table) {
-	struct TAC* t = makeTAC();
+struct TAC* makeTACConstData(uint32_t line_no, uint32_t tmp, uint32_t value_offset_data_table) {
+	struct TAC* t = makeTAC(line_no);
 	t->kind = TAC_CONST_DATA;
 	t->dest = tmp;
 	t->const_value = value_offset_data_table;
 	return t;
 }
 
-struct TAC* makeTACBinOp(uint32_t dest, enum TAC_OP op, uint32_t src) {
+struct TAC* makeTACBinOp(uint32_t line_no, uint32_t dest, enum TAC_OP op, uint32_t src) {
 
-	struct TAC* t = makeTAC();
+	struct TAC* t = makeTAC(line_no);
 
 	t->kind = TAC_BINARY_OP;
 	t->dest = dest;
@@ -169,8 +170,8 @@ struct TAC* makeTACBinOp(uint32_t dest, enum TAC_OP op, uint32_t src) {
 	return t;
 }
 
-struct TAC* makeTACUnaryOp(uint32_t dest, uint32_t src, enum TAC_OP op) {
-	struct TAC* t = makeTAC();
+struct TAC* makeTACUnaryOp(uint32_t line_no, uint32_t dest, uint32_t src, enum TAC_OP op) {
+	struct TAC* t = makeTAC(line_no);
 	t->kind = TAC_UNARY_OP;
 	t->dest = dest;
 	t->arg1 = src;
@@ -189,9 +190,9 @@ struct TAC* makeTACUnaryOp(uint32_t dest, uint32_t src, enum TAC_OP op) {
 	return t;
 }
 
-struct TAC* makeTACParam(uint32_t dest, bool push16, uint32_t param_index, bool is_syscall) {
+struct TAC* makeTACParam(uint32_t line_no, uint32_t dest, bool push16, uint32_t param_index, bool is_syscall) {
 
-	struct TAC* t = makeTAC();
+	struct TAC* t = makeTAC(line_no);
 	t->kind = TAC_PARAM;
 	t->dest = dest;
 
@@ -207,16 +208,16 @@ struct TAC* makeTACParam(uint32_t dest, bool push16, uint32_t param_index, bool 
 	return t;
 }
 
-struct TAC* makeTACCall(uint32_t tmp, uint32_t function_index) {
-	struct TAC* t = makeTAC();
+struct TAC* makeTACCall(uint32_t line_no, uint32_t tmp, uint32_t function_index) {
+	struct TAC* t = makeTAC(line_no);
 	t->kind = TAC_CALL;
 	t->dest = tmp;
 	t->arg1 = function_index;
 	return t;
 }
 
-struct TAC* makeTACICall(uint32_t tmp, uint32_t tmp_call) {
-	struct TAC* t = makeTAC();
+struct TAC* makeTACICall(uint32_t line_no, uint32_t tmp, uint32_t tmp_call) {
+	struct TAC* t = makeTAC(line_no);
 	t->kind = TAC_ICALL;
 	t->dest = tmp;
 	t->arg1 = tmp_call;
@@ -224,34 +225,34 @@ struct TAC* makeTACICall(uint32_t tmp, uint32_t tmp_call) {
 }
 
 // @param frame_size    the size of the stackframe in bytes
-struct TAC* makeTACSetupStackframe(uint32_t frame_size) {
-	struct TAC* t = makeTAC();
+struct TAC* makeTACSetupStackframe(uint32_t line_no, uint32_t frame_size) {
+	struct TAC* t = makeTAC(line_no);
 	t->kind = TAC_SETUP_STACKFRAME;
 	t->const_value = frame_size;
 	return t;
 }
 
-struct TAC* makeTACSetupSP() {
-	struct TAC* t = makeTAC();
+struct TAC* makeTACSetupSP(uint32_t line_no) {
+	struct TAC* t = makeTAC(line_no);
 	t->kind = TAC_SETUP_SP;
 	return t;
 }
 
-struct TAC* makeTACNop() {
-	struct TAC* t = makeTAC();
+struct TAC* makeTACNop(uint32_t line_no) {
+	struct TAC* t = makeTAC(line_no);
 	t->kind = TAC_NOP;
 	return t;
 }
 
-struct TAC* makeTACReturn(uint32_t tmp) {
-	struct TAC* t = makeTAC();
+struct TAC* makeTACReturn(uint32_t line_no, uint32_t tmp) {
+	struct TAC* t = makeTAC(line_no);
 	t->kind = TAC_RETURN;
 	t->dest = tmp;
 	return t;
 }
 
-struct TAC* makeTACLoad(uint32_t tmp, uint32_t taddr, uint8_t width) {
-	struct TAC* t = makeTAC();
+struct TAC* makeTACLoad(uint32_t line_no, uint32_t tmp, uint32_t taddr, uint8_t width) {
+	struct TAC* t = makeTAC(line_no);
 	t->kind = TAC_LOAD;
 	t->dest = tmp;
 	t->arg1 = taddr;
@@ -264,8 +265,8 @@ struct TAC* makeTACLoad(uint32_t tmp, uint32_t taddr, uint8_t width) {
 	return t;
 }
 
-struct TAC* makeTACStore(uint32_t taddr, uint32_t tmp, uint8_t width) {
-	struct TAC* t = makeTAC();
+struct TAC* makeTACStore(uint32_t line_no, uint32_t taddr, uint32_t tmp, uint8_t width) {
+	struct TAC* t = makeTAC(line_no);
 	t->kind = TAC_STORE;
 	t->dest = taddr;
 	t->arg1 = tmp;

@@ -26,7 +26,7 @@ void tac_simplevar(struct TACBuffer* buffer, struct SimpleVar* v, struct Ctx* ct
 	struct LVST* lvst = ctx_tables(ctx)->lvst;
 	const uint8_t simplevar_width = lvst_sizeof_var(lvst, v->name, x86);
 
-	tacbuffer_append(buffer, makeTACLoad(make_temp(), tlast, simplevar_width));
+	tacbuffer_append(buffer, makeTACLoad(v->super.line_num, make_temp(), tlast, simplevar_width));
 }
 
 void tac_simplevar_addr(struct TACBuffer* buffer, struct SimpleVar* sv, struct Ctx* ctx) {

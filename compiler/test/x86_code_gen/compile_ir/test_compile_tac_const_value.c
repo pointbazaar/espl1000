@@ -31,8 +31,8 @@ static void test_x86_compile_tac_const_value_fixed_value(int8_t fixed_value) {
 	struct TACBuffer* b = tacbuffer_ctor();
 	assert(b != NULL);
 
-	tacbuffer_append(b, makeTACNop());
-	tacbuffer_append(b, makeTACConst(1, fixed_value));
+	tacbuffer_append(b, makeTACNop(0));
+	tacbuffer_append(b, makeTACConst(0, 1, fixed_value));
 
 	struct sd_uc_engine* system = sd_uc_engine_from_tacbuffer_v2(b, false);
 	assert(system != NULL);

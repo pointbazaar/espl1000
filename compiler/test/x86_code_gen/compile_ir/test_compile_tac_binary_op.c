@@ -24,13 +24,13 @@ void test_x86_compile_tac_binary_op_add_8bit() {
 
 		struct TACBuffer* b = tacbuffer_ctor();
 
-		tacbuffer_append(b, makeTACSetupStackframe(0));
+		tacbuffer_append(b, makeTACSetupStackframe(0, 0));
 
-		tacbuffer_append(b, makeTACConst(0, start));
-		tacbuffer_append(b, makeTACConst(1, change));
-		tacbuffer_append(b, makeTACBinOp(0, TAC_OP_ADD, 1));
+		tacbuffer_append(b, makeTACConst(0, 0, start));
+		tacbuffer_append(b, makeTACConst(0, 1, change));
+		tacbuffer_append(b, makeTACBinOp(0, 0, TAC_OP_ADD, 1));
 
-		tacbuffer_append(b, makeTACReturn(0));
+		tacbuffer_append(b, makeTACReturn(0, 0));
 
 		struct sd_uc_engine* system = sd_uc_engine_from_tacbuffer_v2(b, false);
 
@@ -56,13 +56,13 @@ void test_x86_compile_tac_binary_op_sub_8bit() {
 
 		struct TACBuffer* b = tacbuffer_ctor();
 
-		tacbuffer_append(b, makeTACSetupStackframe(0));
+		tacbuffer_append(b, makeTACSetupStackframe(0, 0));
 
-		tacbuffer_append(b, makeTACConst(0, start));
-		tacbuffer_append(b, makeTACConst(1, change));
-		tacbuffer_append(b, makeTACBinOp(0, TAC_OP_SUB, 1));
+		tacbuffer_append(b, makeTACConst(0, 0, start));
+		tacbuffer_append(b, makeTACConst(0, 1, change));
+		tacbuffer_append(b, makeTACBinOp(0, 0, TAC_OP_SUB, 1));
 
-		tacbuffer_append(b, makeTACReturn(0));
+		tacbuffer_append(b, makeTACReturn(0, 0));
 
 		struct sd_uc_engine* system = sd_uc_engine_from_tacbuffer_v2(b, false);
 
@@ -87,13 +87,13 @@ void test_x86_compile_tac_binary_op_and_8bit() {
 		int8_t expected = start & change;
 
 		struct TACBuffer* b = tacbuffer_ctor();
-		tacbuffer_append(b, makeTACSetupStackframe(0));
+		tacbuffer_append(b, makeTACSetupStackframe(0, 0));
 
-		tacbuffer_append(b, makeTACConst(0, start));
-		tacbuffer_append(b, makeTACConst(1, change));
-		tacbuffer_append(b, makeTACBinOp(0, TAC_OP_AND, 1));
+		tacbuffer_append(b, makeTACConst(0, 0, start));
+		tacbuffer_append(b, makeTACConst(0, 1, change));
+		tacbuffer_append(b, makeTACBinOp(0, 0, TAC_OP_AND, 1));
 
-		tacbuffer_append(b, makeTACReturn(0));
+		tacbuffer_append(b, makeTACReturn(0, 0));
 
 		struct sd_uc_engine* system = sd_uc_engine_from_tacbuffer_v2(b, false);
 
@@ -118,13 +118,13 @@ void test_x86_compile_tac_binary_op_or_8bit() {
 		int8_t expected = start | change;
 
 		struct TACBuffer* b = tacbuffer_ctor();
-		tacbuffer_append(b, makeTACSetupStackframe(0));
+		tacbuffer_append(b, makeTACSetupStackframe(0, 0));
 
-		tacbuffer_append(b, makeTACConst(0, start));
-		tacbuffer_append(b, makeTACConst(1, change));
-		tacbuffer_append(b, makeTACBinOp(0, TAC_OP_OR, 1));
+		tacbuffer_append(b, makeTACConst(0, 0, start));
+		tacbuffer_append(b, makeTACConst(0, 1, change));
+		tacbuffer_append(b, makeTACBinOp(0, 0, TAC_OP_OR, 1));
 
-		tacbuffer_append(b, makeTACReturn(0));
+		tacbuffer_append(b, makeTACReturn(0, 0));
 
 		struct sd_uc_engine* system = sd_uc_engine_from_tacbuffer_v2(b, false);
 
@@ -146,13 +146,13 @@ void test_x86_compile_tac_binary_op_xor() {
 	uint64_t start = 0xab;
 	for (uint64_t change = 0xf0; change < 0xf3; change++) {
 		struct TACBuffer* b = tacbuffer_ctor();
-		tacbuffer_append(b, makeTACSetupStackframe(0));
+		tacbuffer_append(b, makeTACSetupStackframe(0, 0));
 
-		tacbuffer_append(b, makeTACConst(0, start));
-		tacbuffer_append(b, makeTACConst(1, change));
-		tacbuffer_append(b, makeTACBinOp(0, TAC_OP_XOR, 1));
+		tacbuffer_append(b, makeTACConst(0, 0, start));
+		tacbuffer_append(b, makeTACConst(0, 1, change));
+		tacbuffer_append(b, makeTACBinOp(0, 0, TAC_OP_XOR, 1));
 
-		tacbuffer_append(b, makeTACReturn(0));
+		tacbuffer_append(b, makeTACReturn(0, 0));
 
 		struct sd_uc_engine* system = sd_uc_engine_from_tacbuffer_v2(b, false);
 
@@ -176,13 +176,13 @@ void test_x86_compile_tac_binary_op_neq_true_8bit() {
 		int8_t value2 = value1 + 1;
 
 		struct TACBuffer* b = tacbuffer_ctor();
-		tacbuffer_append(b, makeTACSetupStackframe(0));
+		tacbuffer_append(b, makeTACSetupStackframe(0, 0));
 
-		tacbuffer_append(b, makeTACConst(0, value1));
-		tacbuffer_append(b, makeTACConst(1, value2));
-		tacbuffer_append(b, makeTACBinOp(0, TAC_OP_CMP_NEQ, 1));
+		tacbuffer_append(b, makeTACConst(0, 0, value1));
+		tacbuffer_append(b, makeTACConst(0, 1, value2));
+		tacbuffer_append(b, makeTACBinOp(0, 0, TAC_OP_CMP_NEQ, 1));
 
-		tacbuffer_append(b, makeTACReturn(0));
+		tacbuffer_append(b, makeTACReturn(0, 0));
 
 		struct sd_uc_engine* system = sd_uc_engine_from_tacbuffer_v2(b, false);
 
@@ -206,13 +206,13 @@ void test_x86_compile_tac_binary_op_neq_false_8bit() {
 		int8_t value2 = value1;
 
 		struct TACBuffer* b = tacbuffer_ctor();
-		tacbuffer_append(b, makeTACSetupStackframe(0));
+		tacbuffer_append(b, makeTACSetupStackframe(0, 0));
 
-		tacbuffer_append(b, makeTACConst(0, value1));
-		tacbuffer_append(b, makeTACConst(1, value2));
-		tacbuffer_append(b, makeTACBinOp(0, TAC_OP_CMP_NEQ, 1));
+		tacbuffer_append(b, makeTACConst(0, 0, value1));
+		tacbuffer_append(b, makeTACConst(0, 1, value2));
+		tacbuffer_append(b, makeTACBinOp(0, 0, TAC_OP_CMP_NEQ, 1));
 
-		tacbuffer_append(b, makeTACReturn(0));
+		tacbuffer_append(b, makeTACReturn(0, 0));
 
 		struct sd_uc_engine* system = sd_uc_engine_from_tacbuffer_v2(b, false);
 
@@ -236,13 +236,13 @@ void test_x86_compile_tac_binary_op_lt_true_8bit() {
 		int8_t value2 = value1 + 1;
 
 		struct TACBuffer* b = tacbuffer_ctor();
-		tacbuffer_append(b, makeTACSetupStackframe(0));
+		tacbuffer_append(b, makeTACSetupStackframe(0, 0));
 
-		tacbuffer_append(b, makeTACConst(0, value1));
-		tacbuffer_append(b, makeTACConst(1, value2));
-		tacbuffer_append(b, makeTACBinOp(0, TAC_OP_CMP_LT, 1));
+		tacbuffer_append(b, makeTACConst(0, 0, value1));
+		tacbuffer_append(b, makeTACConst(0, 1, value2));
+		tacbuffer_append(b, makeTACBinOp(0, 0, TAC_OP_CMP_LT, 1));
 
-		tacbuffer_append(b, makeTACReturn(0));
+		tacbuffer_append(b, makeTACReturn(0, 0));
 
 		struct sd_uc_engine* system = sd_uc_engine_from_tacbuffer_v2(b, false);
 
@@ -265,13 +265,13 @@ void test_x86_compile_tac_binary_op_lt_false_8bit() {
 		int8_t value2 = value1;
 
 		struct TACBuffer* b = tacbuffer_ctor();
-		tacbuffer_append(b, makeTACSetupStackframe(0));
+		tacbuffer_append(b, makeTACSetupStackframe(0, 0));
 
-		tacbuffer_append(b, makeTACConst(0, value1));
-		tacbuffer_append(b, makeTACConst(1, value2));
-		tacbuffer_append(b, makeTACBinOp(0, TAC_OP_CMP_LT, 1));
+		tacbuffer_append(b, makeTACConst(0, 0, value1));
+		tacbuffer_append(b, makeTACConst(0, 1, value2));
+		tacbuffer_append(b, makeTACBinOp(0, 0, TAC_OP_CMP_LT, 1));
 
-		tacbuffer_append(b, makeTACReturn(0));
+		tacbuffer_append(b, makeTACReturn(0, 0));
 
 		struct sd_uc_engine* system = sd_uc_engine_from_tacbuffer_v2(b, false);
 
@@ -295,13 +295,13 @@ void test_x86_compile_tac_binary_op_eq_true_8bit() {
 
 		struct TACBuffer* b = tacbuffer_ctor();
 
-		tacbuffer_append(b, makeTACSetupStackframe(0));
+		tacbuffer_append(b, makeTACSetupStackframe(0, 0));
 
-		tacbuffer_append(b, makeTACConst(0, value1));
-		tacbuffer_append(b, makeTACConst(1, value2));
-		tacbuffer_append(b, makeTACBinOp(0, TAC_OP_CMP_EQ, 1));
+		tacbuffer_append(b, makeTACConst(0, 0, value1));
+		tacbuffer_append(b, makeTACConst(0, 1, value2));
+		tacbuffer_append(b, makeTACBinOp(0, 0, TAC_OP_CMP_EQ, 1));
 
-		tacbuffer_append(b, makeTACReturn(0));
+		tacbuffer_append(b, makeTACReturn(0, 0));
 
 		struct sd_uc_engine* system = sd_uc_engine_from_tacbuffer_v2(b, false);
 		uc_err err;
@@ -328,12 +328,12 @@ void test_x86_compile_tac_binary_op_eq_false_8bit() {
 
 		struct TACBuffer* b = tacbuffer_ctor();
 
-		tacbuffer_append(b, makeTACSetupStackframe(0));
-		tacbuffer_append(b, makeTACConst(0, value1));
-		tacbuffer_append(b, makeTACConst(1, value2));
-		tacbuffer_append(b, makeTACBinOp(0, TAC_OP_CMP_EQ, 1));
+		tacbuffer_append(b, makeTACSetupStackframe(0, 0));
+		tacbuffer_append(b, makeTACConst(0, 0, value1));
+		tacbuffer_append(b, makeTACConst(0, 1, value2));
+		tacbuffer_append(b, makeTACBinOp(0, 0, TAC_OP_CMP_EQ, 1));
 
-		tacbuffer_append(b, makeTACReturn(0));
+		tacbuffer_append(b, makeTACReturn(0, 0));
 
 		struct sd_uc_engine* system = sd_uc_engine_from_tacbuffer_v2(b, false);
 		uc_err err;
@@ -360,13 +360,13 @@ void test_x86_compile_tac_binary_op_geq_true_8bit() {
 		uint8_t value2 = 0x03;
 
 		struct TACBuffer* b = tacbuffer_ctor();
-		tacbuffer_append(b, makeTACSetupStackframe(0));
+		tacbuffer_append(b, makeTACSetupStackframe(0, 0));
 
-		tacbuffer_append(b, makeTACConst(0, value1));
-		tacbuffer_append(b, makeTACConst(1, value2));
-		tacbuffer_append(b, makeTACBinOp(0, TAC_OP_CMP_GE, 1));
+		tacbuffer_append(b, makeTACConst(0, 0, value1));
+		tacbuffer_append(b, makeTACConst(0, 1, value2));
+		tacbuffer_append(b, makeTACBinOp(0, 0, TAC_OP_CMP_GE, 1));
 
-		tacbuffer_append(b, makeTACReturn(0));
+		tacbuffer_append(b, makeTACReturn(0, 0));
 
 		struct sd_uc_engine* system = sd_uc_engine_from_tacbuffer_v2(b, false);
 
@@ -390,13 +390,13 @@ void test_x86_compile_tac_binary_op_geq_false_8bit() {
 		uint8_t value2 = 0x10;
 
 		struct TACBuffer* b = tacbuffer_ctor();
-		tacbuffer_append(b, makeTACSetupStackframe(0));
+		tacbuffer_append(b, makeTACSetupStackframe(0, 0));
 
-		tacbuffer_append(b, makeTACConst(0, value1));
-		tacbuffer_append(b, makeTACConst(1, value2));
-		tacbuffer_append(b, makeTACBinOp(0, TAC_OP_CMP_GE, 1));
+		tacbuffer_append(b, makeTACConst(0, 0, value1));
+		tacbuffer_append(b, makeTACConst(0, 1, value2));
+		tacbuffer_append(b, makeTACBinOp(0, 0, TAC_OP_CMP_GE, 1));
 
-		tacbuffer_append(b, makeTACReturn(0));
+		tacbuffer_append(b, makeTACReturn(0, 0));
 
 		struct sd_uc_engine* system = sd_uc_engine_from_tacbuffer_v2(b, false);
 
@@ -420,12 +420,12 @@ void test_x86_compile_tac_binary_op_shift_left() {
 	for (int change = 1; change < 6; change++) {
 
 		struct TACBuffer* b = tacbuffer_ctor();
-		tacbuffer_append(b, makeTACSetupStackframe(0));
+		tacbuffer_append(b, makeTACSetupStackframe(0, 0));
 
-		tacbuffer_append(b, makeTACConst(0, start));
-		tacbuffer_append(b, makeTACConst(1, change));
-		tacbuffer_append(b, makeTACBinOp(0, TAC_OP_SHIFT_LEFT, 1));
-		tacbuffer_append(b, makeTACReturn(0));
+		tacbuffer_append(b, makeTACConst(0, 0, start));
+		tacbuffer_append(b, makeTACConst(0, 1, change));
+		tacbuffer_append(b, makeTACBinOp(0, 0, TAC_OP_SHIFT_LEFT, 1));
+		tacbuffer_append(b, makeTACReturn(0, 0));
 
 		struct sd_uc_engine* system = sd_uc_engine_from_tacbuffer_v2(b, false);
 
@@ -453,12 +453,12 @@ void test_x86_compile_tac_binary_op_shift_right() {
 	for (int change = 1; change < 6; change++) {
 
 		struct TACBuffer* b = tacbuffer_ctor();
-		tacbuffer_append(b, makeTACSetupStackframe(0));
+		tacbuffer_append(b, makeTACSetupStackframe(0, 0));
 
-		tacbuffer_append(b, makeTACConst(0, start));
-		tacbuffer_append(b, makeTACConst(1, change));
-		tacbuffer_append(b, makeTACBinOp(0, TAC_OP_SHIFT_RIGHT, 1));
-		tacbuffer_append(b, makeTACReturn(0));
+		tacbuffer_append(b, makeTACConst(0, 0, start));
+		tacbuffer_append(b, makeTACConst(0, 1, change));
+		tacbuffer_append(b, makeTACBinOp(0, 0, TAC_OP_SHIFT_RIGHT, 1));
+		tacbuffer_append(b, makeTACReturn(0, 0));
 
 		struct sd_uc_engine* system = sd_uc_engine_from_tacbuffer_v2(b, false);
 

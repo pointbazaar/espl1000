@@ -40,7 +40,7 @@ bool tac_unopterm(struct TACBuffer* buffer, struct UnOpTerm* u, struct Ctx* ctx)
 				return false;
 		}
 
-		struct TAC* t = makeTACUnaryOp(dest, tacbuffer_last_dest(buffer), op);
+		struct TAC* t = makeTACUnaryOp(u->super.line_num, dest, tacbuffer_last_dest(buffer), op);
 
 		tacbuffer_append(buffer, t);
 	}

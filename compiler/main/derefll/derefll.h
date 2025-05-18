@@ -1,5 +1,8 @@
 #pragma once
 
+#include "ast/ast_declare.h"
+#include "compiler/main/util/ctx.h"
+
 //struct DerefLL
 //
 //A representation of a chain of dereferencing and indexing access as a Linked List
@@ -31,6 +34,10 @@ enum DEREFLL_ACTION {
 
 struct DerefLL {
 	//this struct should be immutable
+
+	// Approximate line in source file.
+	// Value 0 means invalid/unpopulated
+	uint32_t line_no;
 
 	//at most 1 of these is valid for an instance
 	struct SimpleVar* initial; //may be NULL

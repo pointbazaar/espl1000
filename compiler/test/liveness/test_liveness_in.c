@@ -19,13 +19,13 @@ void test_liveness_in_map() {
 	struct TACBuffer* buf = tacbuffer_ctor();
 
 	// t0 = 999
-	tacbuffer_append(buf, makeTACConst(0, 999));
+	tacbuffer_append(buf, makeTACConst(0, 0, 999));
 	// t1 = t0
-	tacbuffer_append(buf, makeTACCopy(1, 0));
+	tacbuffer_append(buf, makeTACCopy(0, 1, 0));
 	// t2 = t1
-	tacbuffer_append(buf, makeTACCopy(2, 1));
+	tacbuffer_append(buf, makeTACCopy(0, 2, 1));
 	// return t3
-	tacbuffer_append(buf, makeTACReturn(2));
+	tacbuffer_append(buf, makeTACReturn(0, 2));
 
 	struct Liveness* live = liveness_calc_tacbuffer(buf);
 

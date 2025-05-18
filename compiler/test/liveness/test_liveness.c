@@ -19,13 +19,13 @@ void test_liveness_1_block() {
 	struct TACBuffer* buf = tacbuffer_ctor();
 
 	// t0 = 999
-	tacbuffer_append(buf, makeTACConst(0, 999));
+	tacbuffer_append(buf, makeTACConst(0, 0, 999));
 	// t1 = t0
-	tacbuffer_append(buf, makeTACCopy(1, 0));
+	tacbuffer_append(buf, makeTACCopy(0, 1, 0));
 	// t2 = t1
-	tacbuffer_append(buf, makeTACCopy(2, 1));
+	tacbuffer_append(buf, makeTACCopy(0, 2, 1));
 	// return t3
-	tacbuffer_append(buf, makeTACReturn(2));
+	tacbuffer_append(buf, makeTACReturn(0, 2));
 
 	struct Liveness* live = liveness_calc_tacbuffer(buf);
 
@@ -48,19 +48,19 @@ static void make_example_2_blocks(struct BasicBlock*** graph, size_t* nblocks) {
 	struct TACBuffer* buf0 = tacbuffer_ctor();
 
 	// t0 = 999
-	tacbuffer_append(buf0, makeTACConst(0, 999));
+	tacbuffer_append(buf0, makeTACConst(0, 0, 999));
 	// t1 = t0
-	tacbuffer_append(buf0, makeTACCopy(1, 0));
+	tacbuffer_append(buf0, makeTACCopy(0, 1, 0));
 	// t2 = t1
-	tacbuffer_append(buf0, makeTACCopy(2, 1));
+	tacbuffer_append(buf0, makeTACCopy(0, 2, 1));
 	// return t3
-	tacbuffer_append(buf0, makeTACGoto(0));
+	tacbuffer_append(buf0, makeTACGoto(0, 0));
 
 	struct TACBuffer* buf1 = tacbuffer_ctor();
 
-	tacbuffer_append(buf1, makeTACLabel(0));
-	tacbuffer_append(buf1, makeTACReturn(0));
-	tacbuffer_append(buf1, makeTACReturn(2));
+	tacbuffer_append(buf1, makeTACLabel(0, 0));
+	tacbuffer_append(buf1, makeTACReturn(0, 0));
+	tacbuffer_append(buf1, makeTACReturn(0, 2));
 
 	*nblocks = 2;
 	*graph = malloc(sizeof(struct BasicBlock*) * 2);

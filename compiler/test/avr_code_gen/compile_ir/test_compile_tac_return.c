@@ -23,11 +23,11 @@ void test_compile_tac_return_case_8bit_0x54() {
 
 	struct TACBuffer* b = tacbuffer_ctor();
 
-	tacbuffer_append(b, makeTACSetupSP());
-	tacbuffer_append(b, makeTACConst(0, value + 1));
-	tacbuffer_append(b, makeTACConst(1, value));
-	tacbuffer_append(b, makeTACConst(2, value - 1));
-	tacbuffer_append(b, makeTACReturn(1));
+	tacbuffer_append(b, makeTACSetupSP(0));
+	tacbuffer_append(b, makeTACConst(0, 0, value + 1));
+	tacbuffer_append(b, makeTACConst(0, 1, value));
+	tacbuffer_append(b, makeTACConst(0, 2, value - 1));
+	tacbuffer_append(b, makeTACReturn(0, 1));
 
 	vmcu_system_t* system = prepare_vmcu_system_from_tacbuffer(b);
 
@@ -46,11 +46,11 @@ void test_compile_tac_return_case_8bit_0x55() {
 
 	struct TACBuffer* b = tacbuffer_ctor();
 
-	tacbuffer_append(b, makeTACSetupSP());
-	tacbuffer_append(b, makeTACConst(0, value + 1));
-	tacbuffer_append(b, makeTACConst(1, value));
-	tacbuffer_append(b, makeTACConst(2, value - 1));
-	tacbuffer_append(b, makeTACReturn(1));
+	tacbuffer_append(b, makeTACSetupSP(0));
+	tacbuffer_append(b, makeTACConst(0, 0, value + 1));
+	tacbuffer_append(b, makeTACConst(0, 1, value));
+	tacbuffer_append(b, makeTACConst(0, 2, value - 1));
+	tacbuffer_append(b, makeTACReturn(0, 1));
 
 	vmcu_system_t* system = prepare_vmcu_system_from_tacbuffer(b);
 
@@ -69,11 +69,11 @@ void test_compile_tac_return_case_16bit_0x5432() {
 
 	struct TACBuffer* b = tacbuffer_ctor();
 
-	tacbuffer_append(b, makeTACSetupSP());
-	tacbuffer_append(b, makeTACConst(0, value + 1));
-	tacbuffer_append(b, makeTACConst(1, value));
-	tacbuffer_append(b, makeTACConst(2, value - 1));
-	tacbuffer_append(b, makeTACReturn(1));
+	tacbuffer_append(b, makeTACSetupSP(0));
+	tacbuffer_append(b, makeTACConst(0, 0, value + 1));
+	tacbuffer_append(b, makeTACConst(0, 1, value));
+	tacbuffer_append(b, makeTACConst(0, 2, value - 1));
+	tacbuffer_append(b, makeTACReturn(0, 1));
 
 	vmcu_system_t* system = prepare_vmcu_system_from_tacbuffer(b);
 
@@ -92,11 +92,11 @@ void test_compile_tac_return_case_16bit_0x4321() {
 
 	struct TACBuffer* b = tacbuffer_ctor();
 
-	tacbuffer_append(b, makeTACSetupSP());
-	tacbuffer_append(b, makeTACConst(0, value + 1));
-	tacbuffer_append(b, makeTACConst(1, value));
-	tacbuffer_append(b, makeTACConst(2, value - 1));
-	tacbuffer_append(b, makeTACReturn(1));
+	tacbuffer_append(b, makeTACSetupSP(0));
+	tacbuffer_append(b, makeTACConst(0, 0, value + 1));
+	tacbuffer_append(b, makeTACConst(0, 1, value));
+	tacbuffer_append(b, makeTACConst(0, 2, value - 1));
+	tacbuffer_append(b, makeTACReturn(0, 1));
 
 	vmcu_system_t* system = prepare_vmcu_system_from_tacbuffer(b);
 

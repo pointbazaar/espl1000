@@ -158,3 +158,8 @@ bool tac_is_unconditional_jump(struct TAC* tac);
 
 // @returns NULL on error
 char* tac_tostring(struct TAC* tac, struct SST* sst, struct LVST* lvst);
+
+// @returns approximate source line number of the
+// AST node used to generate the IR statement
+// @returns 0   if there is no line number
+uint32_t tac_line_num(struct TAC* tac);

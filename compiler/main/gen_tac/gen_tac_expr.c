@@ -104,9 +104,9 @@ static bool tac_expr_part_2_no_constvalue(struct TACBuffer* buffer, struct Expr*
 	struct TAC* t;
 
 	if (reverse_operands)
-		t = makeTACBinOp(t2, op, t1);
+		t = makeTACBinOp(expr->super.line_num, t2, op, t1);
 	else
-		t = makeTACBinOp(t1, op, t2);
+		t = makeTACBinOp(expr->super.line_num, t1, op, t2);
 
 	tacbuffer_append(buffer, t);
 

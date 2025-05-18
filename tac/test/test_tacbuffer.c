@@ -15,12 +15,17 @@ void test_tacbuffer_tostring() {
 
 	struct TACBuffer* buf = tacbuffer_ctor();
 
-	tacbuffer_append(buf, makeTACNop());
-	tacbuffer_append(buf, makeTACReturn(1));
+	tacbuffer_append(buf, makeTACNop(1));
+	tacbuffer_append(buf, makeTACReturn(2, 1));
 
 	char* s = tacbuffer_tostring(buf, false, NULL, NULL);
 
-	char* expect = "000:   nop\n001:   return t1\n";
+	char* expect = "0   L1    nop\n1   L2    return t1\n";
+
+	if (strcmp(s, expect) != 0) {
+		printf("expect: '\n%s'", expect);
+		printf("actual: '\n%s'", s);
+	}
 
 	assert(strcmp(s, expect) == 0);
 
@@ -34,9 +39,9 @@ void test_tacbuffer_indexof() {
 
 	struct TACBuffer* buf = tacbuffer_ctor();
 
-	struct TAC* t1 = makeTACNop();
-	struct TAC* t2 = makeTACReturn(1);
-	struct TAC* t3 = makeTACParam(2, true, 4, false);
+	struct TAC* t1 = makeTACNop(0);
+	struct TAC* t2 = makeTACReturn(0, 1);
+	struct TAC* t3 = makeTACParam(0, 2, true, 4, false);
 
 	tacbuffer_append(buf, t1);
 	tacbuffer_append(buf, t2);
@@ -55,8 +60,8 @@ void test_tacbuffer_set() {
 
 	struct TACBuffer* buf = tacbuffer_ctor();
 
-	struct TAC* t1 = makeTACNop();
-	struct TAC* t2 = makeTACReturn(1);
+	struct TAC* t1 = makeTACNop(0);
+	struct TAC* t2 = makeTACReturn(0, 1);
 
 	tacbuffer_append(buf, t1);
 
@@ -76,9 +81,9 @@ void test_tacbuffer_get() {
 
 	struct TACBuffer* buf = tacbuffer_ctor();
 
-	struct TAC* t1 = makeTACNop();
-	struct TAC* t2 = makeTACReturn(1);
-	struct TAC* t3 = makeTACParam(2, true, 3, false);
+	struct TAC* t1 = makeTACNop(0);
+	struct TAC* t2 = makeTACReturn(0, 1);
+	struct TAC* t3 = makeTACParam(0, 2, true, 3, false);
 
 	tacbuffer_append(buf, t1);
 	tacbuffer_append(buf, t2);
@@ -96,8 +101,8 @@ void test_tacbuffer_get_last() {
 
 	struct TACBuffer* buf = tacbuffer_ctor();
 
-	struct TAC* t1 = makeTACNop();
-	struct TAC* t2 = makeTACReturn(1);
+	struct TAC* t1 = makeTACNop(0);
+	struct TAC* t2 = makeTACReturn(0, 1);
 
 	tacbuffer_append(buf, t1);
 	tacbuffer_append(buf, t2);
@@ -113,8 +118,8 @@ void test_tacbuffer_last_dest() {
 
 	struct TACBuffer* buf = tacbuffer_ctor();
 
-	struct TAC* t1 = makeTACConst(1, 0x3);
-	struct TAC* t2 = makeTACCopy(20, 1);
+	struct TAC* t1 = makeTACConst(0, 1, 0x3);
+	struct TAC* t2 = makeTACCopy(0, 20, 1);
 
 	tacbuffer_append(buf, t1);
 	tacbuffer_append(buf, t2);
@@ -130,8 +135,8 @@ void test_tacbuffer_count() {
 
 	struct TACBuffer* buf = tacbuffer_ctor();
 
-	struct TAC* t1 = makeTACNop();
-	struct TAC* t2 = makeTACReturn(1);
+	struct TAC* t1 = makeTACNop(0);
+	struct TAC* t2 = makeTACReturn(0, 1);
 
 	tacbuffer_append(buf, t1);
 	tacbuffer_append(buf, t2);

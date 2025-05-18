@@ -55,43 +55,43 @@ bool tac_forstmt(struct TACBuffer* buffer, struct ForStmt* f, struct Ctx* ctx) {
 		return false;
 	}
 	uint32_t t1 = tacbuffer_last_dest(buffer);
-	tacbuffer_append(buffer, makeTACStoreLocal(local_index, t1));
+	tacbuffer_append(buffer, makeTACStoreLocal(f->super.line_num, local_index, t1));
 
 	//L0:
-	tacbuffer_append(buffer, makeTACLabel(l0));
+	tacbuffer_append(buffer, makeTACLabel(f->super.line_num, l0));
 
 	if (!tac_expr(buffer, f->range->end, ctx)) {
 		return false;
 	}
 	uint32_t t2 = tacbuffer_last_dest(buffer);
 
-	tacbuffer_append(buffer, makeTACLoadLocalAddr(make_temp(), local_index, addr_width));
-	tacbuffer_append(buffer, makeTACLoad(t3, tacbuffer_last_dest(buffer), local_width));
+	tacbuffer_append(buffer, makeTACLoadLocalAddr(f->super.line_num, make_temp(), local_index, addr_width));
+	tacbuffer_append(buffer, makeTACLoad(f->super.line_num, t3, tacbuffer_last_dest(buffer), local_width));
 
-	tacbuffer_append(buffer, makeTACIfCMPGoto(t2, TAC_OP_CMP_GE, t3, l1));
+	tacbuffer_append(buffer, makeTACIfCMPGoto(f->super.line_num, t2, TAC_OP_CMP_GE, t3, l1));
 
-	tacbuffer_append(buffer, makeTACGoto(lend));
+	tacbuffer_append(buffer, makeTACGoto(f->super.line_num, lend));
 
 	//L1:
-	tacbuffer_append(buffer, makeTACLabel(l1));
+	tacbuffer_append(buffer, makeTACLabel(f->super.line_num, l1));
 
 	if (!tac_stmtblock(buffer, f->block, ctx)) {
 		return false;
 	}
 
 	// t3++
-	tacbuffer_append(buffer, makeTACLoadLocalAddr(make_temp(), local_index, addr_width));
-	tacbuffer_append(buffer, makeTACLoad(t3, tacbuffer_last_dest(buffer), local_width));
+	tacbuffer_append(buffer, makeTACLoadLocalAddr(f->super.line_num, make_temp(), local_index, addr_width));
+	tacbuffer_append(buffer, makeTACLoad(f->super.line_num, t3, tacbuffer_last_dest(buffer), local_width));
 
 	const uint32_t tinc = make_temp();
-	tacbuffer_append(buffer, makeTACConst(tinc, 1));
-	tacbuffer_append(buffer, makeTACBinOp(t3, TAC_OP_ADD, tinc));
-	tacbuffer_append(buffer, makeTACStoreLocal(local_index, t3));
+	tacbuffer_append(buffer, makeTACConst(f->super.line_num, tinc, 1));
+	tacbuffer_append(buffer, makeTACBinOp(f->super.line_num, t3, TAC_OP_ADD, tinc));
+	tacbuffer_append(buffer, makeTACStoreLocal(f->super.line_num, local_index, t3));
 
-	tacbuffer_append(buffer, makeTACGoto(l0));
+	tacbuffer_append(buffer, makeTACGoto(f->super.line_num, l0));
 
 	//Lend:
-	tacbuffer_append(buffer, makeTACLabel(lend));
+	tacbuffer_append(buffer, makeTACLabel(f->super.line_num, lend));
 
 	return ctx_exit_loop(ctx);
 }
