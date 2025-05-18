@@ -15,10 +15,10 @@ void compile_tac_if_cmp_goto(struct RAT* rat, struct TAC* tac, struct IBuffer* i
 
 	bool wide = rat_is_wide(rat, tac_dest(tac));
 
-	cp(reg1, reg2, c);
+	avr_cp(reg1, reg2, c);
 
 	if (wide)
-		cp(reg1 + 1, reg2 + 1, c);
+		avr_cp(reg1 + 1, reg2 + 1, c);
 
 	char str[32];
 	sprintf(str, "L%d", tac_label_index(tac));
@@ -31,13 +31,13 @@ void compile_tac_if_cmp_goto(struct RAT* rat, struct TAC* tac, struct IBuffer* i
 	// and we do not know how far away our target label is.
 
 	switch (tac_op(tac)) {
-		case TAC_OP_CMP_EQ: brne(tmp_label, c); break;
-		case TAC_OP_CMP_NEQ: breq(tmp_label, c); break;
-		case TAC_OP_CMP_GE: brlt(tmp_label, c); break;
-		case TAC_OP_CMP_LT: brge(tmp_label, c); break;
+		case TAC_OP_CMP_EQ: avr_brne(tmp_label, c); break;
+		case TAC_OP_CMP_NEQ: avr_breq(tmp_label, c); break;
+		case TAC_OP_CMP_GE: avr_brlt(tmp_label, c); break;
+		case TAC_OP_CMP_LT: avr_brge(tmp_label, c); break;
 		default: break;
 	}
 
-	jmp(str);
-	label(tmp_label);
+	avr_jmp(str);
+	avr_label(tmp_label);
 }

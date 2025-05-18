@@ -19,10 +19,10 @@ void compile_tac_const_value(struct RAT* rat, struct TAC* tac, struct IBuffer* i
 	char c[60];
 	sprintf(c, "TAC_CONST_VALUE %d (0x%x)", value, value);
 
-	ldi(reg, (value & 0xff), c);
+	avr_ldi(reg, (value & 0xff), c);
 
 	if (rat_is_wide(rat, tac_dest(tac))) {
 
-		ldi((reg + 1), ((value >> 8) & 0xff), c);
+		avr_ldi((reg + 1), ((value >> 8) & 0xff), c);
 	}
 }

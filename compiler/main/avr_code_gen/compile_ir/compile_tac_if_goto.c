@@ -16,11 +16,11 @@ void compile_tac_if_goto(struct RAT* rat, struct TAC* tac, struct IBuffer* ibu) 
 	char tmp_label[32];
 	sprintf(tmp_label, "L%d", make_label());
 
-	tst(reg, c); //test if r%d is zero
+	avr_tst(reg, c); //test if r%d is zero
 
-	breq(tmp_label, c);
-	jmp(str);
-	label(tmp_label);
+	avr_breq(tmp_label, c);
+	avr_jmp(str);
+	avr_label(tmp_label);
 
 	// brne(str, c);
 	// we cannot use brne since it can only branch +/- 64 words

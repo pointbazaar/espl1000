@@ -4,5 +4,5 @@
 
 void compile_tac_nop(struct IBuffer* ibu) {
 
-	nop("TAC_NOP");
+	avr_nop("TAC_NOP");
 }

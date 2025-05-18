@@ -32,5 +32,5 @@ void compile_tac_label(struct TAC* tac, struct IBuffer* ibu, struct Ctx* ctx) {
 		s = function_name;
 	}
 
-	label(s);
+	avr_label(s);
 }

@@ -24,12 +24,12 @@ void compile_tac_param(struct RAT* rat, struct TAC* tac, struct IBuffer* ibu) {
 		//assert(rat_is_wide(rat, tac->dest));
 
 		if (rat_is_wide(rat, tac_dest(tac))) {
-			push(reg_dest + 1, c);
+			avr_push(reg_dest + 1, c);
 		} else {
-			ldi(rat_scratch_reg(rat), 0, c);
-			push(rat_scratch_reg(rat), c);
+			avr_ldi(rat_scratch_reg(rat), 0, c);
+			avr_push(rat_scratch_reg(rat), c);
 		}
 	}
 
-	push(reg_dest, c);
+	avr_push(reg_dest, c);
 }
