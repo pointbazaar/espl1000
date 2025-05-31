@@ -15,6 +15,10 @@ void ibu_dtor(struct IBuffer* ibu);
 
 void ibu_write(struct IBuffer* ibu, FILE* fout);
 
+// @brief sets the source line numbers for subsequent insertions
+// into the IBuffer.
+void ibu_set_line_num(struct IBuffer* ibu, uint32_t line_no);
+
 void ibu_push(struct IBuffer* ibu, struct Instr* i);
 
 bool ibu_push4(struct IBuffer* ibu, enum IKEY key, int64_t x1, int64_t x2, int64_t x3, char* label, const char* comment);

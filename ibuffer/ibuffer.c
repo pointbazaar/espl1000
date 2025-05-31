@@ -25,6 +25,10 @@ struct Instr {
 
 	//comment for the assembly code
 	char comment[INSTR_COMMENT_LEN];
+
+	// source line number
+	// value 0 means field is invalid / unpopulated
+	uint32_t line_no;
 };
 
 struct IBuffer {
@@ -33,6 +37,13 @@ struct IBuffer {
 	struct Instr** buffer;
 	uint32_t capacity;
 	uint32_t count;
+
+	// Current line number. This is used to populate
+	// 'line_no' field of 'struct Instr' when it is inserted into
+	// the instruction buffer.
+	// Value 0 means field is invalid / unpopulated
+	uint32_t line_no;
+	uint32_t current_line_no;
 };
 
 struct IBuffer* ibu_ctor() {
@@ -52,6 +63,7 @@ struct IBuffer* ibu_ctor() {
 	}
 
 	ibu->count = 0;
+	ibu->current_line_no = 0;
 
 	return ibu;
 }
@@ -78,6 +90,13 @@ void ibu_write(struct IBuffer* ibu, FILE* fout) {
 	}
 }
 
+void ibu_set_line_num(struct IBuffer* ibu, uint32_t line_no) {
+	if (!ibu) {
+		return;
+	}
+	ibu->current_line_no = line_no;
+}
+
 void ibu_push(struct IBuffer* ibu, struct Instr* i) {
 
 	if (ibu->count >= ibu->capacity) {
@@ -86,6 +105,8 @@ void ibu_push(struct IBuffer* ibu, struct Instr* i) {
 		ibu->capacity *= 2;
 		ibu->buffer = realloc(ibu->buffer, sizeof(struct Instr*) * ibu->capacity);
 	}
+
+	i->line_no = ibu->current_line_no;
 
 	ibu->buffer[ibu->count] = i;
 	ibu->count += 1;

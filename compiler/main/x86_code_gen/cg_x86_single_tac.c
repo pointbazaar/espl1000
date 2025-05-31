@@ -22,6 +22,8 @@ bool emit_asm_x86_single_tac(struct RAT* rat, struct TAC* tac, struct Ctx* ctx, 
 		printf("emit_asm_x86_single_tac %s\n", tac_tostring(tac, st->sst, st->lvst));
 	}
 
+	ibu_set_line_num(ibu, tac_line_num(tac));
+
 	switch (tac_kind(tac)) {
 
 		case TAC_LABEL_INDEXED:
