@@ -6,6 +6,7 @@
 #include <stdbool.h>
 
 #include "ibuffer_write.h"
+#include "ibuffer_shared.h"
 
 #define INSTR_COMMENT_LEN 50
 
@@ -90,7 +91,7 @@ void ibu_push(struct IBuffer* ibu, struct Instr* i) {
 	ibu->count += 1;
 }
 
-bool ibu_push4(struct IBuffer* ibu, enum IKEY key, int32_t x1, int32_t x2, int32_t x3, char* label, char* comment) {
+bool ibu_push4(struct IBuffer* ibu, enum IKEY key, int64_t x1, int64_t x2, int64_t x3, char* label, const char* comment) {
 
 	struct Instr* i = malloc(sizeof(struct Instr));
 

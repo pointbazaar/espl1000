@@ -1,10 +1,9 @@
 #pragma once
 
 #include <inttypes.h>
-#include <stdio.h>
 #include <stdbool.h>
 
-#include "ikey.h"
+#include "ibuffer_shared.h"
 
 //AVR pointer registers
 #define XL 26
@@ -20,31 +19,6 @@
 #define RAMEND 0x085f
 #define low(X) (((X) & 0xff))
 #define high(X) (((X) >> 8))
-
-struct Instr;
-
-struct IBuffer;
-
-// @returns NULL on error
-struct IBuffer* ibu_ctor();
-
-void ibu_dtor(struct IBuffer* ibu);
-
-void ibu_write(struct IBuffer* ibu, FILE* fout);
-
-void ibu_push(struct IBuffer* ibu, struct Instr* i);
-
-// @returns false on error
-bool ibu_push4(struct IBuffer* ibu, enum IKEY key, int32_t x1, int32_t x2, int32_t x3, char* label, char* comment);
-
-//constructions macros
-#define ibu_branch(instr, label, comment) ibu_push4(ibu, instr, 0, 0, 0, label, comment)
-
-#define ibu0(instr, comment) ibu_push4(ibu, instr, 0, 0, 0, "", comment)
-#define ibu1(instr, x1, comment) ibu_push4(ibu, instr, x1, 0, 0, "", comment)
-#define ibu2(instr, x1, x2, comment) ibu_push4(ibu, instr, x1, x2, 0, "", comment)
-#define ibu3(instr, x1, x2, x3, comment) ibu_push4(ibu, instr, x1, x2, x3, "", comment)
-#define ibu4(instr, x1, x2, x3, s, comment) ibu_push4(ibu, instr, x1, x2, x3, s, comment)
 
 //some macros to make it easier to write
 //in the codegen functions
