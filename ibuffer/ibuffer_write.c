@@ -40,6 +40,14 @@ void ibu_write_instr(enum IKEY key, int32_t x1, int32_t x2, int32_t x3, char* st
 		fprintf(f, "%s\n", str);
 		return;
 	}
+	if (key == AVRA_DEF) {
+		fprintf(f, ".def %s\n", str);
+		return;
+	}
+	if (key == AVRA_EQU) {
+		fprintf(f, ".equ %s\n", str);
+		return;
+	}
 
 	size_t l = 72;
 	if (str != NULL) {

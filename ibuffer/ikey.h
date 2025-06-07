@@ -12,6 +12,10 @@ enum IKEY {
 	NASM_EXTERN,
 	NASM_DB, // db directive for data
 
+	//avra specific
+	AVRA_DEF,
+	AVRA_EQU,
+
 	//taken from the instruction set summary in the Datasheet
 
 	//Arithmetic and Logic Instructions

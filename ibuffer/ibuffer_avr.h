@@ -151,3 +151,5 @@
 
 //not really an instr
 #define avr_label(name) ibu4(LABEL, 0, 0, 0, name, "")
+#define avra_def(str) ibu4(AVRA_DEF, 0, 0, 0, str, "")
+#define avra_equ(str) ibu4(AVRA_EQU, 0, 0, 0, str, "")

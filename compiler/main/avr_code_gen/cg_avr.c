@@ -20,7 +20,7 @@
 #include "cg_avr_single_function.h"
 #include "cg_avr_single_tac.h"
 
-static void emit_defs(FILE* fout) {
+static void emit_defs(struct IBuffer* ibu) {
 	//in /usr/share/avra
 	//in this file a comment must be shortened, otherwise avra will give an error
 	//.INCLUDE "/usr/share/avra/m32def.inc"
@@ -28,16 +28,16 @@ static void emit_defs(FILE* fout) {
 
 	//we do not want to depend on the specific location of that file
 	//or if it's even there ... just append some stuff here
-	fprintf(fout,
-	        ".equ	RAMEND	= 0x085f\n"
-	        ".def	XH	= r27\n"
-	        ".def	XL	= r26\n"
-	        ".def	YH	= r29\n"
-	        ".def	YL	= r28\n"
-	        ".def	ZH	= r31\n"
-	        ".def	ZL	= r30\n"
-	        ".equ	SPH	= 0x3e\n"
-	        ".equ	SPL	= 0x3d\n");
+
+	avra_equ("RAMEND = 0x085f");
+	avra_def("XH = r27");
+	avra_def("XL = r26");
+	avra_def("YH = r29");
+	avra_def("YL = r28");
+	avra_def("ZH = r31");
+	avra_def("ZL = r30");
+	avra_equ("SPH = 0x3e");
+	avra_equ("SPL = 0x3d");
 }
 
 void emit_call_main_endloop(struct IBuffer* ibu) {
@@ -76,6 +76,8 @@ bool compile_and_write_avr(struct AST* ast, struct Ctx* ctx) {
 	bool status = true;
 	struct IBuffer* ibu = ibu_ctor();
 
+	emit_defs(ibu);
+
 	if (!avr_prologue(ctx, ibu)) {
 		status = false;
 		goto exit;
@@ -99,14 +101,10 @@ bool compile_and_write_avr(struct AST* ast, struct Ctx* ctx) {
 		goto exit;
 	}
 
-	{
-		emit_defs(fout);
+	//TODO: figure out how to support something like .data on AVR.
+	assert(data_count(ctx_tables(ctx)->data) == 0);
 
-		//TODO: figure out how to support something like .data on AVR.
-		assert(data_count(ctx_tables(ctx)->data) == 0);
-
-		ibu_write(ibu, fout);
-	}
+	ibu_write(ibu, fout);
 
 	fclose(fout);
 
