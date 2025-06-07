@@ -13,7 +13,8 @@ struct IBuffer* ibu_ctor();
 
 void ibu_dtor(struct IBuffer* ibu);
 
-void ibu_write(struct IBuffer* ibu, FILE* fout);
+bool ibu_write(struct IBuffer* ibu, FILE* fout);
+bool ibu_write_to_file(struct IBuffer* ibu, char* filename);
 
 // @brief sets the source line numbers for subsequent insertions
 // into the IBuffer.

@@ -78,7 +78,7 @@ void ibu_dtor(struct IBuffer* ibu) {
 	free(ibu);
 }
 
-void ibu_write(struct IBuffer* ibu, FILE* fout) {
+bool ibu_write(struct IBuffer* ibu, FILE* fout) {
 
 	for (uint32_t k = 0; k < ibu->count; k++) {
 
@@ -88,6 +88,23 @@ void ibu_write(struct IBuffer* ibu, FILE* fout) {
 
 		ibu_write_instr(i->key, i->x1, i->x2, i->x3, i->str, i->comment, fout);
 	}
+
+	return true;
+}
+
+bool ibu_write_to_file(struct IBuffer* ibu, char* filename) {
+
+	FILE* fout = fopen(filename, "w");
+
+	if (fout == NULL) {
+		fprintf(stderr, "error opening %s\n", filename);
+		return false;
+	}
+
+	ibu_write(ibu, fout);
+	fclose(fout);
+
+	return true;
 }
 
 void ibu_set_line_num(struct IBuffer* ibu, uint32_t line_no) {

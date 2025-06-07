@@ -68,3 +68,7 @@
 
 //not really an instr
 #define label(name) ibu4(LABEL, 0, 0, 0, name, "")
+#define section(name) ibu4(NASM_SECTION, 0, 0, 0, name, "")
+#define global(name) ibu4(NASM_GLOBAL, 0, 0, 0, name, "")
+#define nasm_extern(name) ibu4(NASM_EXTERN, 0, 0, 0, name, "")
+#define nasm_db(str) ibu4(NASM_DB, 0, 0, 0, str, "")

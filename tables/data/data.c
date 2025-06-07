@@ -7,6 +7,7 @@
 #include <string.h>
 
 #include "data.h"
+#include "ibuffer/ibuffer_x86.h"
 
 struct DataTable {
 
@@ -85,48 +86,68 @@ size_t data_count(struct DataTable* data) {
 	return data->count_entries;
 }
 
-void data_print_escaped_str(FILE* fout, const char* str) {
+void data_print_escaped_str(char* dest, const char* str) {
+
 	while (*str) {
 		switch (*str) {
-			case '\n': fprintf(fout, "\\n"); break;
-			case '\t': fprintf(fout, "\\t"); break;
-			case '\r': fprintf(fout, "\\r"); break;
-			case '\b': fprintf(fout, "\\b"); break;
-			case '\f': fprintf(fout, "\\f"); break;
-			case '\"': fprintf(fout, "\\\""); break;
-			case '\\': fprintf(fout, "\\\\"); break;
+			case '\n': sprintf(dest, "\\n"); break;
+			case '\t': sprintf(dest, "\\t"); break;
+			case '\r': sprintf(dest, "\\r"); break;
+			case '\b': sprintf(dest, "\\b"); break;
+			case '\f': sprintf(dest, "\\f"); break;
+			case '\"': sprintf(dest, "\\\""); break;
+			case '\\': printf(dest, "\\\\"); break;
 			default:
 				if (isprint((unsigned char)*str)) {
 					// Printable character -> write as-is
-					fputc(*str, fout);
+					*dest = *str;
 				} else {
 					// Non-printable character -> use hex notation
-					fprintf(fout, "\\x%02X", (unsigned char)*str);
+					sprintf(dest, "\\x%02X", (unsigned char)*str);
 				}
 				break;
 		}
 		str++;
+		dest++;
 	}
 }
 
-static void data_write_data_segment_entry(struct DataEntry* e, FILE* fout) {
+static bool data_write_data_segment_entry(struct DataEntry* e, struct IBuffer* ibu) {
 
 	// The ',0' at the end NULL-terminates the string.
 
-	fprintf(fout, "%s: db ", e->symbol);
-	fprintf(fout, "`");
-	data_print_escaped_str(fout, e->value);
-	fprintf(fout, "`");
-	fprintf(fout, ",0\n");
+	char* buf = calloc(1, strlen(e->value) * 2 + strlen(e->symbol) + 40);
+	if (!buf) {
+		return false;
+	}
+
+	char* buf2 = calloc(1, strlen(e->value) * 2 + 40);
+	if (!buf2) {
+		return false;
+	}
+
+	data_print_escaped_str(buf2, e->value);
+
+	sprintf(buf, "%s: db `%s`,0\n", e->symbol, buf2);
+
+	nasm_db(strdup(buf));
+
+	free(buf);
+	free(buf2);
+
+	return true;
 }
 
-void data_write_data_segment(struct DataTable* data, FILE* fout) {
+bool data_write_data_segment(struct DataTable* data, struct IBuffer* ibu) {
 
-	fprintf(fout, "section .data\n");
+	section(".data");
 
 	for (size_t i = 0; i < data->count_entries; i++) {
-		data_write_data_segment_entry(data->entries[i], fout);
+		if (!data_write_data_segment_entry(data->entries[i], ibu)) {
+			return false;
+		}
 	}
+	return true;
 }
 
 bool data_insert(struct DataTable* data, char* str) {

@@ -24,6 +24,23 @@ void ibu_write_instr(enum IKEY key, int32_t x1, int32_t x2, int32_t x3, char* st
 		return;
 	}
 
+	if (key == NASM_SECTION) {
+		fprintf(f, "section %s\n", str);
+		return;
+	}
+	if (key == NASM_GLOBAL) {
+		fprintf(f, "global %s\n", str);
+		return;
+	}
+	if (key == NASM_EXTERN) {
+		fprintf(f, "extern %s\n", str);
+		return;
+	}
+	if (key == NASM_DB) {
+		fprintf(f, "%s\n", str);
+		return;
+	}
+
 	size_t l = 72;
 	if (str != NULL) {
 		l += strlen(str);

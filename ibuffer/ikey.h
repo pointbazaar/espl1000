@@ -6,6 +6,12 @@ enum IKEY {
 	//not really an IKEY though we need it anyways
 	LABEL,
 
+	//nasm specific
+	NASM_SECTION,
+	NASM_GLOBAL,
+	NASM_EXTERN,
+	NASM_DB, // db directive for data
+
 	//taken from the instruction set summary in the Datasheet
 
 	//Arithmetic and Logic Instructions

@@ -22,6 +22,7 @@
 #include "util/ctx.h"
 #include "compiler.h"
 #include "tables/symtable/symtable.h"
+#include "ibuffer/ibuffer_shared.h"
 
 #include "typechecker/typecheck.h"
 #include "tables/sst/sst_fill.h"
@@ -151,7 +152,12 @@ bool compile(struct Flags* flags) {
 
 	if (flags_dump_data(flags)) {
 		printf("\ndumping .data table:\n");
-		data_write_data_segment(ctx_tables(ctx)->data, stdout);
+
+		struct IBuffer* dump = ibu_ctor();
+		data_write_data_segment(ctx_tables(ctx)->data, dump);
+		ibu_write(dump, stdout);
+		ibu_dtor(dump);
+
 		printf("\n");
 	}
 

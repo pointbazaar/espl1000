@@ -26,23 +26,26 @@ static void visitor_emit_extern(void* node, enum NODE_TYPE type, void* arg) {
 		return;
 	}
 
-	FILE* fout = (FILE*)arg;
+	struct IBuffer* ibu = (struct IBuffer*)arg;
 
 	struct Method* m = (struct Method*)node;
 
 	if (has_annotation(m->super.annotations, ANNOT_EXTERN)) {
-		fprintf(fout, "extern %s\n", m->decl->name);
+		nasm_extern(m->decl->name);
 	}
 }
 
-static void declare_extern_functions_asm(FILE* fout, struct AST* ast) {
+static void declare_extern_functions_asm(struct IBuffer* ibu, struct AST* ast) {
 
-	visit_ast(ast, visitor_emit_extern, fout);
+	visit_ast(ast, visitor_emit_extern, ibu);
 }
 
 static void prologue_x86(struct IBuffer* ibu) {
 
 	char* c = "call main";
+
+	section(".text");
+	global("_start");
 
 	label("_start");
 
@@ -66,6 +69,9 @@ static void prologue_x86(struct IBuffer* ibu) {
 bool compile_and_write_x86(struct AST* ast, struct Ctx* ctx) {
 
 	struct IBuffer* ibu = ibu_ctor();
+	struct IBuffer* ibu_data = ibu_ctor();
+
+	declare_extern_functions_asm(ibu, ast);
 
 	prologue_x86(ibu);
 
@@ -86,25 +92,27 @@ bool compile_and_write_x86(struct AST* ast, struct Ctx* ctx) {
 		}
 	}
 
-	FILE* fout = fopen(flags_asm_filename(ctx_flags(ctx)), "w");
-	if (fout == NULL) {
-		printf("error opening output file\n");
-		ibu_dtor(ibu);
-		return false;
+	if (!data_write_data_segment(ctx_tables(ctx)->data, ibu_data)) {
+		goto exit_ibu;
 	}
 
-	data_write_data_segment(ctx_tables(ctx)->data, fout);
+	FILE* fout = fopen(flags_asm_filename(ctx_flags(ctx)), "w");
 
-	fprintf(fout, "section .text\n");
-	fprintf(fout, "global _start\n\n");
+	if (!ibu_write(ibu_data, fout)) {
+		success = false;
+		goto exit_file;
+	}
 
-	declare_extern_functions_asm(fout, ast);
+	if (!ibu_write(ibu, fout)) {
+		success = false;
+		goto exit_file;
+	}
 
-	ibu_write(ibu, fout);
-
+exit_file:
 	fclose(fout);
 exit_ibu:
 	ibu_dtor(ibu);
+	ibu_dtor(ibu_data);
 
 	return success;
 }

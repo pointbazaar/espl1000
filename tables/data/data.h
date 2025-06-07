@@ -4,6 +4,8 @@
 #include <stdint.h>
 #include <stdbool.h>
 
+struct IBuffer;
+
 struct DataTable;
 
 struct DataEntry {
@@ -20,7 +22,8 @@ void data_dtor(struct DataTable* data);
 // @returns   the count of entries in data table
 size_t data_count(struct DataTable* data);
 
-void data_write_data_segment(struct DataTable* data, FILE* fout);
+// @returns true on success
+bool data_write_data_segment(struct DataTable* data, struct IBuffer* ibu);
 
 // @brief inserts a new entry into data table
 // @param str   the string to enter
