@@ -35,6 +35,38 @@
 #include "lexer/src/lexer_main.h"
 #include "parser/main/util/parser.h"
 
+static bool call_assembler(struct Flags* flags) {
+
+	const char* prog;
+	const char* stdout_file;
+	const char* stderr_file;
+
+	if (flags_x86(flags)) {
+		prog = "nasm -felf64 -g";
+		stdout_file = "/tmp/nasm-stdout";
+		stderr_file = "/tmp/nasm-stdout";
+	} else {
+		prog = "avra";
+		stdout_file = "/tmp/avra-stdout";
+		stderr_file = "/tmp/avra-stdout";
+	}
+
+	const char* tmplt = "%s %s > %s 2> %s";
+	char* cmd;
+	asprintf(&cmd, tmplt, prog, flags_asm_filename(flags), stdout_file, stderr_file);
+
+	if (WEXITSTATUS(system(cmd)) != 0) {
+
+		fprintf(stderr, "error with %s, see %s, %s \n", prog, stdout_file, stderr_file);
+		free(cmd);
+		return false;
+	}
+
+	free(cmd);
+
+	return true;
+}
+
 bool compile(struct Flags* flags) {
 
 	const size_t count_filenames = flags_count_filenames(flags);
@@ -180,30 +212,8 @@ bool compile(struct Flags* flags) {
 
 	int status = 0;
 
-	const char* prog;
-	const char* stdout_file;
-	const char* stderr_file;
-
-	if (flags_x86(flags)) {
-		prog = "nasm -felf64 -g";
-		stdout_file = "/tmp/nasm-stdout";
-		stderr_file = "/tmp/nasm-stdout";
-	} else {
-		prog = "avra";
-		stdout_file = "/tmp/avra-stdout";
-		stderr_file = "/tmp/avra-stdout";
-	}
-
-	const char* tmplt = "%s %s > %s 2> %s";
-	char* cmd;
-	asprintf(&cmd, tmplt, prog, flags_asm_filename(flags), stdout_file, stderr_file);
-
-	status = system(cmd);
-
-	free(cmd);
-
-	if (WEXITSTATUS(status) != 0) {
-		printf("[Error] error with %s, see %s, %s \n", prog, stdout_file, stderr_file);
+	if (!call_assembler(flags)) {
+		status = 1;
 		goto out;
 	}
 
