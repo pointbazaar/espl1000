@@ -50,27 +50,36 @@ void emit_call_main_endloop(struct IBuffer* ibu) {
 	avr_rjmp("endloop", "");
 }
 
-bool compile_and_write_avr(struct AST* ast, struct Ctx* ctx) {
-
-	bool status = true;
-	struct IBuffer* ibu = ibu_ctor();
-
+static bool avr_prologue(struct Ctx* ctx, struct IBuffer* ibu) {
 	struct RAT* rat = rat_ctor(RAT_ARCH_AVR, 10);
 
 	struct TAC* t = makeTACSetupSP(0);
 
-	status = emit_asm_avr_single_tac(rat, t, ctx, ibu);
+	int status = emit_asm_avr_single_tac(rat, t, ctx, ibu);
 
 	if (!status) {
 		free(t);
 		rat_dtor(rat);
-		goto exit;
+		return false;
 	}
 
 	free(t);
 	rat_dtor(rat);
 
 	emit_call_main_endloop(ibu);
+
+	return true;
+}
+
+bool compile_and_write_avr(struct AST* ast, struct Ctx* ctx) {
+
+	bool status = true;
+	struct IBuffer* ibu = ibu_ctor();
+
+	if (!avr_prologue(ctx, ibu)) {
+		status = false;
+		goto exit;
+	}
 
 	//convert AST into 3 address code with temporaries, use recursive descent to make TAC
 	for (size_t i = 0; i < ast->count_namespaces; i++) {
@@ -86,8 +95,8 @@ bool compile_and_write_avr(struct AST* ast, struct Ctx* ctx) {
 	FILE* fout = fopen(flags_asm_filename(ctx_flags(ctx)), "w");
 	if (fout == NULL) {
 		fprintf(stderr, "error opening output file\n");
-		ibu_dtor(ibu);
-		return false;
+		status = false;
+		goto exit;
 	}
 
 	{
