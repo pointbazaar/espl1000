@@ -50,7 +50,10 @@ void emit_call_main_endloop(struct IBuffer* ibu) {
 	avr_rjmp("endloop", "");
 }
 
-static bool avr_prologue(struct Ctx* ctx, struct IBuffer* ibu) {
+bool avr_prologue(struct Ctx* ctx, struct IBuffer* ibu) {
+
+	emit_defs(ibu);
+
 	struct RAT* rat = rat_ctor(RAT_ARCH_AVR, 10);
 
 	struct TAC* t = makeTACSetupSP(0);
@@ -69,48 +72,4 @@ static bool avr_prologue(struct Ctx* ctx, struct IBuffer* ibu) {
 	emit_call_main_endloop(ibu);
 
 	return true;
-}
-
-bool compile_and_write_avr(struct AST* ast, struct Ctx* ctx) {
-
-	bool status = true;
-	struct IBuffer* ibu = ibu_ctor();
-
-	emit_defs(ibu);
-
-	if (!avr_prologue(ctx, ibu)) {
-		status = false;
-		goto exit;
-	}
-
-	//convert AST into 3 address code with temporaries, use recursive descent to make TAC
-	for (size_t i = 0; i < ast->count_namespaces; i++) {
-		struct Namespace* ns = ast->namespaces[i];
-
-		for (size_t j = 0; j < ns->count_methods; j++) {
-			struct Method* m = ns->methods[j];
-
-			compile_and_write_avr_single_function(m, ctx, ibu);
-		}
-	}
-
-	FILE* fout = fopen(flags_asm_filename(ctx_flags(ctx)), "w");
-	if (fout == NULL) {
-		fprintf(stderr, "error opening output file\n");
-		status = false;
-		goto exit;
-	}
-
-	//TODO: figure out how to support something like .data on AVR.
-	assert(data_count(ctx_tables(ctx)->data) == 0);
-
-	ibu_write(ibu, fout);
-
-	fclose(fout);
-
-exit:
-
-	ibu_dtor(ibu);
-
-	return status;
 }

@@ -40,7 +40,13 @@ static void declare_extern_functions_asm(struct IBuffer* ibu, struct AST* ast) {
 	visit_ast(ast, visitor_emit_extern, ibu);
 }
 
-static void prologue_x86(struct IBuffer* ibu) {
+bool prologue_x86(struct Ctx* ctx, struct IBuffer* ibu, struct AST* ast) {
+
+	if (!data_write_data_segment(ctx_tables(ctx)->data, ibu)) {
+		return false;
+	}
+
+	declare_extern_functions_asm(ibu, ast);
 
 	char* c = "call main";
 
@@ -64,55 +70,6 @@ static void prologue_x86(struct IBuffer* ibu) {
 	nop(c);
 	nop(c);
 	nop(c);
-}
 
-bool compile_and_write_x86(struct AST* ast, struct Ctx* ctx) {
-
-	struct IBuffer* ibu = ibu_ctor();
-	struct IBuffer* ibu_data = ibu_ctor();
-
-	declare_extern_functions_asm(ibu, ast);
-
-	prologue_x86(ibu);
-
-	bool success = true;
-
-	//convert AST into 3 address code with temporaries, use recursive descent to make TAC
-	for (size_t i = 0; i < ast->count_namespaces; i++) {
-		struct Namespace* ns = ast->namespaces[i];
-
-		for (size_t j = 0; j < ns->count_methods; j++) {
-			struct Method* m = ns->methods[j];
-
-			success = compile_and_write_x86_single_function(m, ctx, ibu);
-
-			if (!success) {
-				goto exit_ibu;
-			}
-		}
-	}
-
-	if (!data_write_data_segment(ctx_tables(ctx)->data, ibu_data)) {
-		goto exit_ibu;
-	}
-
-	FILE* fout = fopen(flags_asm_filename(ctx_flags(ctx)), "w");
-
-	if (!ibu_write(ibu_data, fout)) {
-		success = false;
-		goto exit_file;
-	}
-
-	if (!ibu_write(ibu, fout)) {
-		success = false;
-		goto exit_file;
-	}
-
-exit_file:
-	fclose(fout);
-exit_ibu:
-	ibu_dtor(ibu);
-	ibu_dtor(ibu_data);
-
-	return success;
+	return true;
 }

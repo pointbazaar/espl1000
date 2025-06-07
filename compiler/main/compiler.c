@@ -1,3 +1,5 @@
+#include "avr_code_gen/cg_avr_single_function.h"
+#include "x86_code_gen/cg_x86_single_function.h"
 #define _GNU_SOURCE
 
 #include <assert.h>
@@ -65,6 +67,76 @@ static bool call_assembler(struct Flags* flags) {
 	free(cmd);
 
 	return true;
+}
+
+static bool compile_single_function(struct Ctx* ctx, struct Method* m, struct IBuffer* ibu) {
+
+	struct Flags* flags = ctx_flags(ctx);
+
+	if (flags_x86(flags)) {
+		return compile_and_write_x86_single_function(m, ctx, ibu);
+	} else {
+		return compile_and_write_avr_single_function(m, ctx, ibu);
+	}
+}
+
+static bool compile_common_loop(struct Ctx* ctx, struct AST* ast, struct IBuffer* ibu) {
+
+	bool success = true;
+
+	for (size_t i = 0; i < ast->count_namespaces; i++) {
+		struct Namespace* ns = ast->namespaces[i];
+
+		for (size_t j = 0; j < ns->count_methods; j++) {
+			struct Method* m = ns->methods[j];
+
+			success = compile_single_function(ctx, m, ibu);
+			if (!success) {
+				goto exit;
+			}
+		}
+	}
+
+exit:
+	return success;
+}
+
+static bool compile_common(struct Ctx* ctx, struct AST* ast) {
+
+	struct Flags* flags = ctx_flags(ctx);
+	bool success = true;
+
+	struct IBuffer* ibu = ibu_ctor();
+
+	if (flags_x86(flags)) {
+		if (!prologue_x86(ctx, ibu, ast)) {
+			success = false;
+			goto exit;
+		}
+	} else {
+		//TODO: figure out how to support something like .data on AVR.
+		if (data_count(ctx_tables(ctx)->data) != 0) {
+			success = false;
+			goto exit;
+		}
+
+		if (!avr_prologue(ctx, ibu)) {
+			success = false;
+			goto exit;
+		}
+	}
+
+	compile_common_loop(ctx, ast, ibu);
+
+	if (!ibu_write_to_file(ibu, flags_asm_filename(ctx_flags(ctx)))) {
+		success = false;
+		goto exit;
+	}
+
+exit:
+	ibu_dtor(ibu);
+
+	return success;
 }
 
 bool compile(struct Flags* flags) {
@@ -193,11 +265,7 @@ bool compile(struct Flags* flags) {
 		printf("\n");
 	}
 
-	if (flags_x86(flags)) {
-		success = compile_and_write_x86(ast, ctx);
-	} else {
-		success = compile_and_write_avr(ast, ctx);
-	}
+	success = compile_common(ctx, ast);
 
 	free_ast(ast);
 
