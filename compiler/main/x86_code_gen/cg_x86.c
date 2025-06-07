@@ -40,9 +40,7 @@ static void declare_extern_functions_asm(FILE* fout, struct AST* ast) {
 	visit_ast(ast, visitor_emit_extern, fout);
 }
 
-bool compile_and_write_x86(struct AST* ast, struct Ctx* ctx) {
-
-	struct IBuffer* ibu = ibu_ctor();
+static void prologue_x86(struct IBuffer* ibu) {
 
 	char* c = "call main";
 
@@ -63,6 +61,13 @@ bool compile_and_write_x86(struct AST* ast, struct Ctx* ctx) {
 	nop(c);
 	nop(c);
 	nop(c);
+}
+
+bool compile_and_write_x86(struct AST* ast, struct Ctx* ctx) {
+
+	struct IBuffer* ibu = ibu_ctor();
+
+	prologue_x86(ibu);
 
 	bool success = true;
 
