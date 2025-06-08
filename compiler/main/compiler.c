@@ -1,5 +1,3 @@
-#include "avr_code_gen/cg_avr_single_function.h"
-#include "x86_code_gen/cg_x86_single_function.h"
 #define _GNU_SOURCE
 
 #include <assert.h>
@@ -16,6 +14,8 @@
 #include "avr_code_gen/cg_avr.h"
 #include "lexer/src/lexer_flags.h"
 #include "x86_code_gen/cg_x86.h"
+
+#include "compile_single_function.h"
 
 #include "cli/flags/flags.h"
 #include "util/fill_tables.h"
@@ -69,17 +69,6 @@ static bool call_assembler(struct Flags* flags) {
 	return true;
 }
 
-static bool compile_single_function(struct Ctx* ctx, struct Method* m, struct IBuffer* ibu) {
-
-	struct Flags* flags = ctx_flags(ctx);
-
-	if (flags_x86(flags)) {
-		return compile_and_write_x86_single_function(m, ctx, ibu);
-	} else {
-		return compile_and_write_avr_single_function(m, ctx, ibu);
-	}
-}
-
 static bool compile_common_loop(struct Ctx* ctx, struct AST* ast, struct IBuffer* ibu) {
 
 	bool success = true;
@@ -90,7 +79,7 @@ static bool compile_common_loop(struct Ctx* ctx, struct AST* ast, struct IBuffer
 		for (size_t j = 0; j < ns->count_methods; j++) {
 			struct Method* m = ns->methods[j];
 
-			success = compile_single_function(ctx, m, ibu);
+			success = compile_single_function(m, ctx, ibu);
 			if (!success) {
 				goto exit;
 			}

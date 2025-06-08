@@ -13,7 +13,7 @@
 
 #include "test_x86_code_gen_util.h"
 #include "x86_code_gen/cg_x86.h"
-#include "x86_code_gen/cg_x86_single_function.h"
+#include "compile_single_function.h"
 #include "x86_code_gen/cg_x86_basic_block.h"
 #include "x86_code_gen/allocate_registers_x86.h"
 

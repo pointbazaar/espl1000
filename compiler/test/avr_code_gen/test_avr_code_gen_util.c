@@ -6,7 +6,6 @@
 
 #include "test_avr_code_gen_util.h"
 #include "avr_code_gen/cg_avr.h"
-#include "avr_code_gen/cg_avr_single_function.h"
 #include "tac/tacbuffer.h"
 #include "basic_block/basicblock.h"
 #include "analyzer/lv/lv_analyzer.h"

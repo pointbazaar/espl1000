@@ -17,7 +17,6 @@
 #include "cg_avr.h"
 #include "tac/tacbuffer.h"
 #include "tac/tac.h"
-#include "cg_avr_single_function.h"
 #include "cg_avr_single_tac.h"
 
 static void emit_defs(struct IBuffer* ibu) {

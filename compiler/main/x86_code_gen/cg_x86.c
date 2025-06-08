@@ -17,7 +17,6 @@
 #include "cg_x86.h"
 #include "tac/tacbuffer.h"
 #include "tac/tac.h"
-#include "cg_x86_single_function.h"
 #include "cg_x86_single_tac.h"
 
 static void visitor_emit_extern(void* node, enum NODE_TYPE type, void* arg) {

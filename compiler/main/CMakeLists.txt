@@ -4,6 +4,7 @@ add_definitions(-DESPL_STDLIB_PATH="${ESPL_STDLIB_PATH}")
 
 add_library("sd-base"
 	compiler.c
+	compile_single_function.c
 
 	#analyzer
 	analyzer/annotation/annotation_analyzer.c
@@ -61,7 +62,6 @@ add_library("sd-base"
 	# x86 backend
 	x86_code_gen/cg_x86.c
 	x86_code_gen/cg_x86_basic_block.c
-	x86_code_gen/cg_x86_single_function.c
 	x86_code_gen/cg_x86_single_tac.c
 	x86_code_gen/allocate_registers_x86.c
 	x86_code_gen/compile_ir/compile_tac.h
@@ -98,7 +98,6 @@ add_library("sd-base"
 
 	avr_code_gen/cg_avr_basic_block.c
 	avr_code_gen/cg_avr_single_tac.c
-	avr_code_gen/cg_avr_single_function.c
 
 	#typechecker
 	typechecker/typecheck.c

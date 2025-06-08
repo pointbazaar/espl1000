@@ -1,8 +1,10 @@
+#include "avr_code_gen/cg_avr_basic_block.h"
+#include "x86_code_gen/cg_x86_basic_block.h"
 #define _GNU_SOURCE
 
 #include <stdlib.h>
 
-#include "cg_x86_basic_block.h"
+#include "compile_single_function.h"
 #include "analyzer/lv/lv_analyzer.h"
 
 #include "basic_block/basicblock.h"
@@ -16,13 +18,14 @@
 #include "ast/ast_declare.h"
 
 #include "tables/symtable/symtable.h"
-#include "cg_x86_single_function.h"
-#include "allocate_registers_x86.h"
+#include "x86_code_gen/allocate_registers_x86.h"
 
 #include "cli/flags/flags.h"
 #include "liveness/liveness.h"
 
-bool compile_and_write_x86_single_function(struct Method* m, struct Ctx* ctx, struct IBuffer* ibu) {
+bool compile_single_function(struct Method* m, struct Ctx* ctx, struct IBuffer* ibu) {
+
+	const bool x86 = flags_x86(ctx_flags(ctx));
 
 	bool success = true;
 
@@ -106,7 +109,12 @@ bool compile_and_write_x86_single_function(struct Method* m, struct Ctx* ctx, st
 
 	struct Liveness* live = liveness_calc(graph, nblocks);
 
-	struct RAT* rat = rat_ctor(RAT_ARCH_X86, liveness_ntemps(live));
+	struct RAT* rat = NULL;
+	if (x86) {
+		rat = rat_ctor(RAT_ARCH_X86, liveness_ntemps(live));
+	} else {
+		rat = rat_ctor(RAT_ARCH_AVR, liveness_ntemps(live));
+	}
 
 	success = allocate_registers_basicblocks(graph, nblocks, rat, st, live);
 
@@ -138,7 +146,11 @@ bool compile_and_write_x86_single_function(struct Method* m, struct Ctx* ctx, st
 		fclose(fout_rat);
 	}
 
-	success = emit_asm_x86_basic_block(root, ctx, ibu, rat, current_function_name);
+	if (x86) {
+		success = emit_asm_x86_basic_block(root, ctx, ibu, rat, current_function_name);
+	} else {
+		success = emit_asm_avr_basic_block(root, ctx, ibu);
+	}
 
 exit:
 	//delete the basic block graph
